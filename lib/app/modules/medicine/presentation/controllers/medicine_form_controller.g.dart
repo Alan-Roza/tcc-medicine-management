@@ -145,6 +145,14 @@ mixin _$MedicineFormController on MedicineFormControllerBase, Store {
     });
   }
 
+  late final _$submitFormAsyncAction =
+      AsyncAction('MedicineFormControllerBase.submitForm', context: context);
+
+  @override
+  Future<bool> submitForm() {
+    return _$submitFormAsyncAction.run(() => super.submitForm());
+  }
+
   late final _$MedicineFormControllerBaseActionController =
       ActionController(name: 'MedicineFormControllerBase', context: context);
 

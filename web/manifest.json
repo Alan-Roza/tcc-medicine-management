@@ -1,6 +1,6 @@
 {
-    "name": "tcc_drugs_management",
-    "short_name": "tcc_drugs_management",
+    "name": "tcc_medicine_management",
+    "short_name": "tcc_medicine_management",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
