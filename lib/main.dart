@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tcc_drugs_management/app/core/routes/app_routes.dart';
+import 'package:tcc_medicine_management/app/core/routes/app_routes.dart';
 
 void main() {
   runApp(const MyApp());
