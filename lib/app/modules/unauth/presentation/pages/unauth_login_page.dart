@@ -13,7 +13,7 @@ class UnauthLoginPage extends StatelessWidget {
         children: [
           Expanded(
             child: Container(
-              color: const Color(0xFF5AC6FF),
+              color: const Color(0xFF44B3ED),
               child: const Center(
                 child: Text(
                   'LOGO',
@@ -26,7 +26,7 @@ class UnauthLoginPage extends StatelessWidget {
             ),
           ),
           Container(
-            color: const Color(0xFF5AC6FF),
+            color: const Color(0xFF44B3ED),
             child: CustomPaint(
               size: Size(
                   width,
