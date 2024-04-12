@@ -87,6 +87,7 @@ class UnauthHomePage extends StatelessWidget {
                                   Container(
                                     width: constraints.maxWidth / 5,
                                     height: 6,
+                                    margin: const EdgeInsets.only(top: 5),
                                     decoration: BoxDecoration(
                                       color: const Color(0xFF00A8FF),
                                       border: Border.all(
