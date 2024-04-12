@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StepProgressView extends StatelessWidget {
@@ -93,7 +92,7 @@ class StepProgressView extends StatelessWidget {
         Text(
           text,
           style: const TextStyle(
-            color: Color(0x000000),
+            color: Color(0x00000000),
           ),
         ),
       );
