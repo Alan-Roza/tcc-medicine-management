@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/presentation/widgets/geometric_curved_bottom_sheet_widget.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/presentation/widgets/geometric_one_widget.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/presentation/widgets/geometric_three_widget.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/presentation/widgets/geometric_two_widget.dart';
 
 class UnauthHomePage extends StatelessWidget {
   const UnauthHomePage({super.key});
@@ -11,19 +15,50 @@ class UnauthHomePage extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF44B3ED),
+      backgroundColor: const Color(0xFF33ABE9),
       body: Column(
         children: [
           Expanded(
             child: Container(
-              color: const Color(0xFF44B3ED),
-              child: const Center(
-                child: Text(
-                  'HOME LOGO',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0),
-                    fontSize: 20,
-                  ),
+              color: const Color(0xFF33ABE9),
+              child: Center(
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: CustomPaint(
+                        size: Size(width / 1.5, height / 2.5),
+                        painter: GeometricThreeWidget(),
+                      ),
+                    ),
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: CustomPaint(
+                        size: Size(width / 3.4, height / 3.4),
+                        painter: GeometricOneWidget(),
+                      ),
+                    ),
+
+                    Positioned(
+                      top: height / 10,
+                      left: 0,
+                      child: CustomPaint(
+                        size: Size(width / 8, height / 4),
+                        painter: GeometricTwoWidget(),
+                      ),
+                    ),
+
+                    // CustomPaint(
+                    //   size: Size(width, height),
+                    //   painter: GeometricTwoWidget(),
+                    // ),
+                    // CustomPaint(
+                    //   size: Size(width, height),
+                    //   painter: GeometricThreeWidget(),
+                    // ),
+                  ],
                 ),
               ),
             ),
@@ -38,10 +73,10 @@ class UnauthHomePage extends StatelessWidget {
                   left: 0,
                   right: 0,
                   child: Container(
-                    color: const Color(0xFF44B3ED),
+                    color: const Color(0xFF33ABE9),
                     child: CustomPaint(
                       size: Size(width, height / 5.toDouble()),
-                      painter: MyPainter(),
+                      painter: GeometricCurvedBottomSheetWidget(),
                     ),
                   ),
                 ),
@@ -50,7 +85,6 @@ class UnauthHomePage extends StatelessWidget {
           ),
           Expanded(
             child: SizedBox(
-              // Set this to a suitable value
               child: Stack(
                 children: [
                   Positioned(
@@ -176,34 +210,5 @@ class UnauthHomePage extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class MyPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint paint = Paint();
-    Path path = Path();
-
-    paint.color = Colors.white;
-    path = Path();
-    path.lineTo(0, size.height);
-    path.cubicTo(0, size.height, 0, size.height, 0, size.height);
-    path.cubicTo(0, size.height, size.width * 0.11, size.height * 0.3,
-        size.width * 0.115, size.height * 0.3);
-    path.cubicTo(size.width * 0.16, size.height * 0.04, size.width * 0.27,
-        -0.07, size.width * 0.335, size.height * 0.04);
-    path.cubicTo(size.width * 0.37, size.height * 0.05, size.width * 0.89,
-        size.height * 0.66, size.width * 0.89, size.height * 0.66);
-    path.cubicTo(size.width * 0.95, size.height * 0.72, size.width,
-        size.height * 0.85, size.width, size.height);
-    path.cubicTo(size.width, size.height, 0, size.height, 0, size.height);
-    path.cubicTo(0, size.height, 0, size.height, 0, size.height);
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
   }
 }
