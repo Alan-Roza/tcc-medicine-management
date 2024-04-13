@@ -19,71 +19,77 @@ class UnauthHomePage extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child: Container(
-              color: const Color(0xFF33ABE9),
-              child: Center(
-                child: Stack(
-                  children: [
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      child: CustomPaint(
-                        size: Size(width / 1.5, height / 2.5),
-                        painter: GeometricThreeWidget(),
-                      ),
-                    ),
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      child: CustomPaint(
-                        size: Size(width / 3.4, height / 3.4),
-                        painter: GeometricOneWidget(),
-                      ),
-                    ),
-
-                    Positioned(
-                      top: height / 10,
-                      left: 0,
-                      child: CustomPaint(
-                        size: Size(width / 8, height / 4),
-                        painter: GeometricTwoWidget(),
-                      ),
-                    ),
-
-                    // CustomPaint(
-                    //   size: Size(width, height),
-                    //   painter: GeometricTwoWidget(),
-                    // ),
-                    // CustomPaint(
-                    //   size: Size(width, height),
-                    //   painter: GeometricThreeWidget(),
-                    // ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: height / 5.toDouble(), // Set this to a suitable value
+            flex: 3,
             child: Stack(
               children: [
-                Positioned(
-                  top: -1,
-                  bottom: -1,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    color: const Color(0xFF33ABE9),
-                    child: CustomPaint(
-                      size: Size(width, height / 5.toDouble()),
-                      painter: GeometricCurvedBottomSheetWidget(),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: SizedBox(
+                    height:
+                        height / 5.toDouble(), // Set this to a suitable value
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          top: -1,
+                          bottom: -1,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            color: const Color(0xFF33ABE9),
+                            child: CustomPaint(
+                              size: Size(width, height / 5.toDouble()),
+                              painter: GeometricCurvedBottomSheetWidget(),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                  ),
+                ),
+                Center(
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: CustomPaint(
+                          size: Size(width / 1.5, height / 2.5),
+                          painter: GeometricThreeWidget(),
+                        ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: CustomPaint(
+                          size: Size(width / 3.4, height / 3.4),
+                          painter: GeometricOneWidget(),
+                        ),
+                      ),
+                      Positioned(
+                        top: height / 10,
+                        left: 0,
+                        child: CustomPaint(
+                          size: Size(width / 8, height / 4),
+                          painter: GeometricTwoWidget(),
+                        ),
+                      ),
+                      const Center(
+                        child: Text(
+                          'Hello, World!',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
           Expanded(
+            flex: 2,
             child: SizedBox(
               child: Stack(
                 children: [
