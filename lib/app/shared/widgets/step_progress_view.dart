@@ -31,13 +31,13 @@ class StepProgressView extends StatelessWidget {
             Row(
               children: _iconViews(),
             ),
-            const SizedBox(
-              height: 8,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: _titleViews(),
-            ),
+            // const SizedBox(
+            //   height: 8,
+            // ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: _titleViews(),
+            // ),
           ],
         ));
   }
@@ -52,23 +52,37 @@ class StepProgressView extends StatelessWidget {
           (i == 0 || _curStep > i + 1) ? _activeColor : _inactiveColor;
 
       list.add(
-        Container(
-          width: 20.0,
-          height: 20.0,
-          padding: const EdgeInsets.all(0),
-          decoration: BoxDecoration(
-            /* color: circleColor,*/
-            borderRadius: const BorderRadius.all(Radius.circular(22.0)),
-            border: Border.all(
-              color: circleColor,
-              width: 2.0,
+        Column(
+          children: [
+            Container(
+              width: 20.0,
+              height: 20.0,
+              padding: const EdgeInsets.all(0),
+              decoration: BoxDecoration(
+                /* color: circleColor,*/
+                borderRadius: const BorderRadius.all(Radius.circular(22.0)),
+                border: Border.all(
+                  color: circleColor,
+                  width: 2.0,
+                ),
+              ),
+              child: Icon(
+                Icons.circle,
+                color: iconColor,
+                size: 12.0,
+              ),
             ),
-          ),
-          child: Icon(
-            Icons.circle,
-            color: iconColor,
-            size: 12.0,
-          ),
+            const SizedBox(
+              height: 8,
+            ),
+            Text(
+              _titles[i],
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 12.0,
+              ),
+            ),
+          ],
         ),
       );
 
