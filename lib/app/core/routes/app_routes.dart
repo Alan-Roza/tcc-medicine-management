@@ -34,8 +34,9 @@ final GoRouter appRouter = GoRouter(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
         // Return a placeholder widget. The actual widget will be determined by the subroutes.
-        return const UnauthLoginPage();
+        // return const UnauthLoginPage();
         // return const UnauthHomePage();
+        return const MedicineStockFormPage();
       },
       routes: [
         GoRoute(

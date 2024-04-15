@@ -85,18 +85,36 @@ class StepProgressView extends StatelessWidget {
     return list;
   }
 
+//   List<Widget> _titleViews() {
+//     var list = <Widget>[];
+//     _titles.asMap().forEach((i, text) {
+//       list.add(
+//         Text(
+//           text,
+//           style: const TextStyle(
+//             color: Color(0x00000000),
+//           ),
+//         ),
+//       );
+//     });
+//     return list;
+//   }
+// }
+
   List<Widget> _titleViews() {
-    var list = <Widget>[];
-    _titles.asMap().forEach((i, text) {
-      list.add(
+  return _titles.map((title) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
         Text(
-          text,
+          title,
           style: const TextStyle(
-            color: Color(0x00000000),
+            color: Colors.black,
+            fontSize: 12.0,
           ),
         ),
-      );
-    });
-    return list;
-  }
+      ],
+    );
+  }).toList();
+}
 }

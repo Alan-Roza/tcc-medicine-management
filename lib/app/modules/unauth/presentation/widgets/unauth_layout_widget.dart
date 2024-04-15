@@ -26,7 +26,6 @@ class UnauthLayoutWidget extends StatelessWidget {
           height: dinamicHeight,
           child: Stack(
             children: [
-              if (dinamicHeight > (height / 2.3.toDouble()))
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: SizedBox(
