@@ -7,9 +7,13 @@ import 'package:tcc_medicine_management/app/modules/unauth/presentation/widgets/
 class UnauthLayoutWidget extends StatelessWidget {
   final Widget child;
   final Widget logo;
+  final double dinamicHeight;
 
   const UnauthLayoutWidget(
-      {super.key, required this.child, required this.logo});
+      {super.key,
+      required this.child,
+      required this.logo,
+      required this.dinamicHeight});
 
   @override
   Widget build(BuildContext context) {
@@ -18,33 +22,35 @@ class UnauthLayoutWidget extends StatelessWidget {
 
     return Column(
       children: [
-        Expanded(
-          flex: 3,
+        SizedBox(
+          height: dinamicHeight,
           child: Stack(
             children: [
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: SizedBox(
-                  height: height / 5.toDouble(), // Set this to a suitable value
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        top: -1,
-                        bottom: -1,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          color: const Color(0xFF33ABE9),
-                          child: CustomPaint(
-                            size: Size(width, height / 5.toDouble()),
-                            painter: GeometricCurvedBottomSheetWidget(),
+              if (dinamicHeight > (height / 2.3.toDouble()))
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: SizedBox(
+                    height:
+                        height / 5.toDouble(), // Set this to a suitable value
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          top: -1,
+                          bottom: -1,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            color: const Color(0xFF33ABE9),
+                            child: CustomPaint(
+                              size: Size(width, height / 5.toDouble()),
+                              painter: GeometricCurvedBottomSheetWidget(),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
               Center(
                 child: Stack(
                   children: [

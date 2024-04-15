@@ -10,6 +10,7 @@ class UnauthHomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFF33ABE9),
       body: UnauthLayoutWidget(
+        dinamicHeight: 100,
         logo: const Text(
           'LOGO',
           style: TextStyle(
@@ -29,13 +30,13 @@ class UnauthHomePage extends StatelessWidget {
                 right: 0,
                 child: Container(
                   padding: const EdgeInsetsDirectional.only(
-                    start: 20,
-                    end: 20,
+                    start: 25,
+                    end: 25,
                   ),
                   width: MediaQuery.of(context).size.width * 0.75,
                   color: Colors.white,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       LayoutBuilder(
                         builder:
@@ -84,7 +85,7 @@ class UnauthHomePage extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          context.goNamed('MedicineStockList');
+                          context.goNamed('Login');
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.75,
