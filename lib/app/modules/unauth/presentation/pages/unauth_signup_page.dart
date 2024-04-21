@@ -226,6 +226,7 @@ class UnauthSignupPage extends StatelessWidget {
                                         style: TextStyle(color: Colors.blue),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
+                                            context.goNamed('Home');
                                             // Handle terms of use tap
                                           },
                                       ),

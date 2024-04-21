@@ -33,6 +33,7 @@ final GoRouter appRouter = GoRouter(
   routes: <RouteBase>[
     GoRoute(
       path: '/',
+      name: 'Home',
       builder: (BuildContext context, GoRouterState state) {
         // Return a placeholder widget. The actual widget will be determined by the subroutes.
         // return const UnauthLoginPage();
