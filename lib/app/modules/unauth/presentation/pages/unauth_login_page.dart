@@ -9,11 +9,13 @@ class UnauthLoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+     var keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     return Scaffold(
+      // resizeToAvoidBottomInset: false, // This is to keyboard overflow
       backgroundColor: const Color(0xFF33ABE9),
       body: UnauthLayoutWidget(
-        dinamicHeight: height / 2,
+        dinamicHeight: (height / 2) - keyboardHeight,
         logo: const SizedBox(
           width: 200,
           child: Text('BEM-VINDO DE VOLTA!',
