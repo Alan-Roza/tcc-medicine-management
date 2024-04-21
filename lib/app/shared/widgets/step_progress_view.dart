@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:easy_stepper/easy_stepper.dart';
 
-class StepProgressView extends StatelessWidget {
+class StepProgressView extends StatefulWidget {
   final double _width;
 
   final List<String> _titles;
   final int _curStep;
   final Color _activeColor;
-  final Color _inactiveColor = const Color(0xFFE6EEF3);
-  final double lineWidth = 3.0;
 
   const StepProgressView(
       {required Key key,
@@ -23,112 +22,106 @@ class StepProgressView extends StatelessWidget {
         super(key: key);
 
   @override
+  State<StepProgressView> createState() => _StepProgressViewState();
+}
+
+class _StepProgressViewState extends State<StepProgressView> {
+  int activeStep = 0;
+  int activeStep2 = 0;
+  int reachedStep = 0;
+  int upperBound = 5;
+  double progress = 0.2;
+  Set<int> reachedSteps = <int>{0, 2, 4, 5};
+  final dashImages = [
+    'assets/1.png',
+    'assets/2.png',
+    'assets/3.png',
+    'assets/4.png',
+    'assets/5.png',
+  ];
+
+  void increaseProgress() {
+    if (progress < 1) {
+      setState(() => progress += 0.2);
+    } else {
+      setState(() => progress = 0);
+    }
+  }
+
+  final Color _inactiveColor = const Color(0xFFE6EEF3);
+  final double lineWidth = 3.0;
+
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: _width,
+  double width = MediaQuery.of(context).size.width / 3;
+    
+    return SafeArea(
+      child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Row(
-              children: _iconViews(),
-            ),
-            // const SizedBox(
-            //   height: 8,
-            // ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: _titleViews(),
-            // ),
-          ],
-        ));
-  }
-
-  List<Widget> _iconViews() {
-    var list = <Widget>[];
-    _titles.asMap().forEach((i, icon) {
-      var circleColor =
-          (i == 0 || _curStep > i + 1) ? _activeColor : _inactiveColor;
-      var lineColor = _curStep > i + 1 ? _activeColor : _inactiveColor;
-      var iconColor =
-          (i == 0 || _curStep > i + 1) ? _activeColor : _inactiveColor;
-
-      list.add(
-        Column(
-          children: [
-            Container(
-              width: 20.0,
-              height: 20.0,
-              padding: const EdgeInsets.all(0),
-              decoration: BoxDecoration(
-                /* color: circleColor,*/
-                borderRadius: const BorderRadius.all(Radius.circular(22.0)),
-                border: Border.all(
-                  color: circleColor,
-                  width: 2.0,
+            EasyStepper(
+              activeStep: activeStep,
+              lineStyle: LineStyle(
+                lineLength: width,
+                lineType: LineType.normal,
+                finishedLineColor: Colors.orange,
+                lineThickness: 2,
+                lineSpace: 1,
+                lineWidth: 10,
+                unreachedLineType: LineType.normal,
+              ),
+              finishedStepBorderColor: Colors.deepOrange,
+              finishedStepTextColor: Colors.deepOrange,
+              finishedStepBackgroundColor: Colors.deepOrange,
+              activeStepTextColor: Colors.black87,
+              activeStepIconColor: Colors.deepOrange,
+              showLoadingAnimation: false,
+              showStepBorder: false,
+              stepRadius: 8,
+              steps: [
+                EasyStep(
+                  customStep: CircleAvatar(
+                    radius: 8,
+                    backgroundColor: Color.fromARGB(255, 236, 0, 0),
+                    child: CircleAvatar(
+                      radius: 7,
+                      backgroundColor:
+                          activeStep >= 0 ? Colors.orange : Colors.white,
+                    ),
+                  ),
+                  title: 'Waiting',
                 ),
-              ),
-              child: Icon(
-                Icons.circle,
-                color: iconColor,
-                size: 12.0,
-              ),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Text(
-              _titles[i],
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 12.0,
-              ),
+                EasyStep(
+                  customStep: CircleAvatar(
+                    radius: 8,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                      radius: 7,
+                      backgroundColor:
+                          activeStep >= 1 ? Colors.orange : const Color.fromARGB(255, 209, 78, 78),
+                    ),
+                  ),
+                  title: 'Order Received',
+                  topTitle: true,
+                ),
+                EasyStep(
+                  customStep: CircleAvatar(
+                    radius: 8,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                      radius: 7,
+                      backgroundColor:
+                          activeStep >= 2 ? Colors.orange : const Color.fromARGB(255, 168, 0, 0),
+                    ),
+                  ),
+                  title: 'Preparing',
+                ),
+              ],
+              onStepReached: (index) => setState(() => activeStep = index),
             ),
           ],
         ),
-      );
-
-      //line between icons
-      if (i != _titles.length - 1) {
-        list.add(Expanded(
-            child: Container(
-          height: lineWidth,
-          color: lineColor,
-        )));
-      }
-    });
-
-    return list;
-  }
-
-//   List<Widget> _titleViews() {
-//     var list = <Widget>[];
-//     _titles.asMap().forEach((i, text) {
-//       list.add(
-//         Text(
-//           text,
-//           style: const TextStyle(
-//             color: Color(0x00000000),
-//           ),
-//         ),
-//       );
-//     });
-//     return list;
-//   }
-// }
-
-  List<Widget> _titleViews() {
-  return _titles.map((title) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 12.0,
-          ),
-        ),
-      ],
+      ),
     );
-  }).toList();
-}
+  }
 }

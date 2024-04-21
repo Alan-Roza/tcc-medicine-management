@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/presentation/widgets/unauth_layout_widget.dart';
 
-class UnauthHomePage extends StatelessWidget {
-  const UnauthHomePage({super.key});
+class UnauthSignupPage extends StatelessWidget {
+  const UnauthSignupPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,14 +12,17 @@ class UnauthHomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFF33ABE9),
       body: UnauthLayoutWidget(
-        dinamicHeight: height/1.7,
-        logo: const Text(
-          'LOGO',
-          style: TextStyle(
-            fontSize: 35,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
+        dinamicHeight: height/2,
+        logo: const SizedBox(
+          width: 200,
+          child: Text('OLÁ, SEJA BEM-VINDO!',
+              style: TextStyle(
+                fontSize: 35,
+                fontWeight: FontWeight.w400,
+                color: Colors.white,
+                height: 1.2,
+              ),
+              textAlign: TextAlign.center),
         ),
         child: Expanded(
           flex: 2,
@@ -47,7 +50,7 @@ class UnauthHomePage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'bem-vindo ao tcc \no seu assistente médico!'
+                                'Cadastrar'
                                     .toUpperCase(),
                                 style: const TextStyle(
                                     fontSize: 22,
@@ -76,6 +79,55 @@ class UnauthHomePage extends StatelessWidget {
                         },
                       ),
                       Expanded(child: Container()),
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Usuário',
+                          prefixIcon: const Icon(Icons.person),
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              // Clear the text field
+                            },
+                          ),
+                        ),
+                      ),
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'E-mail',
+                          prefixIcon: const Icon(Icons.person),
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              // Clear the text field
+                            },
+                          ),
+                        ),
+                      ),
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Senha',
+                          prefixIcon: const Icon(Icons.person),
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              // Clear the text field
+                            },
+                          ),
+                        ),
+                      ),
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Confirmar Senha',
+                          prefixIcon: const Icon(Icons.person),
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              // Clear the text field
+                            },
+                          ),
+                        ),
+                      ),
+                      
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
@@ -96,38 +148,6 @@ class UnauthHomePage extends StatelessWidget {
                           alignment: Alignment.center, // Center the text
                           child: const Text(
                             'Entrar',
-                            style: TextStyle(
-                              fontSize: 16, // Set the font size to 16 pixels
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          side: const BorderSide(
-                            color: Color(0xFF00A8FF),
-                            width: 1,
-                          ),
-                          backgroundColor: Colors.white,
-                          foregroundColor: const Color(
-                              0xFF00A8FF), // Set the text color to white
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10), // Set the border radius to 10 pixels
-                          ),
-                        ),
-                        onPressed: () {
-                          context.goNamed('Signup');
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.75,
-                          height:
-                              51, // Set the width to 80% of the screen width
-                          alignment: Alignment.center, // Center the text
-                          child: const Text(
-                            'Cadastrar',
                             style: TextStyle(
                               fontSize: 16, // Set the font size to 16 pixels
                             ),

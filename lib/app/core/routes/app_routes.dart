@@ -4,6 +4,7 @@ import 'package:tcc_medicine_management/app/modules/medicine/presentation/pages/
 import 'package:tcc_medicine_management/app/modules/medicine/presentation/pages/medicine_stock_list_page.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/presentation/pages/unauth_home_page.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/presentation/pages/unauth_login_page.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/presentation/pages/unauth_signup_page.dart';
 
 // final GoRouter appRouter = GoRouter (
 //   routes: <RouteBase>[
@@ -35,8 +36,8 @@ final GoRouter appRouter = GoRouter(
       builder: (BuildContext context, GoRouterState state) {
         // Return a placeholder widget. The actual widget will be determined by the subroutes.
         // return const UnauthLoginPage();
-        // return const UnauthHomePage();
-        return const MedicineStockFormPage();
+        return const UnauthHomePage();
+        // return const MedicineStockFormPage();
       },
       routes: [
         GoRoute(
@@ -46,7 +47,13 @@ final GoRouter appRouter = GoRouter(
             return const UnauthLoginPage();
           },
         ),
-        // Add more unauthenticated routes here.
+        GoRoute(
+          path: 'signup',
+          name: 'Signup',
+          builder: (BuildContext context, GoRouterState state) {
+            return const UnauthSignupPage();
+          },
+        ),
       ],
     ),
     GoRoute(
