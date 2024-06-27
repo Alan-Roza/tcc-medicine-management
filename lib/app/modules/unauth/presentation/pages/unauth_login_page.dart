@@ -91,8 +91,8 @@ class UnauthLoginPage extends StatelessWidget {
                                     const EdgeInsets.symmetric(vertical: 5.0),
                                 child: TextField(
                                   decoration: InputDecoration(
-                                    labelText: 'Usuário',
-                                    prefixIcon: const Icon(Icons.person),
+                                    labelText: 'E-mail',
+                                    prefixIcon: const Icon(Icons.mail),
                                     suffixIcon: IconButton(
                                       icon: const Icon(Icons.clear),
                                       onPressed: () {
@@ -108,7 +108,7 @@ class UnauthLoginPage extends StatelessWidget {
                                 child: TextField(
                                   decoration: InputDecoration(
                                     labelText: 'Senha',
-                                    prefixIcon: const Icon(Icons.person),
+                                    prefixIcon: const Icon(Icons.lock),
                                     suffixIcon: IconButton(
                                       icon: const Icon(Icons.clear),
                                       onPressed: () {
@@ -137,13 +137,6 @@ class UnauthLoginPage extends StatelessWidget {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 25.0),
                                 child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    foregroundColor: Colors.white,
-                                    backgroundColor: const Color(0xFF00A8FF),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
                                   onPressed: () {
                                     context.goNamed('Login');
                                   },

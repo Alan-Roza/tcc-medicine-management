@@ -10,11 +10,11 @@ class UnauthHomePage extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF33ABE9),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: UnauthLayoutWidget(
         dinamicHeight: height/1.7,
         logo: const Text(
-          'LOGO',
+          'SALUS',
           style: TextStyle(
             fontSize: 35,
             fontWeight: FontWeight.bold,
@@ -47,7 +47,7 @@ class UnauthHomePage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'bem-vindo ao tcc \no seu assistente médico!'
+                                'bem-vindo ao SALUS \no seu assistente médico!'
                                     .toUpperCase(),
                                 style: const TextStyle(
                                     fontSize: 22,
@@ -77,15 +77,7 @@ class UnauthHomePage extends StatelessWidget {
                       ),
                       Expanded(child: Container()),
                       ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: const Color(
-                              0xFF00A8FF), // Set the text color to white
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10), // Set the border radius to 10 pixels
-                          ),
-                        ),
+                        
                         onPressed: () {
                           context.goNamed('Login');
                         },

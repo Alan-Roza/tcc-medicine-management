@@ -80,7 +80,7 @@ class UnauthSignupPage extends StatelessWidget {
                       ),
                       Expanded(child: Container()),
                       SizedBox(
-                        height: height / 2.21,
+                        height: height / 2.3,
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
@@ -89,24 +89,8 @@ class UnauthSignupPage extends StatelessWidget {
                                     const EdgeInsets.symmetric(vertical: 5.0),
                                 child: TextField(
                                   decoration: InputDecoration(
-                                    labelText: 'Usuário',
-                                    prefixIcon: const Icon(Icons.person),
-                                    suffixIcon: IconButton(
-                                      icon: const Icon(Icons.clear),
-                                      onPressed: () {
-                                        // Clear the text field
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5.0),
-                                child: TextField(
-                                  decoration: InputDecoration(
                                     labelText: 'E-mail',
-                                    prefixIcon: const Icon(Icons.person),
+                                    prefixIcon: const Icon(Icons.mail),
                                     suffixIcon: IconButton(
                                       icon: const Icon(Icons.clear),
                                       onPressed: () {
@@ -122,7 +106,7 @@ class UnauthSignupPage extends StatelessWidget {
                                 child: TextField(
                                   decoration: InputDecoration(
                                     labelText: 'Senha',
-                                    prefixIcon: const Icon(Icons.person),
+                                    prefixIcon: const Icon(Icons.lock),
                                     suffixIcon: IconButton(
                                       icon: const Icon(Icons.clear),
                                       onPressed: () {
@@ -138,7 +122,7 @@ class UnauthSignupPage extends StatelessWidget {
                                 child: TextField(
                                   decoration: InputDecoration(
                                     labelText: 'Confirmar Senha',
-                                    prefixIcon: const Icon(Icons.person),
+                                    prefixIcon: const Icon(Icons.lock),
                                     suffixIcon: IconButton(
                                       icon: const Icon(Icons.clear),
                                       onPressed: () {
