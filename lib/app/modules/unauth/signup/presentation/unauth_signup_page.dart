@@ -1,24 +1,22 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tcc_medicine_management/app/modules/unauth/presentation/widgets/unauth_layout_widget.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/shared/widgets/unauth_layout_widget.dart';
 
-class UnauthLoginPage extends StatelessWidget {
-  const UnauthLoginPage({super.key});
+class UnauthSignupPage extends StatelessWidget {
+  const UnauthSignupPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-     var keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     return Scaffold(
-      // resizeToAvoidBottomInset: false, // This is to keyboard overflow
       backgroundColor: const Color(0xFF33ABE9),
       body: UnauthLayoutWidget(
-        dinamicHeight: (height / 2) - keyboardHeight,
+        dinamicHeight: height / 2,
         logo: const SizedBox(
           width: 200,
-          child: Text('BEM-VINDO DE VOLTA!',
+          child: Text('OLÁ, SEJA BEM-VINDO!',
               style: TextStyle(
                 fontSize: 35,
                 fontWeight: FontWeight.w400,
@@ -52,9 +50,9 @@ class UnauthLoginPage extends StatelessWidget {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'LOGIN',
-                                style: TextStyle(
+                              Text(
+                                'Cadastrar'.toUpperCase(),
+                                style: const TextStyle(
                                     fontSize: 22,
                                     fontFamily:
                                         'Roboto', // Set the font family to Roboto
@@ -62,7 +60,7 @@ class UnauthLoginPage extends StatelessWidget {
                                     height: 1.2),
                               ),
                               Container(
-                                width: constraints.maxWidth / 10,
+                                width: constraints.maxWidth / 5,
                                 height: 6,
                                 margin: const EdgeInsets.only(top: 5),
                                 decoration: BoxDecoration(
@@ -82,7 +80,7 @@ class UnauthLoginPage extends StatelessWidget {
                       ),
                       Expanded(child: Container()),
                       SizedBox(
-                        height: height / 2.21,
+                        height: height / 2.3,
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
@@ -118,25 +116,33 @@ class UnauthLoginPage extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  RichText(
-                                      text: TextSpan(
-                                        text: "Esqueci minha senha",
-                                        style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            // Handle terms of use tap
-                                          },
-                                      ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5.0),
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    labelText: 'Confirmar Senha',
+                                    prefixIcon: const Icon(Icons.lock),
+                                    suffixIcon: IconButton(
+                                      icon: const Icon(Icons.clear),
+                                      onPressed: () {
+                                        // Clear the text field
+                                      },
                                     ),
-                                ],
+                                  ),
+                                ),
                               ),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 25.0),
                                 child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                    backgroundColor: const Color(0xFF00A8FF),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
                                   onPressed: () {
                                     context.goNamed('Login');
                                   },
@@ -154,7 +160,41 @@ class UnauthLoginPage extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5.0),
+                                child: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      const TextSpan(
+                                        text:
+                                            "Cadastrando-se com o TCC, você aceita os ",
+                                        style: TextStyle(color: Colors.black54),
+                                      ),
+                                      TextSpan(
+                                        text: "Termos de Uso",
+                                        style: const TextStyle(color: Colors.blue),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            // Handle terms of use tap
+                                          },
+                                      ),
+                                      const TextSpan(
+                                        text: " e a ",
+                                        style: TextStyle(color: Colors.black54),
+                                      ),
+                                      TextSpan(
+                                        text: "Política de Privacidade",
+                                        style: const TextStyle(color: Colors.blue),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            // Handle privacy policy tap
+                                          },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 15.0),
@@ -162,15 +202,15 @@ class UnauthLoginPage extends StatelessWidget {
                                   text: TextSpan(
                                     children: [
                                       const TextSpan(
-                                        text: "Não possui uma conta? ",
-                                        style: TextStyle(color: Colors.black),
+                                        text: "Já possui uma conta? ",
+                                        style: TextStyle(color: Colors.black54),
                                       ),
                                       TextSpan(
-                                        text: "Cadastrar",
-                                        style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                                        text: "Entrar",
+                                        style: const TextStyle(color: Colors.blue),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
-                                            context.goNamed('Signup');
+                                            context.goNamed('Home');
                                             // Handle terms of use tap
                                           },
                                       ),

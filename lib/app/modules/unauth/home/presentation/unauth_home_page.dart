@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tcc_medicine_management/app/modules/unauth/presentation/widgets/unauth_layout_widget.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/shared/widgets/unauth_layout_widget.dart';
 
 class UnauthHomePage extends StatelessWidget {
   const UnauthHomePage({super.key});
@@ -13,13 +13,23 @@ class UnauthHomePage extends StatelessWidget {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: UnauthLayoutWidget(
         dinamicHeight: height/1.7,
-        logo: const Text(
-          'SALUS',
-          style: TextStyle(
-            fontSize: 35,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
+        logo: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/white_logo.png',
+              width: 50,
+              height: 50,
+            ),
+            const Text(
+              'SALUS',
+              style: TextStyle(
+                fontSize: 35,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ],
         ),
         child: Expanded(
           flex: 2,

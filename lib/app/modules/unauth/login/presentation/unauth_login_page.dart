@@ -1,22 +1,28 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tcc_medicine_management/app/modules/unauth/presentation/widgets/unauth_layout_widget.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/login/controller/login_controller.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/shared/widgets/unauth_layout_widget.dart';
 
-class UnauthSignupPage extends StatelessWidget {
-  const UnauthSignupPage({super.key});
+class UnauthLoginPage extends StatelessWidget {
+  const UnauthLoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final loginController = LoginController();
+
     double height = MediaQuery.of(context).size.height;
+    var keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     return Scaffold(
+      // resizeToAvoidBottomInset: false, // This is to keyboard overflow
       backgroundColor: const Color(0xFF33ABE9),
       body: UnauthLayoutWidget(
-        dinamicHeight: height / 2,
+        dinamicHeight: (height / 2) - keyboardHeight,
         logo: const SizedBox(
           width: 200,
-          child: Text('OLÁ, SEJA BEM-VINDO!',
+          child: Text('BEM-VINDO DE VOLTA!',
               style: TextStyle(
                 fontSize: 35,
                 fontWeight: FontWeight.w400,
@@ -50,9 +56,9 @@ class UnauthSignupPage extends StatelessWidget {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Cadastrar'.toUpperCase(),
-                                style: const TextStyle(
+                              const Text(
+                                'LOGIN',
+                                style: TextStyle(
                                     fontSize: 22,
                                     fontFamily:
                                         'Roboto', // Set the font family to Roboto
@@ -60,7 +66,7 @@ class UnauthSignupPage extends StatelessWidget {
                                     height: 1.2),
                               ),
                               Container(
-                                width: constraints.maxWidth / 5,
+                                width: constraints.maxWidth / 10,
                                 height: 6,
                                 margin: const EdgeInsets.only(top: 5),
                                 decoration: BoxDecoration(
@@ -80,7 +86,7 @@ class UnauthSignupPage extends StatelessWidget {
                       ),
                       Expanded(child: Container()),
                       SizedBox(
-                        height: height / 2.3,
+                        height: height / 2.21,
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
@@ -90,7 +96,7 @@ class UnauthSignupPage extends StatelessWidget {
                                 child: TextField(
                                   decoration: InputDecoration(
                                     labelText: 'E-mail',
-                                    prefixIcon: const Icon(Icons.mail),
+                                    prefixIcon: const Icon(Icons.mail_outline),
                                     suffixIcon: IconButton(
                                       icon: const Icon(Icons.clear),
                                       onPressed: () {
@@ -103,46 +109,41 @@ class UnauthSignupPage extends StatelessWidget {
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 5.0),
-                                child: TextField(
+                                child: Observer(
+                                  builder: (_) => TextField(
+                                  obscureText: !loginController.isPasswordVisible,
                                   decoration: InputDecoration(
                                     labelText: 'Senha',
-                                    prefixIcon: const Icon(Icons.lock),
+                                    prefixIcon: const Icon(Icons.lock_outline),
                                     suffixIcon: IconButton(
-                                      icon: const Icon(Icons.clear),
+                                      icon: Icon( loginController.isPasswordVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined),
                                       onPressed: () {
-                                        // Clear the text field
+                                        loginController.togglePasswordVisibility();
                                       },
                                     ),
                                   ),
                                 ),
+                                )
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5.0),
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Confirmar Senha',
-                                    prefixIcon: const Icon(Icons.lock),
-                                    suffixIcon: IconButton(
-                                      icon: const Icon(Icons.clear),
-                                      onPressed: () {
-                                        // Clear the text field
-                                      },
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  RichText(
+                                      text: TextSpan(
+                                        text: "Esqueci minha senha",
+                                        style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            // Handle terms of use tap
+                                          },
+                                      ),
                                     ),
-                                  ),
-                                ),
+                                ],
                               ),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 25.0),
                                 child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    foregroundColor: Colors.white,
-                                    backgroundColor: const Color(0xFF00A8FF),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
                                   onPressed: () {
                                     context.goNamed('Login');
                                   },
@@ -160,41 +161,7 @@ class UnauthSignupPage extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5.0),
-                                child: RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      const TextSpan(
-                                        text:
-                                            "Cadastrando-se com o TCC, você aceita os ",
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      TextSpan(
-                                        text: "Termos de Uso",
-                                        style: TextStyle(color: Colors.blue),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            // Handle terms of use tap
-                                          },
-                                      ),
-                                      const TextSpan(
-                                        text: " e a ",
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      TextSpan(
-                                        text: "Política de Privacidade",
-                                        style: TextStyle(color: Colors.blue),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            // Handle privacy policy tap
-                                          },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 15.0),
@@ -202,15 +169,15 @@ class UnauthSignupPage extends StatelessWidget {
                                   text: TextSpan(
                                     children: [
                                       const TextSpan(
-                                        text: "Já possui uma conta? ",
-                                        style: TextStyle(color: Colors.black),
+                                        text: "Não possui uma conta? ",
+                                        style: TextStyle(color: Colors.black54),
                                       ),
                                       TextSpan(
-                                        text: "Entrar",
-                                        style: TextStyle(color: Colors.blue),
+                                        text: "Cadastrar",
+                                        style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
-                                            context.goNamed('Home');
+                                            context.goNamed('Signup');
                                             // Handle terms of use tap
                                           },
                                       ),

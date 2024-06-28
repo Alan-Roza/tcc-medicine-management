@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tcc_medicine_management/app/modules/unauth/presentation/widgets/geometric_curved_bottom_sheet_widget.dart';
-import 'package:tcc_medicine_management/app/modules/unauth/presentation/widgets/geometric_one_widget.dart';
-import 'package:tcc_medicine_management/app/modules/unauth/presentation/widgets/geometric_three_widget.dart';
-import 'package:tcc_medicine_management/app/modules/unauth/presentation/widgets/geometric_two_widget.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/shared/widgets/geometric_curved_bottom_sheet_widget.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/shared/widgets/geometric_one_widget.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/shared/widgets/geometric_three_widget.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/shared/widgets/geometric_two_widget.dart';
 
 class UnauthLayoutWidget extends StatefulWidget {
   final Widget child;
