@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-final brightness = View.of(context).platformDispatcher.platformBrightness;
+// final brightness = View.of(context).platformDispatcher.platformBrightness; // TODO - Will be used at the future
 
  TextTheme textTheme = createTextTheme(context, "Roboto", "Roboto");
 
@@ -22,7 +22,8 @@ final brightness = View.of(context).platformDispatcher.platformBrightness;
     return MaterialApp.router(
       routerConfig: appRouter,
       // theme: AppTheme.lightTheme
-      theme: brightness == Brightness.light ? theme.light() : theme.dark()
+      // theme: brightness == Brightness.light ? theme.light() : theme.dark()TODO - Will be used at the future
+      theme: theme.light()
     );
   }
 }
