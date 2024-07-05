@@ -93,51 +93,66 @@ class UnauthLoginPage extends StatelessWidget {
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 5.0),
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                    labelText: 'E-mail',
-                                    prefixIcon: const Icon(Icons.mail_outline),
-                                    suffixIcon: IconButton(
-                                      icon: const Icon(Icons.clear),
-                                      onPressed: () {
-                                        // Clear the text field
-                                      },
+                                child: Observer(builder: (_) {
+                                  return TextField(
+                                    controller: loginController.emailController,
+                                    onChanged: loginController.setEmail,
+                                    decoration: InputDecoration(
+                                      labelText: 'E-mail',
+                                      prefixIcon:
+                                          const Icon(Icons.mail_outline),
+                                      suffixIcon: loginController.hasEmailValue
+                                          ? IconButton(
+                                              icon: const Icon(Icons.clear),
+                                              onPressed: () {
+                                                // Limpe o campo de texto quando o botão for pressionado
+                                                loginController.clearEmail();
+                                              },
+                                            )
+                                          : null, // Retorne um SizedBox.shrink se o campo estiver vazio
                                     ),
-                                  ),
-                                ),
+                                  );
+                                }),
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5.0),
-                                child: Observer(
-                                  builder: (_) => TextField(
-                                  obscureText: !loginController.isPasswordVisible,
-                                  decoration: InputDecoration(
-                                    labelText: 'Senha',
-                                    prefixIcon: const Icon(Icons.lock_outline),
-                                    suffixIcon: IconButton(
-                                      icon: Icon( loginController.isPasswordVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined),
-                                      onPressed: () {
-                                        loginController.togglePasswordVisibility();
-                                      },
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5.0),
+                                  child: Observer(
+                                    builder: (_) => TextField(
+                                      obscureText:
+                                          !loginController.isPasswordVisible,
+                                      decoration: InputDecoration(
+                                        labelText: 'Senha',
+                                        prefixIcon:
+                                            const Icon(Icons.lock_outline),
+                                        suffixIcon: IconButton(
+                                          icon: Icon(loginController
+                                                  .isPasswordVisible
+                                              ? Icons.visibility_outlined
+                                              : Icons.visibility_off_outlined),
+                                          onPressed: () {
+                                            loginController
+                                                .togglePasswordVisibility();
+                                          },
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                )
-                              ),
+                                  )),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   RichText(
-                                      text: TextSpan(
-                                        text: "Esqueci minha senha",
-                                        style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            // Handle terms of use tap
-                                          },
-                                      ),
+                                    text: TextSpan(
+                                      text: "Esqueci minha senha",
+                                      style: const TextStyle(
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          // Handle terms of use tap
+                                        },
                                     ),
+                                  ),
                                 ],
                               ),
                               Padding(
@@ -161,7 +176,6 @@ class UnauthLoginPage extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 15.0),
@@ -174,7 +188,9 @@ class UnauthLoginPage extends StatelessWidget {
                                       ),
                                       TextSpan(
                                         text: "Cadastrar",
-                                        style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                                        style: const TextStyle(
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
                                             context.goNamed('Signup');

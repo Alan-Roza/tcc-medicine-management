@@ -63,8 +63,9 @@ class UnauthHomePage extends StatelessWidget {
                                     fontSize: 22,
                                     fontFamily:
                                         'Roboto', // Set the font family to Roboto
-                                    fontWeight: FontWeight.w500,
-                                    height: 1.2),
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.2
+                                    ),
                               ),
                               Container(
                                 width: constraints.maxWidth / 5,
