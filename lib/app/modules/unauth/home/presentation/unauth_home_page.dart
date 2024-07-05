@@ -10,7 +10,7 @@ class UnauthHomePage extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: const Color(0xFF33ABE9),
       body: UnauthLayoutWidget(
         dinamicHeight: height/1.7,
         logo: Row(

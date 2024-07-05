@@ -90,7 +90,7 @@ class UnauthSignupPage extends StatelessWidget {
                                 child: TextField(
                                   decoration: InputDecoration(
                                     labelText: 'E-mail',
-                                    prefixIcon: const Icon(Icons.mail),
+                                    prefixIcon: const Icon(Icons.mail_outline),
                                     suffixIcon: IconButton(
                                       icon: const Icon(Icons.clear),
                                       onPressed: () {
