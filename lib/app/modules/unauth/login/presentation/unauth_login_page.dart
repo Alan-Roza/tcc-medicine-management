@@ -5,8 +5,15 @@ import 'package:go_router/go_router.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/login/controller/login_controller.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/shared/widgets/unauth_layout_widget.dart';
 
-class UnauthLoginPage extends StatelessWidget {
+class UnauthLoginPage extends StatefulWidget {
   const UnauthLoginPage({super.key});
+
+  @override
+  State<UnauthLoginPage> createState() => _UnauthLoginPageState();
+}
+
+class _UnauthLoginPageState extends State<UnauthLoginPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -88,39 +95,33 @@ class UnauthLoginPage extends StatelessWidget {
                       SizedBox(
                         height: height / 2.21,
                         child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5.0),
-                                child: Observer(builder: (_) {
-                                  return TextField(
-                                    controller: loginController.emailController,
-                                    onChanged: loginController.setEmail,
-                                    decoration: InputDecoration(
-                                      labelText: 'E-mail',
-                                      prefixIcon:
-                                          const Icon(Icons.mail_outline),
-                                      suffixIcon: loginController.hasEmailValue
-                                          ? IconButton(
-                                              icon: const Icon(Icons.clear),
-                                              onPressed: () {
-                                                // Limpe o campo de texto quando o botão for pressionado
-                                                loginController.clearEmail();
-                                              },
-                                            )
-                                          : null, // Retorne um SizedBox.shrink se o campo estiver vazio
-                                    ),
-                                  );
-                                }),
-                              ),
-                              Padding(
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 5.0),
                                   child: Observer(
-                                    builder: (_) => TextField(
+                                    builder: (_) => TextFormField(
+                                      onChanged: loginController.setEmail,
+                                      decoration: const InputDecoration(
+                                        labelText: 'Email',
+                                        prefixIcon: Icon(Icons.email_outlined),
+                                      ),
+                                      validator: (_) =>
+                                          loginController.emailError,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5.0),
+                                  child: Observer(
+                                    builder: (_) => TextFormField(
                                       obscureText:
                                           !loginController.isPasswordVisible,
+                                      onChanged: loginController.setPassword,
                                       decoration: InputDecoration(
                                         labelText: 'Senha',
                                         prefixIcon:
@@ -136,72 +137,96 @@ class UnauthLoginPage extends StatelessWidget {
                                           },
                                         ),
                                       ),
-                                    ),
-                                  )),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  RichText(
-                                    text: TextSpan(
-                                      text: "Esqueci minha senha",
-                                      style: const TextStyle(
-                                          color: Colors.blue,
-                                          fontWeight: FontWeight.bold),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          // Handle terms of use tap
-                                        },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 25.0),
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    context.goNamed('Login');
-                                  },
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.75,
-                                    height: 51,
-                                    alignment: Alignment.center,
-                                    child: const Text(
-                                      'Entrar',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),
+                                      validator: (_) =>
+                                          loginController.passwordError,
                                     ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 15.0),
-                                child: RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      const TextSpan(
-                                        text: "Não possui uma conta? ",
-                                        style: TextStyle(color: Colors.black54),
-                                      ),
-                                      TextSpan(
-                                        text: "Cadastrar",
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    RichText(
+                                      text: TextSpan(
+                                        text: "Esqueci minha senha",
                                         style: const TextStyle(
                                             color: Colors.blue,
                                             fontWeight: FontWeight.bold),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
-                                            context.goNamed('Signup');
                                             // Handle terms of use tap
                                           },
                                       ),
-                                    ],
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 25.0),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      final Future<String?> response = loginController.submitLogin(_formKey);
+
+                                      response.then((value) {
+                                        if (value != null && value.isNotEmpty) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                               content: Text(value),
+                                            ),
+                                          );
+                                          
+                                        } else {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              content: Text('Login realizado com sucesso!'),
+                                            ),
+                                          );
+                                          context.goNamed('first_access');
+                                        }
+                                      });
+                                      
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.75,
+                                      height: 51,
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        'Entrar',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 15.0),
+                                  child: RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        const TextSpan(
+                                          text: "Não possui uma conta? ",
+                                          style:
+                                              TextStyle(color: Colors.black54),
+                                        ),
+                                        TextSpan(
+                                          text: "Cadastrar",
+                                          style: const TextStyle(
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.bold),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              context.goNamed('Signup');
+                                              // Handle terms of use tap
+                                            },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

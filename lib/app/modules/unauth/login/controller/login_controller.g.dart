@@ -9,12 +9,33 @@ part of 'login_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$LoginController on _LoginController, Store {
-  Computed<bool>? _$hasEmailValueComputed;
+  Computed<bool>? _$isEmailValidComputed;
 
   @override
-  bool get hasEmailValue =>
-      (_$hasEmailValueComputed ??= Computed<bool>(() => super.hasEmailValue,
-              name: '_LoginController.hasEmailValue'))
+  bool get isEmailValid =>
+      (_$isEmailValidComputed ??= Computed<bool>(() => super.isEmailValid,
+              name: '_LoginController.isEmailValid'))
+          .value;
+  Computed<String?>? _$emailErrorComputed;
+
+  @override
+  String? get emailError =>
+      (_$emailErrorComputed ??= Computed<String?>(() => super.emailError,
+              name: '_LoginController.emailError'))
+          .value;
+  Computed<bool>? _$isPasswordValidComputed;
+
+  @override
+  bool get isPasswordValid =>
+      (_$isPasswordValidComputed ??= Computed<bool>(() => super.isPasswordValid,
+              name: '_LoginController.isPasswordValid'))
+          .value;
+  Computed<String?>? _$passwordErrorComputed;
+
+  @override
+  String? get passwordError =>
+      (_$passwordErrorComputed ??= Computed<String?>(() => super.passwordError,
+              name: '_LoginController.passwordError'))
           .value;
 
   late final _$isPasswordVisibleAtom =
@@ -33,20 +54,44 @@ mixin _$LoginController on _LoginController, Store {
     });
   }
 
-  late final _$emailControllerAtom =
-      Atom(name: '_LoginController.emailController', context: context);
+  late final _$emailAtom =
+      Atom(name: '_LoginController.email', context: context);
 
   @override
-  TextEditingController get emailController {
-    _$emailControllerAtom.reportRead();
-    return super.emailController;
+  String get email {
+    _$emailAtom.reportRead();
+    return super.email;
   }
 
   @override
-  set emailController(TextEditingController value) {
-    _$emailControllerAtom.reportWrite(value, super.emailController, () {
-      super.emailController = value;
+  set email(String value) {
+    _$emailAtom.reportWrite(value, super.email, () {
+      super.email = value;
     });
+  }
+
+  late final _$passwordAtom =
+      Atom(name: '_LoginController.password', context: context);
+
+  @override
+  String get password {
+    _$passwordAtom.reportRead();
+    return super.password;
+  }
+
+  @override
+  set password(String value) {
+    _$passwordAtom.reportWrite(value, super.password, () {
+      super.password = value;
+    });
+  }
+
+  late final _$submitLoginAsyncAction =
+      AsyncAction('_LoginController.submitLogin', context: context);
+
+  @override
+  Future<String?> submitLogin(GlobalKey<FormState> formKey) {
+    return _$submitLoginAsyncAction.run(() => super.submitLogin(formKey));
   }
 
   late final _$_LoginControllerActionController =
@@ -75,11 +120,11 @@ mixin _$LoginController on _LoginController, Store {
   }
 
   @override
-  void clearEmail() {
+  void setPassword(String value) {
     final _$actionInfo = _$_LoginControllerActionController.startAction(
-        name: '_LoginController.clearEmail');
+        name: '_LoginController.setPassword');
     try {
-      return super.clearEmail();
+      return super.setPassword(value);
     } finally {
       _$_LoginControllerActionController.endAction(_$actionInfo);
     }
@@ -89,8 +134,12 @@ mixin _$LoginController on _LoginController, Store {
   String toString() {
     return '''
 isPasswordVisible: ${isPasswordVisible},
-emailController: ${emailController},
-hasEmailValue: ${hasEmailValue}
+email: ${email},
+password: ${password},
+isEmailValid: ${isEmailValid},
+emailError: ${emailError},
+isPasswordValid: ${isPasswordValid},
+passwordError: ${passwordError}
     ''';
   }
 }

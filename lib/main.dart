@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: appRouter,
       // theme: AppTheme.lightTheme
-      // theme: brightness == Brightness.light ? theme.light() : theme.dark()TODO - Will be used at the future
+      // theme: brightness == Brightness.light ? theme.light() : theme.dark() // TODO - Will be used at the future
       theme: theme.light()
     );
   }

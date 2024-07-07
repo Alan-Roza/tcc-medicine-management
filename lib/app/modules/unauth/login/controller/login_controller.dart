@@ -10,10 +10,10 @@ abstract class _LoginController with Store {
   bool isPasswordVisible = false;
 
   @observable
-  TextEditingController emailController = TextEditingController();
+  String email = '';
 
-  // @observable
-  // String email = '';
+  @observable
+  String password = '';
 
   @action
   void togglePasswordVisibility() {
@@ -21,17 +21,39 @@ abstract class _LoginController with Store {
   }
 
   @action
-  void setEmail(String value) {
-    // email = value;
-  }
+  void setEmail(String value) => email = value;
 
   @action
-  void clearEmail() {
-    emailController.clear();
-    // emailController.text = '';
-    // email = '';
+  void setPassword(String value) => password = value;
+
+  @action
+  Future<String?> submitLogin(GlobalKey<FormState> formKey) async {
+    if (formKey.currentState!.validate()) {
+      return null;
+    }
+
+    return 'Não foi possível realizar o login, tente novamente mais tarde.';
   }
 
   @computed
-  bool get hasEmailValue => emailController.text.isNotEmpty ? true : false;
+  bool get isEmailValid => email.contains('@');
+
+  @computed
+  String? get emailError {
+    if (email.isEmpty || !isEmailValid) {
+      return 'Por favor, insira um e-mail válido';
+    }
+    return null;
+  }
+
+  @computed
+  bool get isPasswordValid => password.length >= 6;
+
+  @computed
+  String? get passwordError {
+    if (password.isEmpty || !isPasswordValid) {
+      return 'A senha deve conter pelo menos 6 caracteres';
+    }
+    return null;
+  }
 }
