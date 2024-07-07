@@ -14,11 +14,10 @@ class UnauthLoginPage extends StatefulWidget {
 
 class _UnauthLoginPageState extends State<UnauthLoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final loginController = LoginController();
 
   @override
   Widget build(BuildContext context) {
-    final loginController = LoginController();
-
     double height = MediaQuery.of(context).size.height;
     var keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
@@ -164,26 +163,31 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                       vertical: 25.0),
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      final Future<String?> response = loginController.submitLogin(_formKey);
+                                      final Future<String?> response =
+                                          loginController.submitLogin(_formKey);
 
-                                      response.then((value) {
-                                        if (value != null && value.isNotEmpty) {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(
-                                               content: Text(value),
-                                            ),
-                                          );
-                                          
-                                        } else {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
-                                              content: Text('Login realizado com sucesso!'),
-                                            ),
-                                          );
-                                          context.goNamed('first_access');
-                                        }
-                                      });
-                                      
+                                      response.then(
+                                        (value) {
+                                          if (value != null &&
+                                              value.isNotEmpty) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(value),
+                                              ),
+                                            );
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    'Login realizado com sucesso!'),
+                                              ),
+                                            );
+                                            context.goNamed('FirstAccess');
+                                          }
+                                        },
+                                      );
                                     },
                                     child: Container(
                                       width: MediaQuery.of(context).size.width *

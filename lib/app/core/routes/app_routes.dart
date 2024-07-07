@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/user_level_assistance/presentation/user_level_assistance_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/presentation/pages/medicine_stock_view_form_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/presentation/pages/medicine_stock_list_page.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/home/presentation/unauth_home_page.dart';
@@ -56,6 +57,13 @@ final GoRouter appRouter = GoRouter(
           },
         ),
       ],
+    ),
+    GoRoute(
+      path: '/first-access',
+      name: 'FirstAccess',
+      builder: (BuildContext context, GoRouterState state) {
+        return UserLevelAssistancePage();
+      },
     ),
     GoRoute(
       path: '/medicine-stock-list',
