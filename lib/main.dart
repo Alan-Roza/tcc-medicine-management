@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
     MaterialTheme theme = MaterialTheme(textTheme);
 
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       routerConfig: appRouter,
       // theme: AppTheme.lightTheme
       // theme: brightness == Brightness.light ? theme.light() : theme.dark() // TODO - Will be used at the future

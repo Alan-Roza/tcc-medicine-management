@@ -7,6 +7,8 @@ class UserLevelAssistancePage extends StatelessWidget {
       UserLevelAssistanceController();
   final PageController _pageController = PageController();
 
+  UserLevelAssistancePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,13 +25,13 @@ class UserLevelAssistancePage extends StatelessWidget {
                       if (userLevelAssistanceController.currentPage < 2) {
                         _pageController.animateToPage(
                           userLevelAssistanceController.currentPage + 1,
-                          duration: Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInOut,
                         );
                       }
                     },
-                    child: Text(
-                      'Voltar',
+                    child: const Text(
+                      'Pular',
                       style: TextStyle(
                           color: Colors
                               .grey), // Change color to indicate it's clickable
@@ -58,12 +60,12 @@ class UserLevelAssistancePage extends StatelessWidget {
                       if (userLevelAssistanceController.currentPage < 2) {
                         _pageController.animateToPage(
                           userLevelAssistanceController.currentPage + 1,
-                          duration: Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInOut,
                         );
                       }
                     },
-                    child: Text(
+                    child: const Text(
                       'Voltar',
                       style: TextStyle(
                           color: Colors
@@ -102,12 +104,12 @@ class UserLevelAssistancePage extends StatelessWidget {
                       if (userLevelAssistanceController.currentPage < 2) {
                         _pageController.animateToPage(
                           userLevelAssistanceController.currentPage + 1,
-                          duration: Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInOut,
                         );
                       }
                     },
-                    child: Text(
+                    child: const Text(
                       'Continuar',
                       style: TextStyle(
                           color: Colors
@@ -135,20 +137,20 @@ class UserLevelAssistancePage extends StatelessWidget {
           Container(
             height: 200,
             color: Colors.grey.shade200,
-            child: Center(child: Text('Imagem')),
+            child: const Center(child: Text('Imagem')),
           ),
-          SizedBox(height: 20),
-          Text(
+          const SizedBox(height: 20),
+          const Text(
             'OS NÍVEIS DE USUÁRIOS',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 10),
-          Text(
+          const SizedBox(height: 10),
+          const Text(
             'Salus foi projetado para oferecer flexibilidade e suporte personalizado, garantindo que os usuários possam gerenciar sua saúde de maneira independente, ao mesmo tempo em que têm a opção de receber assistência de um Responsável caso necessário. Estamos comprometidos em proporcionar uma experiência segura, confiável e intuitiva para todos os nossos usuários.',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 16),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Observer(
             builder: (_) => ElevatedButton(
               onPressed: userLevelAssistanceController.toggleAssistance,
