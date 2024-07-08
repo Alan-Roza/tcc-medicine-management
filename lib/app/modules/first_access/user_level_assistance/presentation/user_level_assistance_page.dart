@@ -14,6 +14,30 @@ class UserLevelAssistancePage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Observer(
+                  builder: (_) => GestureDetector(
+                    onTap: () {
+                      if (userLevelAssistanceController.currentPage < 2) {
+                        _pageController.animateToPage(
+                          userLevelAssistanceController.currentPage + 1,
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                      }
+                    },
+                    child: Text(
+                      'Voltar',
+                      style: TextStyle(
+                          color: Colors
+                              .grey), // Change color to indicate it's clickable
+                    ),
+                  ),
+                ),
+              ],
+            ),
             Expanded(
               child: PageView(
                 controller: _pageController,
@@ -25,42 +49,73 @@ class UserLevelAssistancePage extends StatelessWidget {
                 ],
               ),
             ),
-            Observer(
-              builder: (_) => Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(3, (index) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                    width: userLevelAssistanceController.currentPage == index
-                        ? 12.0
-                        : 8.0,
-                    height: userLevelAssistanceController.currentPage == index
-                        ? 12.0
-                        : 8.0,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: userLevelAssistanceController.currentPage == index
-                          ? Colors.blue
-                          : Colors.grey,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Observer(
+                  builder: (_) => GestureDetector(
+                    onTap: () {
+                      if (userLevelAssistanceController.currentPage < 2) {
+                        _pageController.animateToPage(
+                          userLevelAssistanceController.currentPage + 1,
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                      }
+                    },
+                    child: Text(
+                      'Voltar',
+                      style: TextStyle(
+                          color: Colors
+                              .grey), // Change color to indicate it's clickable
                     ),
-                  );
-                }),
-              ),
-            ),
-            SizedBox(height: 20),
-            Observer(
-              builder: (_) => ElevatedButton(
-                onPressed: () {
-                  if (userLevelAssistanceController.currentPage < 2) {
-                    _pageController.animateToPage(
-                      userLevelAssistanceController.currentPage + 1,
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  }
-                },
-                child: Text('Continuar'),
-              ),
+                  ),
+                ),
+                Observer(
+                  builder: (_) => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(3, (index) {
+                      return Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                        width:
+                            userLevelAssistanceController.currentPage == index
+                                ? 12.0
+                                : 8.0,
+                        height:
+                            userLevelAssistanceController.currentPage == index
+                                ? 12.0
+                                : 8.0,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color:
+                              userLevelAssistanceController.currentPage == index
+                                  ? Colors.blue
+                                  : Colors.grey,
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+                Observer(
+                  builder: (_) => GestureDetector(
+                    onTap: () {
+                      if (userLevelAssistanceController.currentPage < 2) {
+                        _pageController.animateToPage(
+                          userLevelAssistanceController.currentPage + 1,
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                      }
+                    },
+                    child: Text(
+                      'Continuar',
+                      style: TextStyle(
+                          color: Colors
+                              .blue), // Change color to indicate it's clickable
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
