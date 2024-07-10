@@ -1,166 +1,100 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:tcc_medicine_management/app/modules/first_access/user_level_assistance/controller/user_level_assistance_controller.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:tcc_medicine_management/app/shared/widgets/screen_assistance/presentation/screen_assistance_page.dart';
+import 'package:tcc_medicine_management/app/shared/widgets/screen_assistance/widgets/body_assistance_widget.dart';
 
 class UserLevelAssistancePage extends StatelessWidget {
-  final UserLevelAssistanceController userLevelAssistanceController =
-      UserLevelAssistanceController();
-  final PageController _pageController = PageController();
-
-  UserLevelAssistancePage({super.key});
+  const UserLevelAssistancePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Observer(
-                  builder: (_) => GestureDetector(
-                    onTap: () {
-                      if (userLevelAssistanceController.currentPage < 2) {
-                        _pageController.animateToPage(
-                          userLevelAssistanceController.currentPage + 1,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
-                      }
-                    },
-                    child: const Text(
-                      'Pular',
-                      style: TextStyle(
-                          color: Colors
-                              .grey), // Change color to indicate it's clickable
-                    ),
-                  ),
-                ),
-              ],
+    return ScreenAssistancePage(
+      redirectPath: 'toDo',
+      bodyAssistanceWidget: [
+        BodyAssistanceWidget(
+          image: SvgPicture.asset('assets/images/medicine.svg', height: 200),
+          title: 'OS NÍVEIS DE USUÁRIO',
+          message: const [
+            TextSpan(
+              text: "Salus ",
+              style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
             ),
-            Expanded(
-              child: PageView(
-                controller: _pageController,
-                onPageChanged: userLevelAssistanceController.setPage,
-                children: [
-                  buildPage(context),
-                  buildPage(context),
-                  buildPage(context),
-                ],
-              ),
+            TextSpan(
+              text:
+                  'foi projetado para oferecer flexibilidade e suporte personalizado, garantindo que os usuários possam gerenciar sua saúde de maneira ',
+              style: TextStyle(color: Colors.black54),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Observer(
-                  builder: (_) => GestureDetector(
-                    onTap: () {
-                      if (userLevelAssistanceController.currentPage < 2) {
-                        _pageController.animateToPage(
-                          userLevelAssistanceController.currentPage + 1,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
-                      }
-                    },
-                    child: const Text(
-                      'Voltar',
-                      style: TextStyle(
-                          color: Colors
-                              .grey), // Change color to indicate it's clickable
-                    ),
-                  ),
-                ),
-                Observer(
-                  builder: (_) => Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(3, (index) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                        width:
-                            userLevelAssistanceController.currentPage == index
-                                ? 12.0
-                                : 8.0,
-                        height:
-                            userLevelAssistanceController.currentPage == index
-                                ? 12.0
-                                : 8.0,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color:
-                              userLevelAssistanceController.currentPage == index
-                                  ? Colors.blue
-                                  : Colors.grey,
-                        ),
-                      );
-                    }),
-                  ),
-                ),
-                Observer(
-                  builder: (_) => GestureDetector(
-                    onTap: () {
-                      if (userLevelAssistanceController.currentPage < 2) {
-                        _pageController.animateToPage(
-                          userLevelAssistanceController.currentPage + 1,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
-                      }
-                    },
-                    child: const Text(
-                      'Continuar',
-                      style: TextStyle(
-                          color: Colors
-                              .blue), // Change color to indicate it's clickable
-                    ),
-                  ),
-                ),
-              ],
+            TextSpan(
+              text: "independente",
+              style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
+            ),
+            TextSpan(
+              text: ', ao mesmo tempo em que têm a opção de receber ',
+              style: TextStyle(color: Colors.black54),
+            ),
+            TextSpan(
+              text: "assistência ",
+              style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
+            ),
+            TextSpan(
+              text:
+                  'de um Responsável caso necessário. Estamos comprometidos em proporcionar uma experiência segura, confiável e intuitiva para todos os nossos usuários.',
+              style: TextStyle(color: Colors.black54),
             ),
           ],
         ),
-      ),
-    );
-  }
 
-  Widget buildPage(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Adicione uma imagem local ou de rede aqui
-          // Image.asset('assets/image.png', height: 200),
-          // Simulação da imagem
-          Container(
-            height: 200,
-            color: Colors.grey.shade200,
-            child: const Center(child: Text('Imagem')),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            'OS NÍVEIS DE USUÁRIOS',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            'Salus foi projetado para oferecer flexibilidade e suporte personalizado, garantindo que os usuários possam gerenciar sua saúde de maneira independente, ao mesmo tempo em que têm a opção de receber assistência de um Responsável caso necessário. Estamos comprometidos em proporcionar uma experiência segura, confiável e intuitiva para todos os nossos usuários.',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16),
-          ),
-          const SizedBox(height: 20),
-          Observer(
-            builder: (_) => ElevatedButton(
-              onPressed: userLevelAssistanceController.toggleAssistance,
-              child: Text(userLevelAssistanceController.assistanceRequired
-                  ? 'Assistência Ativada'
-                  : 'Assistência Desativada'),
+        BodyAssistanceWidget(
+          image: SvgPicture.asset('assets/images/medical_care.svg', height: 200),
+          title: 'USUÁRIO PACIENTE',
+          message: const [
+            TextSpan(
+              text:
+                  'O nível de acesso Paciente é atribuído por padrão a todos os novos usuários ao se cadastrarem no aplicativo. Esse tipo de usuário tem acesso a todas as funcionalidades principais voltadas para o gerenciamento pessoal de saúde.',
+              style: TextStyle(color: Colors.black54),
             ),
-          ),
-        ],
-      ),
+            
+          ],
+        ),
+
+        BodyAssistanceWidget(
+          image: SvgPicture.asset('assets/images/business_woman.svg', height: 200),
+          title: 'USUÁRIO RESPONSÁVEL',
+          message: const [
+            TextSpan(
+              text:
+                  'O nível de acesso ',
+              style: TextStyle(color: Colors.black54),
+            ),
+            TextSpan(
+              text: "Responsável ",
+              style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
+            ),
+            TextSpan(
+              text: 'é projetado para usuários que desejam ou precisam auxiliar outros usuários do tipo ',
+              style: TextStyle(color: Colors.black54),
+            ),
+            TextSpan(
+              text: "Paciente ",
+              style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
+            ),
+            TextSpan(
+              text:
+                  '. Um usuário se torna um Responsável quando um paciente utiliza um ',
+              style: TextStyle(color: Colors.black54),
+            ),
+            TextSpan(
+              text: "código ",
+              style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
+            ),
+            TextSpan(
+              text:
+                  'de 6 dígitos gerado e disponibilizado por este usuário.',
+              style: TextStyle(color: Colors.black54),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
