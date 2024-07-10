@@ -9,7 +9,7 @@ class UserLevelAssistancePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenAssistancePage(
-      redirectPath: 'toDo',
+      redirectPath: 'UserInfo',
       bodyAssistanceWidget: [
         BodyAssistanceWidget(
           image: SvgPicture.asset('assets/images/medicine.svg', height: 200),

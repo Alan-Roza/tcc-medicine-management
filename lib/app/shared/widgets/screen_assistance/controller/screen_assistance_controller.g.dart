@@ -40,6 +40,28 @@ mixin _$ScreenAssistanceController on _ScreenAssistanceController, Store {
   }
 
   @override
+  void goToNextPage() {
+    final _$actionInfo = _$_ScreenAssistanceControllerActionController
+        .startAction(name: '_ScreenAssistanceController.goToNextPage');
+    try {
+      return super.goToNextPage();
+    } finally {
+      _$_ScreenAssistanceControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void goToPreviousPage() {
+    final _$actionInfo = _$_ScreenAssistanceControllerActionController
+        .startAction(name: '_ScreenAssistanceController.goToPreviousPage');
+    try {
+      return super.goToPreviousPage();
+    } finally {
+      _$_ScreenAssistanceControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 currentPage: ${currentPage}

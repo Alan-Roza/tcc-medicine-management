@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/screen_assistance/controller/screen_assistance_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/screen_assistance/widgets/body_assistance_widget.dart';
 
@@ -30,7 +31,7 @@ class ScreenAssistancePage extends StatelessWidget {
                   child: Observer(
                     builder: (_) => GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, redirectPath);
+                        context.goNamed(redirectPath);
                       },
                       child: const Text(
                         'Pular',
@@ -111,7 +112,7 @@ class ScreenAssistancePage extends StatelessWidget {
                             curve: Curves.easeInOut,
                           );
                         } else {
-                          Navigator.pushNamed(context, redirectPath);
+                          context.goNamed(redirectPath);
                         }
                       },
                       child: Text(
