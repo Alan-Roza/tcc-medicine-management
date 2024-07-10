@@ -74,7 +74,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
                 ],
               ),
               const SizedBox(height: 40),
-              Container(
+              Expanded(
+                flex: 4,
                 child: SingleChildScrollView(
                     child: Form(
                         key: _formKey,
