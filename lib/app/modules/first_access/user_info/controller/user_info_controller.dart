@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
 part 'user_info_controller.g.dart';
@@ -6,34 +7,33 @@ class UserInfoController = _UserInfoController with _$UserInfoController;
 
 abstract class _UserInfoController with Store {
   @observable
-  String name = '';
+  TextEditingController nameController = TextEditingController();
+  TextEditingController birthDateController = TextEditingController();
+  TextEditingController genderController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
 
-  @observable
-  String birthDate = '';
-
-  @observable
-  String gender = '';
-
-  @observable
-  String phone = '';
+  @action
+  void setName(value) {
+    nameController.text = value;
+  }
 
   @action
   void clearName() {
-    name = '';
+    nameController.clear();
   }
 
   @action
   void clearBirthDate() {
-    birthDate = '';
+    birthDateController.clear();
   }
 
   @action
   void clearGender() {
-    gender = '';
+    genderController.clear();
   }
 
   @action
   void clearPhone() {
-    phone = '';
+    phoneController.clear();
   }
 }

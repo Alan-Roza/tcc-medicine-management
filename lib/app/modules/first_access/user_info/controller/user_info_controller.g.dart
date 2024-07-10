@@ -9,72 +9,35 @@ part of 'user_info_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$UserInfoController on _UserInfoController, Store {
-  late final _$nameAtom =
-      Atom(name: '_UserInfoController.name', context: context);
+  late final _$nameControllerAtom =
+      Atom(name: '_UserInfoController.nameController', context: context);
 
   @override
-  String get name {
-    _$nameAtom.reportRead();
-    return super.name;
+  TextEditingController get nameController {
+    _$nameControllerAtom.reportRead();
+    return super.nameController;
   }
 
   @override
-  set name(String value) {
-    _$nameAtom.reportWrite(value, super.name, () {
-      super.name = value;
-    });
-  }
-
-  late final _$birthDateAtom =
-      Atom(name: '_UserInfoController.birthDate', context: context);
-
-  @override
-  String get birthDate {
-    _$birthDateAtom.reportRead();
-    return super.birthDate;
-  }
-
-  @override
-  set birthDate(String value) {
-    _$birthDateAtom.reportWrite(value, super.birthDate, () {
-      super.birthDate = value;
-    });
-  }
-
-  late final _$genderAtom =
-      Atom(name: '_UserInfoController.gender', context: context);
-
-  @override
-  String get gender {
-    _$genderAtom.reportRead();
-    return super.gender;
-  }
-
-  @override
-  set gender(String value) {
-    _$genderAtom.reportWrite(value, super.gender, () {
-      super.gender = value;
-    });
-  }
-
-  late final _$phoneAtom =
-      Atom(name: '_UserInfoController.phone', context: context);
-
-  @override
-  String get phone {
-    _$phoneAtom.reportRead();
-    return super.phone;
-  }
-
-  @override
-  set phone(String value) {
-    _$phoneAtom.reportWrite(value, super.phone, () {
-      super.phone = value;
+  set nameController(TextEditingController value) {
+    _$nameControllerAtom.reportWrite(value, super.nameController, () {
+      super.nameController = value;
     });
   }
 
   late final _$_UserInfoControllerActionController =
       ActionController(name: '_UserInfoController', context: context);
+
+  @override
+  void setName(dynamic value) {
+    final _$actionInfo = _$_UserInfoControllerActionController.startAction(
+        name: '_UserInfoController.setName');
+    try {
+      return super.setName(value);
+    } finally {
+      _$_UserInfoControllerActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void clearName() {
@@ -123,10 +86,7 @@ mixin _$UserInfoController on _UserInfoController, Store {
   @override
   String toString() {
     return '''
-name: ${name},
-birthDate: ${birthDate},
-gender: ${gender},
-phone: ${phone}
+nameController: ${nameController}
     ''';
   }
 }
