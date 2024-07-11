@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobx/mobx.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/address_info/controller/address_info_controller.dart';
+import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 
 class AddressInfoPage extends StatefulWidget {
   const AddressInfoPage({super.key});
@@ -19,17 +20,27 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+        child: PaddedScreen(
           child: Column(
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  GestureDetector(
+                    onTap: () {
+                      context.goNamed('UserInfo');
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.only(bottom: 7.0),
+                      child: Icon(Icons.arrow_back_ios, size: 20),
+                    )
+                  ),
+                  const SizedBox(width: 6.0),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'INFORMAÇÕES DO USUÁRIO',
+                        'ENDEREÇO DO USUÁRIO',
                         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       Container(
@@ -48,15 +59,15 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                   ),
                 ],
               ),
-              const Flexible(
-                child: Text(
-                  'Adicione uma foto de perfil (opcional)',
-                  style: TextStyle(fontSize: 14),
-                ),
+              const SizedBox(height: 30.0),
+              const Text(
+                textAlign: TextAlign.justify,
+                'Os dados de endereço são utilizados apenas para sugerir a você as farmácias mais próximas, para quando o seu medicamento estiver prestes a acabar.',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.black54, height: 1.4),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 10.0),
               Expanded(
-                flex: 10,
+                flex: 4,
                 child: SingleChildScrollView(
                   child: Form(
                     key: _formKey,
@@ -70,7 +81,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                             label: 'CEP',
                           ),
                         ),
-
+                    
                          Observer(
                           builder: (_) => buildTextField(
                             context,
@@ -79,7 +90,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                             label: 'Logradouro',
                           ),
                         ),
-
+                    
                          Observer(
                           builder: (_) => buildTextField(
                             context,
@@ -88,7 +99,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                             label: 'Bairro',
                           ),
                         ),
-
+                    
                          Observer(
                           builder: (_) => buildTextField(
                             context,
@@ -97,7 +108,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                             label: 'Município',
                           ),
                         ),
-
+                    
                          Observer(
                           builder: (_) => buildTextField(
                             context,

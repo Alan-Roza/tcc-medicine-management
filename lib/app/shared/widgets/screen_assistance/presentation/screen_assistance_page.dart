@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/screen_assistance/controller/screen_assistance_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/screen_assistance/widgets/body_assistance_widget.dart';
 
@@ -20,8 +21,7 @@ class ScreenAssistancePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: PaddedScreen(
         child: Column(
           children: [
             Row(
@@ -60,7 +60,7 @@ class ScreenAssistancePage extends StatelessWidget {
                     if (screenAssistanceController.currentPage < 1) {
                       return const SizedBox(width: 70);
                     }
-
+                
                     return SizedBox(
                       width: 70,
                       child: GestureDetector(

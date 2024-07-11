@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 
 class BodyAssistanceWidget extends StatelessWidget {
   final Widget image;
@@ -14,8 +15,7 @@ class BodyAssistanceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
+    return PaddedScreen(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
