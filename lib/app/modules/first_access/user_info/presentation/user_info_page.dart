@@ -145,11 +145,12 @@ class _UserInfoPageState extends State<UserInfoPage> {
               Expanded(child: Container()),
               ElevatedButton(
                 onPressed: () {
-                  context.goNamed('UserAddressInfo');
+                  context.goNamed('AddressInfo');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   minimumSize: const Size(double.infinity, 50),
+                  textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 child: const Text('Continuar'),
               ),
@@ -158,7 +159,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  context.goNamed('UserAddressInfo');
+                  context.goNamed('AddressInfo');
                 },
                 child: const Text(
                   'Pular Etapa',

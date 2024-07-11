@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/address_info/presentation/address_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/user_info/presentation/user_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/user_level_assistance/presentation/user_level_assistance_page.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/screen_assistance/presentation/screen_assistance_page.dart';
@@ -71,7 +72,14 @@ final GoRouter appRouter = GoRouter(
             path: 'user-info',
             name: 'UserInfo',
             builder: (BuildContext context, GoRouterState state) {
-              return UserInfoPage();
+              return const UserInfoPage();
+            },
+          ),
+          GoRoute(
+            path: 'address-info',
+            name: 'AddressInfo',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AddressInfoPage();
             },
           ),
         ]),
