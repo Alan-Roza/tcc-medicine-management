@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/user_info/controller/user_info_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/profile_picture_widget/presentation/profile_picture_widget.dart';
@@ -14,16 +16,6 @@ class UserInfoPage extends StatefulWidget {
 class _UserInfoPageState extends State<UserInfoPage> {
   final UserInfoController userInfoController = UserInfoController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  // late final TextEditingController textFieldController;
-
-  @override
-  void initState() {
-    super.initState();
-    reaction((_) => userInfoController.nameController.text, (String value) {
-      userInfoController.nameController.text = value;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +32,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                     children: [
                       const Text(
                         'INFORMAÇÕES DO USUÁRIO',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       Container(
                         width: 40,
@@ -52,8 +43,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                             color: const Color(0xFF00A8FF), // Set border color
                             width: 2, // Set border width
                           ),
-                          borderRadius:
-                              BorderRadius.circular(10), // Add a border radius
+                          borderRadius: BorderRadius.circular(10), // Add a border radius
                         ),
                       )
                     ],
@@ -84,60 +74,100 @@ class _UserInfoPageState extends State<UserInfoPage> {
                             builder: (_) => buildTextField(
                               context,
                               userInfoController.nameController,
-                              icon: Icons.person,
+                              icon: Icons.person_outline,
                               label: 'Nome',
                               onClear: userInfoController.clearName,
-                              onChanged: (value) =>
-                                  userInfoController.setName(value),
+                              onChanged: (value) => userInfoController.setName(value),
                             ),
                           ),
                           Observer(
-                            builder: (_) => buildTextField(
-                              context,
-                              userInfoController.birthDateController,
-                              icon: Icons.calendar_today,
-                              label: 'Data de Nascimento',
-                              onClear: userInfoController.clearBirthDate,
-                              onChanged: (value) => userInfoController
-                                  .birthDateController.text = value,
+                            builder: (_) => Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              child: TextFormField(
+                                controller: userInfoController.birthDateController,
+                                decoration: const InputDecoration(
+                                  prefixIcon: Icon(Icons.calendar_month_rounded),
+                                  labelText: 'Data de Nascimento',
+                                ),
+                                readOnly: true, // Makes the field not editable; only selectable
+                                onTap: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1900),
+                                    lastDate: DateTime.now(),
+                                  );
+                                  if (pickedDate != null) {
+                                    // Update the text field with the selected date
+                                    userInfoController
+                                        .setBirthDate(pickedDate); // Update your controller/state management solution
+                                  }
+                                },
+                              ),
                             ),
                           ),
                           Observer(
-                            builder: (_) => buildTextField(
-                              context,
-                              userInfoController.genderController,
-                              icon: Icons.people,
-                              label: 'Gênero',
-                              onClear: userInfoController.clearGender,
-                              onChanged: (value) => userInfoController
-                                  .genderController.text = value,
+                            builder: (_) => Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              child: DropdownButtonFormField<Gender>(
+                                value: userInfoController.gender,
+                                decoration: const InputDecoration(
+                                  prefixIcon: Icon(Icons.people_outline),
+                                  labelText: 'Gênero',
+                                  // Add other decorations here if necessary
+                                ),
+                                items: Gender.values.map((Gender value) {
+                                  return DropdownMenuItem<Gender>(
+                                    value: value,
+                                    child: Text(value.toString().split('.').last),
+                                  );
+                                }).toList(),
+                                onChanged: (Gender? value) {
+                                  if (value != null) {
+                                    userInfoController.setGender(value);
+                                  }
+                                },
+                              ),
                             ),
                           ),
                           Observer(
                             builder: (_) => buildTextField(
                               context,
                               userInfoController.phoneController,
-                              icon: Icons.phone,
+                              icon: Icons.phone_outlined,
                               label: 'Celular',
                               onClear: userInfoController.clearPhone,
-                              onChanged: (value) =>
-                                  userInfoController.phoneController.text = value,
+                              onChanged: (value) => userInfoController.phoneController.text = value,
                             ),
                           ),
                         ]))),
               ),
               Expanded(child: Container()),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.goNamed('UserAddressInfo');
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   minimumSize: const Size(double.infinity, 50),
                 ),
                 child: const Text('Continuar'),
               ),
-              TextButton(
-                onPressed: () {},
-                child: const Text('Pular Etapa'),
+              const SizedBox(
+                height: 10,
+              ),
+              GestureDetector(
+                onTap: () {
+                  context.goNamed('UserAddressInfo');
+                },
+                child: const Text(
+                  'Pular Etapa',
+                  style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+                  // Change color to indicate it's clickable
+                ),
+              ),
+              const SizedBox(
+                height: 10,
               ),
             ],
           ),
