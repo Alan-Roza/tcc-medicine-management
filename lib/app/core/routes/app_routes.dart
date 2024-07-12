@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/address_info/presentation/address_info_page.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/health_info/presentation/health_info_page.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/health_assistance/presentation/health_assistance_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/user_info/presentation/user_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/user_level_assistance/presentation/user_level_assistance_page.dart';
-import 'package:tcc_medicine_management/app/shared/widgets/screen_assistance/presentation/screen_assistance_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/presentation/pages/medicine_stock_view_form_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/presentation/pages/medicine_stock_list_page.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/home/presentation/unauth_home_page.dart';
@@ -80,6 +81,20 @@ final GoRouter appRouter = GoRouter(
             name: 'AddressInfo',
             builder: (BuildContext context, GoRouterState state) {
               return const AddressInfoPage();
+            },
+          ),
+          GoRoute(
+            path: 'health-assistance',
+            name: 'HealthAssistance',
+            builder: (BuildContext context, GoRouterState state) {
+              return const HealthAssistancePage();
+            },
+          ),
+          GoRoute(
+            path: 'health-info',
+            name: 'HealthInfo',
+            builder: (BuildContext context, GoRouterState state) {
+              return const HealthInfoPage();
             },
           ),
         ]),

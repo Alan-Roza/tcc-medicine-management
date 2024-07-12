@@ -125,7 +125,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
               Expanded(child: Container()),
               ElevatedButton(
                 onPressed: () {
-                  context.goNamed('UserAddressInfo');
+                  context.goNamed('HealthAssistance');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -139,7 +139,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  context.goNamed('UserAddressInfo');
+                  context.goNamed('HealthAssistance');
                 },
                 child: const Text(
                   'Pular Etapa',

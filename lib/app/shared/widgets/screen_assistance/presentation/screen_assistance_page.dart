@@ -10,12 +10,14 @@ class ScreenAssistancePage extends StatelessWidget {
   final PageController _pageController = PageController();
 
   final String redirectPath;
+  final String? previousPath;
   final List<BodyAssistanceWidget> bodyAssistanceWidget;
 
   ScreenAssistancePage({
     super.key,
     required this.redirectPath,
     required this.bodyAssistanceWidget,
+    this.previousPath,
   });
 
   @override
@@ -71,6 +73,8 @@ class ScreenAssistancePage extends StatelessWidget {
                               duration: const Duration(milliseconds: 300),
                               curve: Curves.easeInOut,
                             );
+                          } else if (previousPath != null) {
+                            context.goNamed(previousPath!);
                           }
                         },
                         child: const Text(
