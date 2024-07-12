@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/address_info/presentation/address_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/allergy_info/presentation/allergy_info_page.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/chronical_disease_info/presentation/chronical_disease_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/health_info/presentation/health_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/health_assistance/presentation/health_assistance_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/user_info/presentation/user_info_page.dart';
@@ -103,6 +104,13 @@ final GoRouter appRouter = GoRouter(
             name: 'AllergyInfo',
             builder: (BuildContext context, GoRouterState state) {
               return const AllergyInfoPage();
+            },
+          ),
+          GoRoute(
+            path: 'chronical-disease-info',
+            name: 'ChronicalDiseaseInfo',
+            builder: (BuildContext context, GoRouterState state) {
+              return const ChronicalDiseaseInfoPage();
             },
           ),
         ]),

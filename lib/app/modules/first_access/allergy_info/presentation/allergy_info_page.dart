@@ -29,7 +29,7 @@ class _AllergyInfoPageState extends State<AllergyInfoPage> {
                 children: [
                   GestureDetector(
                       onTap: () {
-                        context.goNamed('HealthAssistance');
+                        context.goNamed('HealthInfo');
                       },
                       child: const Padding(
                         padding: EdgeInsets.only(bottom: 7.0),
@@ -60,64 +60,69 @@ class _AllergyInfoPageState extends State<AllergyInfoPage> {
                 ],
               ),
               const SizedBox(height: 30.0),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const Text(
-                    textAlign: TextAlign.justify,
-                    'Escreva todos os medicamentos que você possui alergia, separando-os por vírgula.',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.black54, height: 1.4),
-                  ),
-                  const SizedBox(height: 30.0),
-                  const Text(
-                    'Medicamentos',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      labelText: 'Digite os medicamentos',
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.add, color: Colors.blue,),
-                        onPressed: () {
-                          allergyInfoController.addMedicine(_controller.text);
-                          _controller.clear();
-                        },
+              Expanded(
+                flex: 10,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const Text(
+                        textAlign: TextAlign.justify,
+                        'Escreva todos os medicamentos que você possui alergia, separando-os por vírgula.',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.black54, height: 1.4),
                       ),
-                    ),
+                      const SizedBox(height: 30.0),
+                      const Text(
+                        'Medicamentos',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      TextField(
+                        controller: _controller,
+                        decoration: InputDecoration(
+                          labelText: 'Digite os medicamentos',
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.add, color: Colors.blue,),
+                            onPressed: () {
+                              allergyInfoController.addMedicine(_controller.text);
+                              _controller.clear();
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Observer(
+                        builder: (_) => Wrap(
+                          spacing: 8.0,
+                          children: allergyInfoController.medicines
+                              .map((medicine) => Chip(
+                                    label: Text(
+                                      medicine,
+                                      style: TextStyle(
+                                        color: Theme.of(context).primaryColor, // Set text color to primaryColor
+                                      ),
+                                    ),
+                                    onDeleted: () => allergyInfoController.removeMedicine(medicine),
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                      color: Theme.of(context).primaryColor, // Set border color to primaryColor
+                                      width: 1, // Set border width
+                                      ),
+                                      borderRadius: BorderRadius.circular(10), // Add a border radius
+                                    ),
+                                    deleteIconColor:
+                                        Theme.of(context).primaryColor, // Set delete icon color to primaryColor
+                                  ))
+                              .toList(),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 16),
-                  Observer(
-                    builder: (_) => Wrap(
-                      spacing: 8.0,
-                      children: allergyInfoController.medicines
-                          .map((medicine) => Chip(
-                                label: Text(
-                                  medicine,
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColor, // Set text color to primaryColor
-                                  ),
-                                ),
-                                onDeleted: () => allergyInfoController.removeMedicine(medicine),
-                                shape: RoundedRectangleBorder(
-                                  side: BorderSide(
-                                  color: Theme.of(context).primaryColor, // Set border color to primaryColor
-                                  width: 1, // Set border width
-                                  ),
-                                  borderRadius: BorderRadius.circular(10), // Add a border radius
-                                ),
-                                deleteIconColor:
-                                    Theme.of(context).primaryColor, // Set delete icon color to primaryColor
-                              ))
-                          .toList(),
-                    ),
-                  ),
-                ],
+                ),
               ),
               Expanded(child: Container()),
               ElevatedButton(
                 onPressed: () {
-                  context.goNamed('UserAddressInfo');
+                  context.goNamed('ChronicalDiseaseInfo');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -131,7 +136,7 @@ class _AllergyInfoPageState extends State<AllergyInfoPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  context.goNamed('UserAddressInfo');
+                  context.goNamed('ChronicalDiseaseInfo');
                 },
                 child: const Text(
                   'Pular Etapa',
