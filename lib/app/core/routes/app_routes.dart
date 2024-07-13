@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/address_info/presentation/address_info_page.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/administrator_info/presentation/administrator_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/allergy_info/presentation/allergy_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/chronical_disease_info/presentation/chronical_disease_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/configurations/presentation/configurations_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/health_info/presentation/health_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/health_assistance/presentation/health_assistance_page.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/menu_assistance/presentation/menu_assistance_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/user_info/presentation/user_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/user_level_assistance/presentation/user_level_assistance_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/presentation/pages/medicine_stock_view_form_page.dart';
@@ -66,62 +68,77 @@ final GoRouter appRouter = GoRouter(
       ],
     ),
     GoRoute(
-        path: '/first-access',
-        name: 'FirstAccess',
-        builder: (BuildContext context, GoRouterState state) {
-          return const UserLevelAssistancePage();
-        },
-        routes: [
-          GoRoute(
-            path: 'user-info',
-            name: 'UserInfo',
-            builder: (BuildContext context, GoRouterState state) {
-              return const UserInfoPage();
-            },
-          ),
-          GoRoute(
-            path: 'address-info',
-            name: 'AddressInfo',
-            builder: (BuildContext context, GoRouterState state) {
-              return const AddressInfoPage();
-            },
-          ),
-          GoRoute(
-            path: 'health-assistance',
-            name: 'HealthAssistance',
-            builder: (BuildContext context, GoRouterState state) {
-              return const HealthAssistancePage();
-            },
-          ),
-          GoRoute(
-            path: 'health-info',
-            name: 'HealthInfo',
-            builder: (BuildContext context, GoRouterState state) {
-              return const HealthInfoPage();
-            },
-          ),
-          GoRoute(
-            path: 'allergy-info',
-            name: 'AllergyInfo',
-            builder: (BuildContext context, GoRouterState state) {
-              return const AllergyInfoPage();
-            },
-          ),
-          GoRoute(
-            path: 'chronical-disease-info',
-            name: 'ChronicalDiseaseInfo',
-            builder: (BuildContext context, GoRouterState state) {
-              return const ChronicalDiseaseInfoPage();
-            },
-          ),
-          GoRoute(
-            path: 'configurations-info',
-            name: 'ConfigurationsInfo',
-            builder: (BuildContext context, GoRouterState state) {
-              return const ConfigurationsPage();
-            },
-          ),
-        ]),
+      path: '/first-access',
+      name: 'FirstAccess',
+      builder: (BuildContext context, GoRouterState state) {
+        return const UserLevelAssistancePage();
+      },
+      routes: [
+        GoRoute(
+          path: 'user-info',
+          name: 'UserInfo',
+          builder: (BuildContext context, GoRouterState state) {
+            return const UserInfoPage();
+          },
+        ),
+        GoRoute(
+          path: 'address-info',
+          name: 'AddressInfo',
+          builder: (BuildContext context, GoRouterState state) {
+            return const AddressInfoPage();
+          },
+        ),
+        GoRoute(
+          path: 'health-assistance',
+          name: 'HealthAssistance',
+          builder: (BuildContext context, GoRouterState state) {
+            return const HealthAssistancePage();
+          },
+        ),
+        GoRoute(
+          path: 'health-info',
+          name: 'HealthInfo',
+          builder: (BuildContext context, GoRouterState state) {
+            return const HealthInfoPage();
+          },
+        ),
+        GoRoute(
+          path: 'allergy-info',
+          name: 'AllergyInfo',
+          builder: (BuildContext context, GoRouterState state) {
+            return const AllergyInfoPage();
+          },
+        ),
+        GoRoute(
+          path: 'chronical-disease-info',
+          name: 'ChronicalDiseaseInfo',
+          builder: (BuildContext context, GoRouterState state) {
+            return const ChronicalDiseaseInfoPage();
+          },
+        ),
+        GoRoute(
+          path: 'configurations-info',
+          name: 'ConfigurationsInfo',
+          builder: (BuildContext context, GoRouterState state) {
+            return const ConfigurationsPage();
+          },
+        ),
+        GoRoute(
+          path: 'administrator-info',
+          name: 'AdministratorInfo',
+          builder: (BuildContext context, GoRouterState state) {
+            return const AdministratorInfoPage();
+          },
+        ),
+        GoRoute(
+          path: 'menu-assistance',
+          name: 'MenuAssistance',
+          builder: (BuildContext context, GoRouterState state) {
+            return const MenuAssistancePage();
+          },
+        ),
+      ],
+    ),
     GoRoute(
       path: '/medicine-stock-list',
       name: 'MedicineStockList',

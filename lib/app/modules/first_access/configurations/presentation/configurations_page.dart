@@ -221,7 +221,7 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
               Expanded(child: Container()),
               ElevatedButton(
                 onPressed: () {
-                  context.goNamed('AllergyInfo');
+                  context.goNamed('AdministratorInfo');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -235,7 +235,7 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  context.goNamed('AllergyInfo');
+                  context.goNamed('AdministratorInfo');
                 },
                 child: const Text(
                   'Pular Etapa',

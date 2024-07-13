@@ -5,12 +5,14 @@ class BodyAssistanceWidget extends StatelessWidget {
   final Widget image;
   final String title;
   final List<TextSpan> message;
+  bool isInverse;
 
-  const BodyAssistanceWidget({
+  BodyAssistanceWidget({
     super.key,
     required this.image,
     required this.title,
     required this.message,
+    this.isInverse = false,
   });
 
   @override
@@ -19,8 +21,15 @@ class BodyAssistanceWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          image,
-          const SizedBox(height: 50),
+          if (isInverse)
+            const SizedBox.shrink()
+          else
+            Column(
+              children: [
+                image,
+                const SizedBox(height: 50),
+              ],
+            ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -53,6 +62,15 @@ class BodyAssistanceWidget extends StatelessWidget {
               ),
             ),
           ),
+          if (isInverse)
+            Column(
+              children: [
+                const SizedBox(height: 50),
+                image,
+              ],
+            )
+          else
+            const SizedBox.shrink()
         ],
       ),
     );
