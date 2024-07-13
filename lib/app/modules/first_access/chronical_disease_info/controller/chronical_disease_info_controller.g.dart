@@ -59,6 +59,23 @@ mixin _$ChronicalDiseaseInfoController
     });
   }
 
+  late final _$hasParkinsonDiseaseAtom = Atom(
+      name: '_ChronicalDiseaseInfoController.hasParkinsonDisease',
+      context: context);
+
+  @override
+  bool get hasParkinsonDisease {
+    _$hasParkinsonDiseaseAtom.reportRead();
+    return super.hasParkinsonDisease;
+  }
+
+  @override
+  set hasParkinsonDisease(bool value) {
+    _$hasParkinsonDiseaseAtom.reportWrite(value, super.hasParkinsonDisease, () {
+      super.hasParkinsonDisease = value;
+    });
+  }
+
   late final _$hasOsteoporosisAtom = Atom(
       name: '_ChronicalDiseaseInfoController.hasOsteoporosis',
       context: context);
@@ -124,6 +141,7 @@ mixin _$ChronicalDiseaseInfoController
 hasHypertension: ${hasHypertension},
 hasDiabetes: ${hasDiabetes},
 hasAlzheimer: ${hasAlzheimer},
+hasParkinsonDisease: ${hasParkinsonDisease},
 hasOsteoporosis: ${hasOsteoporosis},
 otherDiseases: ${otherDiseases}
     ''';
