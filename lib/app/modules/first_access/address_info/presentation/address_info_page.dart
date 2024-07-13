@@ -79,6 +79,11 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                             addressInfoController.postalCode,
                             icon: Icons.local_post_office_rounded,
                             label: 'CEP',
+                            onChanged: (value) {
+                              if (value.length == 8) {
+                                addressInfoController.getAddressInfo(value);
+                              }
+                            },
                           ),
                         ),
                     

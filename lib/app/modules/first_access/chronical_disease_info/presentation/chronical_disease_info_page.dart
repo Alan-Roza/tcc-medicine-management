@@ -174,6 +174,33 @@ class _ChronicalDiseaseInfoPageState extends State<ChronicalDiseaseInfoPage> {
                             ),
                           ),
                         ),
+                        Observer(
+                          builder: (_) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: DropdownButtonFormField<bool>(
+                              value: chronicalDiseaseInfoController.hasParkinsonDisease,
+                              decoration: const InputDecoration(
+                                prefixIcon: Icon(Icons.people_outline),
+                                labelText: 'Possui Mal de Parkinson?',
+                              ),
+                              items: const [
+                                DropdownMenuItem<bool>(
+                                  value: true,
+                                  child: Text('SIM'),
+                                ),
+                                DropdownMenuItem<bool>(
+                                  value: false,
+                                  child: Text('NÃO'),
+                                ),
+                              ],
+                              onChanged: (bool? value) {
+                                if (value != null) {
+                                  chronicalDiseaseInfoController.setParkinsonDisease(value);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
                         TextField(
                           controller: chronicalDiseaseInfoController.diseasesController,
                           decoration: InputDecoration(

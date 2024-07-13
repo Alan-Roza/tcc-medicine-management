@@ -16,6 +16,9 @@ abstract class _ChronicalDiseaseInfoController with Store {
   bool hasAlzheimer = false;
 
   @observable
+  bool hasParkinsonDisease= false;
+
+  @observable
   bool hasOsteoporosis = false;
 
   final TextEditingController diseasesController = TextEditingController();
@@ -48,5 +51,9 @@ abstract class _ChronicalDiseaseInfoController with Store {
 
   void setOsteoporosis(bool value) {
     hasOsteoporosis = value;
+  }
+
+  void setParkinsonDisease(bool value) {
+    hasParkinsonDisease = value;
   }
 }
