@@ -13,9 +13,9 @@ class MenuAssistancePage extends StatelessWidget {
       bodyAssistanceWidget: [
         BodyAssistanceWidget(
           isInverse: true,
-          image: SvgPicture.asset('assets/images/bottom-navigation-home.svg', fit: BoxFit.cover,),
-          // image: Image.asset('assets/images/bottom-navigator.png'),
-          title: 'ÍNICIO',
+          // image: SvgPicture.asset('assets/images/bottom-navigation-home.svg', fit: BoxFit.cover,),
+          image: Image.asset('assets/images/navigator-home.png', fit: BoxFit.cover),
+          title: 'INÍCIO',
           message: const [
             // TextSpan(
             //   text: "Salus ",
@@ -48,9 +48,8 @@ class MenuAssistancePage extends StatelessWidget {
 
         BodyAssistanceWidget(
           isInverse: true,
-          image: SvgPicture.asset('assets/images/bottom-navigation-home.svg', fit: BoxFit.cover,),
-          // image: Image.asset('assets/images/bottom-navigator.png'),
-          title: 'ÍNICIO',
+          image: Image.asset('assets/images/navigator-treatment.png', fit: BoxFit.cover),
+          title: 'TRATAMENTO',
           message: const [
             // TextSpan(
             //   text: "Salus ",
@@ -83,9 +82,8 @@ class MenuAssistancePage extends StatelessWidget {
 
         BodyAssistanceWidget(
           isInverse: true,
-          image: SvgPicture.asset('assets/images/bottom-navigation-home.svg', fit: BoxFit.cover,),
-          // image: Image.asset('assets/images/bottom-navigator.png'),
-          title: 'ÍNICIO',
+          image: Image.asset('assets/images/navigator-medicine.png', fit: BoxFit.cover),
+          title: 'MEDICAMENTOS',
           message: const [
             // TextSpan(
             //   text: "Salus ",
@@ -118,9 +116,8 @@ class MenuAssistancePage extends StatelessWidget {
 
         BodyAssistanceWidget(
           isInverse: true,
-          image: SvgPicture.asset('assets/images/bottom-navigation-home.svg', fit: BoxFit.cover,),
-          // image: Image.asset('assets/images/bottom-navigator.png'),
-          title: 'ÍNICIO',
+          image: Image.asset('assets/images/navigator-profile.png', fit: BoxFit.cover),
+          title: 'PERFIL',
           message: const [
             // TextSpan(
             //   text: "Salus ",
