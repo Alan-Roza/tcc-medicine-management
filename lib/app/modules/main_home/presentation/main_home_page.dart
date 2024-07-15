@@ -13,9 +13,11 @@ class MainHomePage extends StatelessWidget {
     return Observer(
       builder: (_) => Scaffold(
         appBar: AppBar(
+          centerTitle: true,
+          surfaceTintColor: Colors.white,
           title: const Text('Tela Inicial'),
           actions: [
-            IconButton(icon: const Icon(Icons.notifications), onPressed: () {}),
+            IconButton(icon: const Badge(child: Icon(Icons.notifications_outlined)), onPressed: () {}),
           ],
         ),
         drawer: Drawer(
@@ -105,6 +107,7 @@ class MainHomePage extends StatelessWidget {
             _buildSectionHeader('TRATAMENTOS', 'Mais Importantes'),
             _buildTreatmentRow(),
             _buildHelpSection(),
+            const SizedBox(height: 16.0),
           ],
         ),
       ),
@@ -286,10 +289,40 @@ class MainHomePage extends StatelessWidget {
   }
 
   Widget _buildHelpSection() {
-    return const Card(
-      child: ListTile(
-        title: Text('Precisa de ajuda?'),
-        trailing: Icon(Icons.arrow_forward),
+    return Card(
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      elevation: 0,
+      child: Container(
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 12.0),
+        child: Row(
+          children: [
+            const SizedBox(width: 24.0),
+            Expanded(
+              flex: 2,
+              child: SvgPicture.asset('assets/images/help.svg', fit: BoxFit.cover),
+            ),
+            const Expanded(
+              flex: 5,
+              child: Text(
+                'PRECISA DE AJUDA?',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const Expanded(
+              flex: 1,
+              child: Icon(
+                Icons.arrow_forward,
+                color: Colors.blue,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
