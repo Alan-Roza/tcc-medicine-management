@@ -150,7 +150,7 @@ class _AdministratorInfoPageState extends State<AdministratorInfoPage> {
                   context.goNamed('MenuAssistance');
                 },
                 child: const Text(
-                  'não Possuo Responsável',
+                  'Não Possuo Responsável',
                   style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
                   // Change color to indicate it's clickable
                 ),

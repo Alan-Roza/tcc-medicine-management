@@ -9,7 +9,7 @@ class MenuAssistancePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenAssistancePage(
-      redirectPath: 'Home',
+      redirectPath: 'MainHome',
       bodyAssistanceWidget: [
         BodyAssistanceWidget(
           isInverse: true,
