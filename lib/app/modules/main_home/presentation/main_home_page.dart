@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/controller/main_home_controller.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/presentation/pages/medicine_stock_list_page.dart';
 
 class MainHomePage extends StatelessWidget {
   final MainHomeController mainHomeController = MainHomeController();
@@ -86,7 +87,7 @@ class MainHomePage extends StatelessWidget {
       case 1:
         return const Center(child: Text('Tratamento Page'));
       case 2:
-        return const Center(child: Text('Medicamentos Page'));
+        return _buildMedicinePage();
       case 3:
         return const Center(child: Text('Perfil Page'));
       default:
@@ -94,6 +95,21 @@ class MainHomePage extends StatelessWidget {
     }
   }
 
+  Widget _buildMedicinePage() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            MedicineStockListPage();
+            const SizedBox(height: 16.0),
+          ],
+        ),
+      ),
+    );
+  }
+
+// BELOW IS THE WIDGETS FOR MAIN HOME PAGE
   Widget _buildHomePage() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
