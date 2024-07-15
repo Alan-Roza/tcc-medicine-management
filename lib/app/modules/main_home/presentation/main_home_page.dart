@@ -14,7 +14,8 @@ class MainHomePage extends StatelessWidget {
       builder: (_) => Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          surfaceTintColor: Colors.white,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
           title: const Text('Tela Inicial'),
           actions: [
             IconButton(icon: const Badge(child: Icon(Icons.notifications_outlined)), onPressed: () {}),
@@ -115,17 +116,71 @@ class MainHomePage extends StatelessWidget {
   }
 
   Widget _buildAlertCard() {
-    return const Card(
-      color: Colors.red,
-      child: ListTile(
-        leading: Icon(Icons.warning, color: Colors.white),
-        title: Text(
-          'Existem pontos que precisam de atenção',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        subtitle: Text(
-          'Houve medicamentos não ingeridos, clique aqui para mais detalhes',
-          style: TextStyle(color: Colors.white),
+    return Card(
+      color: const Color(0xFFB3261E),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      elevation: 0,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            SvgPicture.asset(
+            'assets/images/graphic_down.svg',
+            fit: BoxFit.cover,
+            height: 80,
+            ),
+            const SizedBox(width: 12.0),
+            Expanded(
+              flex: 5,
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 18.0),
+                child: Column(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Existem pontos que precisam de atenção',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            height: 1.1,
+                          ),
+                        ),
+                        Container(
+                          width: 40,
+                          height: 6,
+                          margin: const EdgeInsets.only(top: 6.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              color: Colors.white, // Set border color
+                              width: 2, // Set border width
+                            ),
+                            borderRadius: BorderRadius.circular(10), // Add a border radius
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    const Text(
+                      'Houve medicamentos não ingeridos, clique aqui para mais detalhes',
+                      style: TextStyle(
+                        color: Colors.white,
+                        height: 1.1,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -137,10 +192,10 @@ class MainHomePage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildMenuIcon(Icons.inventory, 'Estoque'),
-          _buildMenuIcon(Icons.local_hospital, 'Tratamentos'),
+          _buildMenuIcon(Icons.health_and_safety_outlined, 'Estoque'),
+          _buildMenuIcon(Icons.calendar_month, 'Tratamentos'),
           _buildMenuIcon(Icons.wifi, 'Conexão'),
-          _buildMenuIcon(Icons.bar_chart, 'Estatísticas'),
+          _buildMenuIcon(Icons.language_outlined, 'Estatísticas'),
         ],
       ),
     );
@@ -149,8 +204,18 @@ class MainHomePage extends StatelessWidget {
   Widget _buildMenuIcon(IconData icon, String label) {
     return Column(
       children: [
-        Icon(icon, size: 40),
-        Text(label),
+        Card(
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          color: Colors.white,
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Icon(icon, size: 24),
+          ),
+        ),
+        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
       ],
     );
   }
@@ -175,16 +240,17 @@ class MainHomePage extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _buildViewCard('GARDENAL', '12/04/2023', '12/07/2024'),
-          _buildViewCard('DIPIRONA', '08/02/2023', '12/07/2024'),
-          _buildViewCard('DISALINA', '08/02/2023', '12/07/2024'),
+          _buildViewCard(name: 'GARDENAL', added: '12/04/2023', expires: '12/07/2024'),
+          _buildViewCard(name: 'DIPIRONA', added: '08/02/2023', expires: '12/07/2024'),
+          _buildViewCard(name: 'DISALINA', added: '08/02/2023', expires: '12/07/2024'),
         ],
       ),
     );
   }
 
-  Widget _buildViewCard(String name, String added, String expires) {
+  Widget _buildViewCard({required String name, required String added, required String expires}) {
     return Card(
       color: Colors.grey.shade900,
       margin: const EdgeInsets.all(8.0),
@@ -198,8 +264,6 @@ class MainHomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset('assets/images/generic_medicine.png'),
-                // SvgPicture.asset('assets/images/generic_medicine.svg')
-                // Icon(Icons.medical_services, size: 40),
               ],
             ),
             const SizedBox(
@@ -262,9 +326,10 @@ class MainHomePage extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _buildViewCard('SINUSITE', '08/02/2023', '12/07/2024'),
-          _buildViewCard('ALERGIA', '08/02/2023', '12/07/2024'),
+          _buildViewCard(name: 'SINUSITE', added: '08/02/2023', expires: '12/07/2024'),
+          _buildViewCard(name: 'ALERGIA', added: '08/02/2023', expires: '12/07/2024'),
         ],
       ),
     );
@@ -282,8 +347,13 @@ class MainHomePage extends StatelessWidget {
         child: Row(
           children: [
             const SizedBox(width: 12.0),
-            Container(padding: const EdgeInsets.only(left: 8.0, top: 6.0), child: SvgPicture.asset('assets/images/help.svg', fit: BoxFit.cover, height: 80,)),
-            
+            Container(
+                padding: const EdgeInsets.only(left: 8.0, top: 6.0),
+                child: SvgPicture.asset(
+                  'assets/images/help.svg',
+                  fit: BoxFit.cover,
+                  height: 80,
+                )),
             const Expanded(
               flex: 5,
               child: Text(
