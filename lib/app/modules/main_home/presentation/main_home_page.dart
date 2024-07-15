@@ -176,15 +176,15 @@ class MainHomePage extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          _buildMedicineCard('GARDENAL', '12/04/2023', '12/07/2024'),
-          _buildMedicineCard('DIPIRONA', '08/02/2023', '12/07/2024'),
-          _buildMedicineCard('DISALINA', '08/02/2023', '12/07/2024'),
+          _buildViewCard('GARDENAL', '12/04/2023', '12/07/2024'),
+          _buildViewCard('DIPIRONA', '08/02/2023', '12/07/2024'),
+          _buildViewCard('DISALINA', '08/02/2023', '12/07/2024'),
         ],
       ),
     );
   }
 
-  Widget _buildMedicineCard(String name, String added, String expires) {
+  Widget _buildViewCard(String name, String added, String expires) {
     return Card(
       color: Colors.grey.shade900,
       margin: const EdgeInsets.all(8.0),
@@ -263,27 +263,9 @@ class MainHomePage extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          _buildTreatmentCard('SINUSITE', '08/02/2023', '12/07/2024'),
-          _buildTreatmentCard('ALERGIA', '08/02/2023', '12/07/2024'),
+          _buildViewCard('SINUSITE', '08/02/2023', '12/07/2024'),
+          _buildViewCard('ALERGIA', '08/02/2023', '12/07/2024'),
         ],
-      ),
-    );
-  }
-
-  Widget _buildTreatmentCard(String name, String added, String expires) {
-    return Card(
-      margin: const EdgeInsets.all(8.0),
-      child: Container(
-        width: 150,
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            const Icon(Icons.healing, size: 40),
-            Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
-            Text('Adicionado em: $added'),
-            Text('Vence em: $expires'),
-          ],
-        ),
       ),
     );
   }
@@ -296,14 +278,12 @@ class MainHomePage extends StatelessWidget {
       ),
       elevation: 0,
       child: Container(
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 12.0),
+        padding: const EdgeInsets.only(right: 8.0),
         child: Row(
           children: [
-            const SizedBox(width: 24.0),
-            Expanded(
-              flex: 2,
-              child: SvgPicture.asset('assets/images/help.svg', fit: BoxFit.cover),
-            ),
+            const SizedBox(width: 12.0),
+            Container(padding: const EdgeInsets.only(left: 8.0, top: 6.0), child: SvgPicture.asset('assets/images/help.svg', fit: BoxFit.cover, height: 80,)),
+            
             const Expanded(
               flex: 5,
               child: Text(
