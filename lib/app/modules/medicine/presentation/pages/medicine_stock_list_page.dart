@@ -28,11 +28,7 @@ class MedicineStockListPage extends StatelessWidget {
       importante: false,
     ));
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Estoque de Medicamentos'),
-      ),
-      body: Padding(
+    return  Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
@@ -145,13 +141,6 @@ class MedicineStockListPage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Ação do botão flutuante
-        },
-        child: const Icon(Icons.more_vert),
-      ),
     );
   }
 }

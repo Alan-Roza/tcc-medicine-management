@@ -151,7 +151,7 @@ final GoRouter appRouter = GoRouter(
       path: '/medicine-stock-list',
       name: 'MedicineStockList',
       builder: (BuildContext context, GoRouterState state) {
-        return const MedicineStockListPage();
+        return MedicineStockListPage();
       },
       routes: [
         GoRoute(
