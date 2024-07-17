@@ -8,7 +8,7 @@ import 'package:tcc_medicine_management/app/modules/medicine/presentation/pages/
 class MainHomePage extends StatelessWidget {
   final MainHomeController mainHomeController = MainHomeController();
   final MedicineStockListController store = MedicineStockListController();
-  
+
   MainHomePage({super.key});
 
   @override
@@ -33,15 +33,17 @@ class MainHomePage extends StatelessWidget {
 
     return Observer(
       builder: (_) => Scaffold(
-        appBar: mainHomeController.selectedIndex == 0 ? AppBar(
-          centerTitle: true,
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
-          title: const Text('Tela Inicial'),
-          actions: [
-            IconButton(icon: const Badge(child: Icon(Icons.notifications_outlined)), onPressed: () {}),
-          ],
-        ) : null,
+        appBar: mainHomeController.selectedIndex == 0
+            ? AppBar(
+                centerTitle: true,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
+                title: const Text('Tela Inicial'),
+                actions: [
+                  IconButton(icon: const Badge(child: Icon(Icons.notifications_outlined)), onPressed: () {}),
+                ],
+              )
+            : null,
         drawer: Drawer(
           child: ListView(
             children: [
@@ -119,133 +121,164 @@ class MainHomePage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
-            child: Expanded(
-              flex: 3,
-              child: _medicineStockListPage(),
-            ),
+        child: Expanded(
+          flex: 3,
+          child: _medicineStockListPage(),
+        ),
       ),
     );
   }
 
-   Widget _medicineStockListPage() {
-    return  Column(
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.blue[100],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: <Widget>[
-              const Text(
-                'Estoque de medicamentos',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+  Widget _medicineStockListPage() {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            Stack(
+              clipBehavior: Clip.none,
+              children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    color: const Color(0x9900A8FF),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                  child: Container(
+                     padding: const EdgeInsets.only(bottom: 24.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Estoque de\nMedicamentos',
+                          style: TextStyle(
+                            fontSize: 26, // Set the font family to Roboto
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                            height: 1),
+                        ),
+                        Container(
+                          width: 65,
+                          height: 6,
+                          margin: const EdgeInsets.only(top: 5),
+                          decoration: BoxDecoration(
+                            color: Colors.black87,
+                            border: Border.all(
+                              color: Colors.black87, // Set border color
+                              width: 2, // Set border width
+                            ),
+                            borderRadius: BorderRadius.circular(10), // Add a border radius
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16),
-                Stack(
-                  children: [
-                  Positioned(
-                    top: 100,
-                    child: TextField(
+                Positioned(
+                  top: 120, // Adjust this value as needed
+                  left: 16, // Adjust this value as needed
+                  right: 16, // Adjust this value as needed
+                  child: TextField(
                     decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
                       hintText: 'Busque seu medicamento',
                       prefixIcon: const Icon(Icons.search),
                       suffixIcon: const Icon(Icons.filter_list),
                       border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                    ),
+                      hintStyle: const TextStyle(color: Colors.grey, fontWeight: FontWeight.normal),
                     ),
                   ),
-                  // Other stack widgets go here
-                  ],
                 ),
-            ],
-          ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            // Expanded(
+            //   child: Observer(
+            //     builder: (_) => ListView.builder(
+            //       itemCount: store.medicamentos.length,
+            //       itemBuilder: (context, index) {
+            //         final medicamento = store.medicamentos[index];
+            //         return Card(
+            //           shape: RoundedRectangleBorder(
+            //             borderRadius: BorderRadius.circular(10),
+            //           ),
+            //           child: Padding(
+            //             padding: const EdgeInsets.all(16.0),
+            //             child: Column(
+            //               crossAxisAlignment: CrossAxisAlignment.start,
+            //               children: <Widget>[
+            //                 Row(
+            //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //                   children: <Widget>[
+            //                     Text(
+            //                       medicamento.tipo,
+            //                       style: const TextStyle(
+            //                         fontSize: 16,
+            //                         fontWeight: FontWeight.bold,
+            //                       ),
+            //                     ),
+            //                     if (medicamento.importante)
+            //                       Container(
+            //                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            //                         decoration: BoxDecoration(
+            //                           color: Colors.red,
+            //                           borderRadius: BorderRadius.circular(8),
+            //                         ),
+            //                         child: const Text(
+            //                           'Importante',
+            //                           style: TextStyle(
+            //                             color: Colors.white,
+            //                             fontWeight: FontWeight.bold,
+            //                           ),
+            //                         ),
+            //                       )
+            //                     else
+            //                       Container(
+            //                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            //                         decoration: BoxDecoration(
+            //                           color: Colors.blue,
+            //                           borderRadius: BorderRadius.circular(8),
+            //                         ),
+            //                         child: const Text(
+            //                           'Normal',
+            //                           style: TextStyle(
+            //                             color: Colors.white,
+            //                             fontWeight: FontWeight.bold,
+            //                           ),
+            //                         ),
+            //                       ),
+            //                   ],
+            //                 ),
+            //                 const SizedBox(height: 8),
+            //                 Text(
+            //                   medicamento.nome,
+            //                   style: const TextStyle(
+            //                     fontSize: 20,
+            //                     fontWeight: FontWeight.bold,
+            //                   ),
+            //                 ),
+            //                 const SizedBox(height: 8),
+            //                 Text('Quantidade: ${medicamento.quantidade} unidades'),
+            //                 Text('Vencimento: ${medicamento.vencimento.day}/${medicamento.vencimento.month}/${medicamento.vencimento.year}'),
+            //                 Text('Último Preço: R\$${medicamento.preco.toStringAsFixed(2)}'),
+            //               ],
+            //             ),
+            //           ),
+            //         );
+            //       },
+            //     ),
+            //   ),
+            // ),
+          ],
         ),
-        const SizedBox(height: 16),
-        // Expanded(
-        //   child: Observer(
-        //     builder: (_) => ListView.builder(
-        //       itemCount: store.medicamentos.length,
-        //       itemBuilder: (context, index) {
-        //         final medicamento = store.medicamentos[index];
-        //         return Card(
-        //           shape: RoundedRectangleBorder(
-        //             borderRadius: BorderRadius.circular(10),
-        //           ),
-        //           child: Padding(
-        //             padding: const EdgeInsets.all(16.0),
-        //             child: Column(
-        //               crossAxisAlignment: CrossAxisAlignment.start,
-        //               children: <Widget>[
-        //                 Row(
-        //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                   children: <Widget>[
-        //                     Text(
-        //                       medicamento.tipo,
-        //                       style: const TextStyle(
-        //                         fontSize: 16,
-        //                         fontWeight: FontWeight.bold,
-        //                       ),
-        //                     ),
-        //                     if (medicamento.importante)
-        //                       Container(
-        //                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        //                         decoration: BoxDecoration(
-        //                           color: Colors.red,
-        //                           borderRadius: BorderRadius.circular(8),
-        //                         ),
-        //                         child: const Text(
-        //                           'Importante',
-        //                           style: TextStyle(
-        //                             color: Colors.white,
-        //                             fontWeight: FontWeight.bold,
-        //                           ),
-        //                         ),
-        //                       )
-        //                     else
-        //                       Container(
-        //                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        //                         decoration: BoxDecoration(
-        //                           color: Colors.blue,
-        //                           borderRadius: BorderRadius.circular(8),
-        //                         ),
-        //                         child: const Text(
-        //                           'Normal',
-        //                           style: TextStyle(
-        //                             color: Colors.white,
-        //                             fontWeight: FontWeight.bold,
-        //                           ),
-        //                         ),
-        //                       ),
-        //                   ],
-        //                 ),
-        //                 const SizedBox(height: 8),
-        //                 Text(
-        //                   medicamento.nome,
-        //                   style: const TextStyle(
-        //                     fontSize: 20,
-        //                     fontWeight: FontWeight.bold,
-        //                   ),
-        //                 ),
-        //                 const SizedBox(height: 8),
-        //                 Text('Quantidade: ${medicamento.quantidade} unidades'),
-        //                 Text('Vencimento: ${medicamento.vencimento.day}/${medicamento.vencimento.month}/${medicamento.vencimento.year}'),
-        //                 Text('Último Preço: R\$${medicamento.preco.toStringAsFixed(2)}'),
-        //               ],
-        //             ),
-        //           ),
-        //         );
-        //       },
-        //     ),
-        //   ),
-        // ),
-      ],
+      ),
     );
   }
 
@@ -284,9 +317,9 @@ class MainHomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             SvgPicture.asset(
-            'assets/images/graphic_down.svg',
-            fit: BoxFit.cover,
-            height: 80,
+              'assets/images/graphic_down.svg',
+              fit: BoxFit.cover,
+              height: 80,
             ),
             const SizedBox(width: 12.0),
             Expanded(
