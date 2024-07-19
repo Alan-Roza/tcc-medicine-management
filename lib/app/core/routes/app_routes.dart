@@ -11,7 +11,7 @@ import 'package:tcc_medicine_management/app/modules/first_access/menu_assistance
 import 'package:tcc_medicine_management/app/modules/first_access/user_info/presentation/user_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/user_level_assistance/presentation/user_level_assistance_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/presentation/main_home_page.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/presentation/pages/medicine_stock_view_form_page.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/presentation/pages/medicine_stock_form_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/presentation/pages/medicine_stock_list_page.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/home/presentation/unauth_home_page.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/login/presentation/unauth_login_page.dart';
@@ -141,12 +141,20 @@ final GoRouter appRouter = GoRouter(
       ],
     ),
     GoRoute(
-          path: '/main-home',
-          name: 'MainHome',
-          builder: (BuildContext context, GoRouterState state) {
-            return MainHomePage();
-          },
-        ),
+        path: '/main-home',
+        name: 'MainHome',
+        builder: (BuildContext context, GoRouterState state) {
+          return const MainHomePage();
+        },
+        routes: [
+          GoRoute(
+            path: 'medicine-stock-form',
+            name: 'MedicineStockForm',
+            builder: (BuildContext context, GoRouterState state) {
+              return const MedicineStockFormPage();
+            },
+          ),
+        ]),
     // GoRoute(
     //   path: '/medicine-stock-list',
     //   name: 'MedicineStockList',

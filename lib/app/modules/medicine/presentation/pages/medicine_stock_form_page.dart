@@ -80,49 +80,47 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage>
     with SingleTickerProviderStateMixin {
 
   final MedicineFormController _formController = MedicineFormController();
-  int _currentStep = 0;
+  final int _currentStep = 0;
   final List<String> titles = ['CART', 'ADDRESS', 'PAYMENT'];
    final List<Widget> _formWidgets = [
     const MedicineStockBasicFormWidget(),
     const MedicineStockOptionalFormWidget(),
-    Text('Your third step content here'),
+    const Text('Your third step content here'),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('MedicineStockListPage'),
+        title: const Text('Medicine Stock Form Page'),
       ),
-      body: PaddedScreen(
-        child: Column(
-          children: [
-            StepProgressView(
-              width: MediaQuery.of(context).size.width,
-              curStep: _currentStep,
-              color: const Color(0xff50AC02),
-              titles: titles,
-              key: const Key('abc'),
-            ),
-            Expanded(
-              child: _formWidgets[_currentStep],
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                if (await _formController.submitForm()) {
-                  // If the form is valid, display a Snackbar.
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Processing Data')));
-                } else {
-                  // If the form is invalid, display a Snackbar.
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Invalid Data')));
-                }
-              },
-              child: const Text('Submit'),
-            ),
-          ],
-        ),
+      body: Column(
+        children: [
+          StepProgressView(
+            width: MediaQuery.of(context).size.width,
+            curStep: _currentStep,
+            color: const Color(0xff50AC02),
+            titles: titles,
+            key: const Key('abc'),
+          ),
+          Expanded(
+            child: _formWidgets[_currentStep],
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              if (await _formController.submitForm()) {
+                // If the form is valid, display a Snackbar.
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Processing Data')));
+              } else {
+                // If the form is invalid, display a Snackbar.
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Invalid Data')));
+              }
+            },
+            child: const Text('Submit'),
+          ),
+        ],
       ),
     );
   }

@@ -82,7 +82,7 @@ class _StepProgressViewState extends State<StepProgressView> {
                 EasyStep(
                   customStep: CircleAvatar(
                     radius: 8,
-                    backgroundColor: Color.fromARGB(255, 236, 0, 0),
+                    backgroundColor: const Color.fromARGB(255, 236, 0, 0),
                     child: CircleAvatar(
                       radius: 7,
                       backgroundColor:

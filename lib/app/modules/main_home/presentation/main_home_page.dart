@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/controller/main_home_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/presentation/controllers/medicine_stock_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/presentation/pages/medicine_stock_list_page.dart';
@@ -161,14 +162,7 @@ class _MainHomePageState extends State<MainHomePage> {
               backgroundColor: Colors.blue,
               label: 'Novo Medicamento',
               onTap: () {
-                medicineStockListController.addCard(CardItem(
-                  name: 'Medicamentos',
-                  type: "Comprimido",
-                  quantity: 1,
-                  expirationDate: '29/07/2024',
-                  price: 15.75,
-                  priority: 'low',
-                ));
+                context.goNamed('MedicineStockForm');
               },
             ),
             SpeedDialChild(
