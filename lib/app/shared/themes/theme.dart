@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:google_fonts/google_fonts.dart";
 
 class MaterialTheme {
   final TextTheme textTheme;
@@ -351,13 +352,13 @@ class MaterialTheme {
     brightness: colorScheme.brightness,
     colorScheme: colorScheme,
     textTheme: textTheme.apply(
+      fontFamily: 'Roboto',
       bodyColor: colorScheme.onSurface,
       displayColor: colorScheme.onSurface,
     ),
     scaffoldBackgroundColor: colorScheme.surface,
     canvasColor: colorScheme.surface,
     primaryColor: const Color(0xFF00A8FF),
-    fontFamily: 'Roboto',
     buttonTheme: const ButtonThemeData(
       buttonColor: Color(0xFF00A8FF),
       textTheme: ButtonTextTheme.primary,

@@ -5,34 +5,29 @@ part 'medicine_stock_list_controller.g.dart';
 class MedicineStockListController = _MedicineStockListController with _$MedicineStockListController;
 
 abstract class _MedicineStockListController with Store {
-  @observable
-  ObservableList<Medicamento> medicamentos = ObservableList<Medicamento>();
+   @observable
+  ObservableList<CardItem> cardItems = ObservableList<CardItem>();
 
   @action
-  void adicionarMedicamento(Medicamento medicamento) {
-    medicamentos.add(medicamento);
-  }
-
-  @action
-  void removerMedicamento(Medicamento medicamento) {
-    medicamentos.remove(medicamento);
+  void addCard(CardItem item) {
+    cardItems.add(item);
   }
 }
 
-class Medicamento {
-  String tipo;
-  String nome;
-  int quantidade;
-  DateTime vencimento;
-  double preco;
-  bool importante;
+class CardItem {
+  String name;
+  String type;
+  int quantity;
+  String expirationDate;
+  double price;
+  String priority;
 
-  Medicamento({
-    required this.tipo,
-    required this.nome,
-    required this.quantidade,
-    required this.vencimento,
-    required this.preco,
-    required this.importante,
+  CardItem({
+    required this.name,
+    required this.type,
+    required this.quantity,
+    required this.expirationDate,
+    required this.price,
+    required this.priority,
   });
 }

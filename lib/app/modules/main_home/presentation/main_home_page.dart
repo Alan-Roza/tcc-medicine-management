@@ -4,33 +4,22 @@ import 'package:flutter_svg/svg.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/controller/main_home_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/presentation/controllers/medicine_stock_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/presentation/pages/medicine_stock_list_page.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/presentation/widgets/medicine_card_widget.dart';
 
-class MainHomePage extends StatelessWidget {
+class MainHomePage extends StatefulWidget {
+  const MainHomePage({super.key});
+
+  @override
+  State<MainHomePage> createState() => _MainHomePageState();
+}
+
+class _MainHomePageState extends State<MainHomePage> {
   final MainHomeController mainHomeController = MainHomeController();
-  final MedicineStockListController store = MedicineStockListController();
 
-  MainHomePage({super.key});
+  final MedicineStockListController medicineStockListController = MedicineStockListController();
 
   @override
   Widget build(BuildContext context) {
-    // Adicionando medicamentos de exemplo
-    store.adicionarMedicamento(Medicamento(
-      tipo: 'Comprimido',
-      nome: 'Gardenal',
-      quantidade: 22,
-      vencimento: DateTime(2023, 11, 15),
-      preco: 12.99,
-      importante: true,
-    ));
-    store.adicionarMedicamento(Medicamento(
-      tipo: 'Gotas',
-      nome: 'Dipirona',
-      quantidade: 1,
-      vencimento: DateTime(2024, 7, 29),
-      preco: 15.75,
-      importante: false,
-    ));
-
     return Observer(
       builder: (_) => Scaffold(
         appBar: mainHomeController.selectedIndex == 0
@@ -98,8 +87,72 @@ class MainHomePage extends StatelessWidget {
             ),
           ],
         ),
+        floatingActionButton: _buildFloatingActionButton(mainHomeController.selectedIndex),
       ),
     );
+  }
+
+  Widget _buildFloatingActionButton(int selectedIndex) {
+    switch (selectedIndex) {
+      case 0:
+        return FloatingActionButton(
+          onPressed: () {
+            medicineStockListController.addCard(CardItem(
+              type: "Comprimido",
+              name: 'Início',
+              quantity: 1,
+              expirationDate: '29/07/2024',
+              price: 15.75,
+              priority: 'normal',
+            ));
+          },
+          child: const Icon(Icons.home),
+        );
+      case 1:
+        return FloatingActionButton(
+          onPressed: () {
+            medicineStockListController.addCard(CardItem(
+              name: 'Tratamento',
+              type: "Comprimido",
+              quantity: 1,
+              expirationDate: '29/07/2024',
+              price: 15.75,
+              priority: 'high',
+            ));
+          },
+          child: const Icon(Icons.calendar_today),
+        );
+      case 2:
+        return FloatingActionButton(
+          onPressed: () {
+            medicineStockListController.addCard(CardItem(
+              name: 'Medicamentos',
+              type: "Comprimido",
+              quantity: 1,
+              expirationDate: '29/07/2024',
+              price: 15.75,
+              priority: 'low',
+            ));
+          },
+          child: const Icon(Icons.health_and_safety),
+        );
+      case 3:
+        return FloatingActionButton(
+          onPressed: () {
+            medicineStockListController.addCard(CardItem(
+              name: 'Perfil',
+              quantity: 1,
+              type: "Comprimido",
+              expirationDate: '29/07/2024',
+              price: 15.75,
+              priority: 'normal',
+            ));
+          },
+          child: const Icon(Icons.person),
+        );
+      default:
+        return Container();
+    }
   }
 
   Widget _buildBody(int index) {
@@ -147,7 +200,7 @@ class MainHomePage extends StatelessWidget {
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 30.0),
                   child: Container(
-                     padding: const EdgeInsets.only(bottom: 24.0),
+                    padding: const EdgeInsets.only(bottom: 12.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,10 +208,10 @@ class MainHomePage extends StatelessWidget {
                         const Text(
                           'Estoque de\nMedicamentos',
                           style: TextStyle(
-                            fontSize: 26, // Set the font family to Roboto
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                            height: 1),
+                              fontSize: 26, // Set the font family to Roboto
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                              height: 1),
                         ),
                         Container(
                           width: 65,
@@ -198,84 +251,28 @@ class MainHomePage extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-            // Expanded(
-            //   child: Observer(
-            //     builder: (_) => ListView.builder(
-            //       itemCount: store.medicamentos.length,
-            //       itemBuilder: (context, index) {
-            //         final medicamento = store.medicamentos[index];
-            //         return Card(
-            //           shape: RoundedRectangleBorder(
-            //             borderRadius: BorderRadius.circular(10),
-            //           ),
-            //           child: Padding(
-            //             padding: const EdgeInsets.all(16.0),
-            //             child: Column(
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               children: <Widget>[
-            //                 Row(
-            //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //                   children: <Widget>[
-            //                     Text(
-            //                       medicamento.tipo,
-            //                       style: const TextStyle(
-            //                         fontSize: 16,
-            //                         fontWeight: FontWeight.bold,
-            //                       ),
-            //                     ),
-            //                     if (medicamento.importante)
-            //                       Container(
-            //                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            //                         decoration: BoxDecoration(
-            //                           color: Colors.red,
-            //                           borderRadius: BorderRadius.circular(8),
-            //                         ),
-            //                         child: const Text(
-            //                           'Importante',
-            //                           style: TextStyle(
-            //                             color: Colors.white,
-            //                             fontWeight: FontWeight.bold,
-            //                           ),
-            //                         ),
-            //                       )
-            //                     else
-            //                       Container(
-            //                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            //                         decoration: BoxDecoration(
-            //                           color: Colors.blue,
-            //                           borderRadius: BorderRadius.circular(8),
-            //                         ),
-            //                         child: const Text(
-            //                           'Normal',
-            //                           style: TextStyle(
-            //                             color: Colors.white,
-            //                             fontWeight: FontWeight.bold,
-            //                           ),
-            //                         ),
-            //                       ),
-            //                   ],
-            //                 ),
-            //                 const SizedBox(height: 8),
-            //                 Text(
-            //                   medicamento.nome,
-            //                   style: const TextStyle(
-            //                     fontSize: 20,
-            //                     fontWeight: FontWeight.bold,
-            //                   ),
-            //                 ),
-            //                 const SizedBox(height: 8),
-            //                 Text('Quantidade: ${medicamento.quantidade} unidades'),
-            //                 Text('Vencimento: ${medicamento.vencimento.day}/${medicamento.vencimento.month}/${medicamento.vencimento.year}'),
-            //                 Text('Último Preço: R\$${medicamento.preco.toStringAsFixed(2)}'),
-            //               ],
-            //             ),
-            //           ),
-            //         );
-            //       },
-            //     ),
-            //   ),
-            // ),
+            const SizedBox(height: 30.0),
+            SizedBox(
+              height: MediaQuery.of(context).size.height - 250,
+              child: Observer(
+                builder: (_) => ListView.builder(
+                  padding: const EdgeInsets.only(bottom: 50.0),
+                  itemCount: medicineStockListController.cardItems.length,
+                  itemBuilder: (context, index) {
+                    final item = medicineStockListController.cardItems[index];
+                    return MedicineCardWidget(
+                      type: item.type,
+                      name: item.name,
+                      quantity: index,
+                      expirationDate: item.expirationDate,
+                      price: item.price,
+                      priority: item.priority,
+                    );
+                  },
+                ),
+              ),
+            ),
+            
           ],
         ),
       ),
@@ -474,13 +471,17 @@ class MainHomePage extends StatelessWidget {
               height: 2,
             ),
             RichText(
-                text: TextSpan(children: [
-              const TextSpan(
-                  text: 'Vence em: ', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w200, fontSize: 10)),
-              TextSpan(
-                  text: expires,
-                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 10)),
-            ])),
+              text: TextSpan(
+                children: [
+                  const TextSpan(
+                      text: 'Vence em: ',
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w200, fontSize: 10)),
+                  TextSpan(
+                      text: expires,
+                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 10)),
+                ],
+              ),
+            ),
           ],
         ),
       ),

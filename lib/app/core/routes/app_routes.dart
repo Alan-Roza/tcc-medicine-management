@@ -147,22 +147,22 @@ final GoRouter appRouter = GoRouter(
             return MainHomePage();
           },
         ),
-    GoRoute(
-      path: '/medicine-stock-list',
-      name: 'MedicineStockList',
-      builder: (BuildContext context, GoRouterState state) {
-        return MedicineStockListPage();
-      },
-      routes: [
-        GoRoute(
-          path: 'medicine-stock-form',
-          name: 'MedicineStockForm',
-          builder: (BuildContext context, GoRouterState state) {
-            return const MedicineStockFormPage();
-          },
-        ),
-        // Add more authenticated routes here.
-      ],
-    ),
+    // GoRoute(
+    //   path: '/medicine-stock-list',
+    //   name: 'MedicineStockList',
+    //   builder: (BuildContext context, GoRouterState state) {
+    //     return MedicineStockListPage();
+    //   },
+    //   routes: [
+    //     GoRoute(
+    //       path: 'medicine-stock-form',
+    //       name: 'MedicineStockForm',
+    //       builder: (BuildContext context, GoRouterState state) {
+    //         return const MedicineStockFormPage();
+    //       },
+    //     ),
+    //     // Add more authenticated routes here.
+    //   ],
+    // ),
   ],
 );
