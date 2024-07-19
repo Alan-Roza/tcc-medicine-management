@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/controller/main_home_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/presentation/controllers/medicine_stock_list_controller.dart';
@@ -123,18 +124,66 @@ class _MainHomePageState extends State<MainHomePage> {
           child: const Icon(Icons.calendar_today),
         );
       case 2:
-        return FloatingActionButton(
-          onPressed: () {
-            medicineStockListController.addCard(CardItem(
-              name: 'Medicamentos',
-              type: "Comprimido",
-              quantity: 1,
-              expirationDate: '29/07/2024',
-              price: 15.75,
-              priority: 'low',
-            ));
-          },
-          child: const Icon(Icons.health_and_safety),
+        return SpeedDial(
+          icon: Icons.more_vert,
+          activeIcon: Icons.close,
+          backgroundColor: const Color(0xFF00A8FF),
+          activeBackgroundColor: Colors.black87,
+          foregroundColor: Colors.white,
+          activeForegroundColor: Colors.white,
+          overlayColor: Colors.black,
+          overlayOpacity: 0.3,
+          elevation: 0,
+          spacing: 3,
+          childPadding: const EdgeInsets.all(5),
+          spaceBetweenChildren: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          // TODO: if needed, Implement the dialRoot
+          // dialRoot: (ctx, open, toggleChildren) {
+          //   return ElevatedButton(
+          //     onPressed: toggleChildren,
+          //     style: ElevatedButton.styleFrom(
+          //       shape: RoundedRectangleBorder(
+          //         borderRadius: BorderRadius.circular(16),
+          //       ),
+          //       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          //       minimumSize: const Size(56, 56),
+          //       maximumSize:  const Size(56, 56)
+          //     ),
+          //     child: const Icon(Icons.more_vert, color: Colors.white),
+          //   );
+          // },
+          children: [
+            SpeedDialChild(
+              child: const Icon(Icons.add, color: Colors.white),
+              backgroundColor: Colors.blue,
+              label: 'Novo Medicamento',
+              onTap: () {
+                medicineStockListController.addCard(CardItem(
+                  name: 'Medicamentos',
+                  type: "Comprimido",
+                  quantity: 1,
+                  expirationDate: '29/07/2024',
+                  price: 15.75,
+                  priority: 'low',
+                ));
+              },
+            ),
+            SpeedDialChild(
+              child: const Icon(Icons.edit, color: Colors.white),
+              backgroundColor: const Color(0xFFC99B08),
+              label: 'Editar',
+              onTap: () => print('Edit Tapped'),
+            ),
+            SpeedDialChild(
+              child: const Icon(Icons.delete, color: Colors.white),
+              backgroundColor: const Color(0xFFB3261E),
+              label: 'Remover',
+              onTap: () => print('Remove Tapped'),
+            ),
+          ],
         );
       case 3:
         return FloatingActionButton(
@@ -272,7 +321,6 @@ class _MainHomePageState extends State<MainHomePage> {
                 ),
               ),
             ),
-            
           ],
         ),
       ),
