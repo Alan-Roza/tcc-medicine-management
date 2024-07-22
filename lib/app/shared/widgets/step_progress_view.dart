@@ -44,8 +44,9 @@ class _StepProgressViewState extends State<StepProgressView> {
             lineLength: width,
             lineType: LineType.normal,
             finishedLineColor: Colors.blue,
+            activeLineColor: Colors.black26,
             unreachedLineType: LineType.normal,
-            unreachedLineColor: Colors.grey.shade400,
+            unreachedLineColor: Colors.black26,
             lineThickness: 2,
             lineSpace: 1,
             lineWidth: 10,
@@ -59,6 +60,7 @@ class _StepProgressViewState extends State<StepProgressView> {
           unreachedStepBackgroundColor: Colors.black26,
 
           activeStepBorderColor: Colors.blue,
+          activeStepBorderType: BorderType.normal,
           activeStepTextColor: Colors.black87,
           activeStepBackgroundColor: Colors.white,
           activeStepIconColor: Colors.black87,
@@ -69,15 +71,15 @@ class _StepProgressViewState extends State<StepProgressView> {
             steps: widget._titles.map((title) {
               int index = widget._titles.indexOf(title);
               return EasyStep(
+                title: title,
                 customStep: CircleAvatar(
                   radius: 8,
-                  backgroundColor: activeStep >= index ? Colors.blue : Colors.black26,
-                  child: CircleAvatar(
-                    radius: 7,
-                    backgroundColor: activeStep >= index ? Colors.blue : Colors.black26,
-                  ),
+                  backgroundColor:  activeStep == index ? Colors.white : activeStep >= index ? Colors.blue : Colors.grey.shade400,
+                  // child: CircleAvatar(
+                  //   radius: 7,
+                  //   backgroundColor: activeStep >= index ? Colors.blue : Colors.black26,
+                  // ),
                 ),
-                title: title,
               );
             }).toList(),
             // EasyStep(
