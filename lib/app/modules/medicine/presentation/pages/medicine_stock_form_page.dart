@@ -98,6 +98,7 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
         return Column(
           children: [
             StepProgressWidget(
+              currentStep: stepProgressController.currentStep,
               titles: titles,
             ),
             Text(stepProgressController.currentStep.toString()),

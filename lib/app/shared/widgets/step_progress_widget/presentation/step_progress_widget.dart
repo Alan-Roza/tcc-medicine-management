@@ -5,10 +5,12 @@ import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/
 
 class StepProgressWidget extends StatefulWidget {
   final List<String> _titles;
+  final int currentStep;
 
   const StepProgressWidget({
     super.key,
     required List<String> titles,
+    required this.currentStep,
   }) : _titles = titles;
 
   @override
