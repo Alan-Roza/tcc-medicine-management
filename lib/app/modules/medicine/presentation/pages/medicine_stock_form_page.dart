@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/presentation/controllers/medicine_form_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/presentation/widgets/medicine_stock_basic_form_widget.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/presentation/widgets/medicine_stock_optional_form_widget.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
-import 'package:tcc_medicine_management/app/shared/widgets/step_progress_view.dart';
+import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/controller/step_progress_controller.dart';
+import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/presentation/step_progress_widget.dart';
 
 // class MedicineStockFormPage extends StatefulWidget {
 //   const MedicineStockFormPage({super.key});
@@ -76,13 +78,11 @@ class MedicineStockFormPage extends StatefulWidget {
   MedicineStockFormPageState createState() => MedicineStockFormPageState();
 }
 
-class MedicineStockFormPageState extends State<MedicineStockFormPage>
-    with SingleTickerProviderStateMixin {
-
+class MedicineStockFormPageState extends State<MedicineStockFormPage> with SingleTickerProviderStateMixin {
   final MedicineFormController _formController = MedicineFormController();
-  final int _currentStep = 0;
+  final StepProgressController stepProgressController = StepProgressController();
   final List<String> titles = ['CART', 'ADDRESS', 'PAYMENT'];
-   final List<Widget> _formWidgets = [
+  final List<Widget> _formWidgets = [
     const MedicineStockBasicFormWidget(),
     const MedicineStockOptionalFormWidget(),
     const Text('Your third step content here'),
@@ -94,34 +94,35 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage>
       appBar: AppBar(
         title: const Text('Medicine Stock Form Page'),
       ),
-      body: Column(
-        children: [
-          StepProgressView(
-            width: MediaQuery.of(context).size.width,
-            curStep: _currentStep,
-            color: const Color(0xff50AC02),
-            titles: titles,
-            key: const Key('abc'),
-          ),
-          Expanded(
-            child: _formWidgets[_currentStep],
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              if (await _formController.submitForm()) {
-                // If the form is valid, display a Snackbar.
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')));
-              } else {
-                // If the form is invalid, display a Snackbar.
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Invalid Data')));
-              }
-            },
-            child: const Text('Submit'),
-          ),
-        ],
-      ),
+      body: Observer(builder: (_) {
+        return Column(
+          children: [
+            StepProgressWidget(
+              titles: titles,
+            ),
+            Text(stepProgressController.currentStep.toString()),
+            Expanded(
+              child: _formWidgets[stepProgressController.currentStep],
+            ),
+            ElevatedButton(
+              onPressed: () {
+                stepProgressController.setCurrentStep(stepProgressController.currentStep + 1);
+                // stepProgressController.increaseCurrentStep();
+                // if (await _formController.submitForm()) {
+                //   // If the form is valid, display a Snackbar.
+                //   ScaffoldMessenger.of(context).showSnackBar(
+                //       const SnackBar(content: Text('Processing Data')));
+                // } else {
+                //   // If the form is invalid, display a Snackbar.
+                //   ScaffoldMessenger.of(context).showSnackBar(
+                //       const SnackBar(content: Text('Invalid Data')));
+                // }
+              },
+              child: const Text('Submit'),
+            ),
+          ],
+        );
+      }),
     );
   }
 }

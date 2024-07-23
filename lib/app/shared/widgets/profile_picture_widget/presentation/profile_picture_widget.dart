@@ -12,13 +12,13 @@ class ProfilePictureWidget extends StatefulWidget {
 }
 
 class _ProfilePictureWidgetState extends State<ProfilePictureWidget> {
-  final ProfilePictureController profilePictureStore = ProfilePictureController();
+  final ProfilePictureController profilePictureController = ProfilePictureController();
 
   Future<void> _pickImage() async {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        profilePictureStore.setImage(File(pickedFile.path));
+        profilePictureController.setImage(File(pickedFile.path));
       });
     }
   }
@@ -44,8 +44,8 @@ class _ProfilePictureWidgetState extends State<ProfilePictureWidget> {
               child: CircleAvatar(
                 radius: 70,
                 backgroundColor: Colors.grey.shade800,
-                backgroundImage: profilePictureStore.image != null ? FileImage(profilePictureStore.image!) : null,
-                child: profilePictureStore.image == null
+                backgroundImage: profilePictureController.image != null ? FileImage(profilePictureController.image!) : null,
+                child: profilePictureController.image == null
                     ? const Icon(
                         Icons.camera_alt_outlined,
                         size: 55,

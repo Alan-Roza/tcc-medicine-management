@@ -184,7 +184,8 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                                     'Login realizado com sucesso!'),
                                               ),
                                             );
-                                            context.goNamed('FirstAccess');
+                                            // context.goNamed('FirstAccess'); // TODO - Add conditional 
+                                            context.goNamed('MainHome');
                                           }
                                         },
                                       );
