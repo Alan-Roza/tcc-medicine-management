@@ -81,7 +81,7 @@ class MedicineStockFormPage extends StatefulWidget {
 class MedicineStockFormPageState extends State<MedicineStockFormPage> with SingleTickerProviderStateMixin {
   final MedicineFormController _formController = MedicineFormController();
   final StepProgressController stepProgressController = StepProgressController();
-  final List<String> titles = ['CART', 'ADDRESS', 'PAYMENT'];
+  final List<String> titles = ['Dados Básicos', 'Dados Complementares', 'Revisão'];
   final List<Widget> _formWidgets = [
     const MedicineStockBasicFormWidget(),
     const MedicineStockOptionalFormWidget(),
