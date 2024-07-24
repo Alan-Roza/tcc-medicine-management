@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
 part 'medicine_form_controller.g.dart';
@@ -5,6 +6,8 @@ part 'medicine_form_controller.g.dart';
 class MedicineFormController = MedicineFormControllerBase with _$MedicineFormController;
 
 abstract class MedicineFormControllerBase with Store {
+  TextEditingController medicineNameController = TextEditingController();
+
   @observable
   String name = '';
 

@@ -84,7 +84,7 @@ class StepProgressWidgetState extends State<StepProgressWidget> {
               ),
             ),
             finishIcon: const Icon(Icons.check),
-            icon: const Icon(Icons.circle, color: Colors.white),
+            icon: const Icon(Icons.circle, color: Colors.transparent),
             // customStep: CircleAvatar(
             //   backgroundColor: widget.currentStep == index
             //       ? Colors.white
