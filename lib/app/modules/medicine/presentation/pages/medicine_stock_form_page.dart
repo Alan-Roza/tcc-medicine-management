@@ -81,7 +81,7 @@ class MedicineStockFormPage extends StatefulWidget {
 class MedicineStockFormPageState extends State<MedicineStockFormPage> with SingleTickerProviderStateMixin {
   final MedicineFormController _formController = MedicineFormController();
   final StepProgressController stepProgressController = StepProgressController();
-  final List<String> titles = ['Dados Básicos', 'Dados Complementares', 'Revisão'];
+  final List<String> titles = ['Dados\nBásicos', 'Dados\nComplementares', 'Revisão'];
   final List<Widget> _formWidgets = [
     const MedicineStockBasicFormWidget(),
     const MedicineStockOptionalFormWidget(),
@@ -95,33 +95,43 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
         title: const Text('Medicine Stock Form Page'),
       ),
       body: Observer(builder: (_) {
-        return Column(
-          children: [
-            StepProgressWidget(
-              currentStep: stepProgressController.currentStep,
-              titles: titles,
-            ),
-            Text(stepProgressController.currentStep.toString()),
-            Expanded(
-              child: _formWidgets[stepProgressController.currentStep],
-            ),
-            ElevatedButton(
-              onPressed: () {
-                stepProgressController.setCurrentStep(stepProgressController.currentStep + 1);
-                // stepProgressController.increaseCurrentStep();
-                // if (await _formController.submitForm()) {
-                //   // If the form is valid, display a Snackbar.
-                //   ScaffoldMessenger.of(context).showSnackBar(
-                //       const SnackBar(content: Text('Processing Data')));
-                // } else {
-                //   // If the form is invalid, display a Snackbar.
-                //   ScaffoldMessenger.of(context).showSnackBar(
-                //       const SnackBar(content: Text('Invalid Data')));
-                // }
-              },
-              child: const Text('Submit'),
-            ),
-          ],
+        return PaddedScreen(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // SizedBox(
+              //   width: 300,
+              //   child: StepProgressWidget(
+              //     currentStep: stepProgressController.currentStep,
+              //     titles: titles,
+              //   ),
+              // ),
+              StepProgressWidget(
+                currentStep: stepProgressController.currentStep,
+                titles: titles,
+              ),
+              Text(stepProgressController.currentStep.toString()),
+              Expanded(
+                child: _formWidgets[stepProgressController.currentStep],
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  stepProgressController.setCurrentStep(stepProgressController.currentStep + 1);
+                  // stepProgressController.increaseCurrentStep();
+                  // if (await _formController.submitForm()) {
+                  //   // If the form is valid, display a Snackbar.
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //       const SnackBar(content: Text('Processing Data')));
+                  // } else {
+                  //   // If the form is invalid, display a Snackbar.
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //       const SnackBar(content: Text('Invalid Data')));
+                  // }
+                },
+                child: const Text('Submit'),
+              ),
+            ],
+          ),
         );
       }),
     );

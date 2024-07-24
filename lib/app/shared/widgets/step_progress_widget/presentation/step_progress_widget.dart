@@ -27,7 +27,6 @@ class StepProgressWidget extends StatefulWidget {
 }
 
 class StepProgressWidgetState extends State<StepProgressWidget> {
-
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width / widget._titles.length;
@@ -48,9 +47,9 @@ class StepProgressWidgetState extends State<StepProgressWidget> {
           lineWidth: 1,
         ),
         internalPadding: 0,
-         borderThickness: 3,
-         defaultStepBorderType: BorderType.normal,
-         unreachedStepBorderType: BorderType.normal,
+        borderThickness: 3,
+        defaultStepBorderType: BorderType.normal,
+        unreachedStepBorderType: BorderType.normal,
         finishedStepBorderColor: Colors.blue,
         finishedStepTextColor: Colors.black54,
         finishedStepBackgroundColor: Colors.blue,
@@ -64,13 +63,28 @@ class StepProgressWidgetState extends State<StepProgressWidget> {
         activeStepIconColor: Colors.white,
         showLoadingAnimation: false,
         titlesAreLargerThanSteps: false,
+        enableStepTapping: false,
         showStepBorder: true,
         stepRadius: 10,
         steps: widget._titles.map((title) {
+          int index = widget._titles.indexOf(title);
           return EasyStep(
-            title: title,
+            // title: title,
+            customTitle: SizedBox(
+              width: width,
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  height: 1.2,
+                  fontWeight: widget.currentStep == index ? FontWeight.w700 : FontWeight.w500,
+                  color: widget.currentStep >= index ? Colors.blue : Colors.black26,
+                ),
+              ),
+            ),
             finishIcon: const Icon(Icons.check),
-              icon: const Icon(Icons.circle, color: Colors.white),
+            icon: const Icon(Icons.circle, color: Colors.white),
             // customStep: CircleAvatar(
             //   backgroundColor: widget.currentStep == index
             //       ? Colors.white
