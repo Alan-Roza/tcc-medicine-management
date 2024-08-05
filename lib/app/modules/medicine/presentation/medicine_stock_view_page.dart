@@ -69,7 +69,7 @@ class _MedicineStockViewPageState extends State<MedicineStockViewPage> with Tick
               index: medicineViewController.selectedIndex,
               children: const [
                 MedicineStockBasicFormWidget(),
-                MedicineStockOptionalFormWidget(),
+                MedicineStockOptionalFormWidget(readOnly: true),
               ],
             ),
           );

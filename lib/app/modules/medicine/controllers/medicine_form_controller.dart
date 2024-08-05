@@ -6,7 +6,16 @@ part 'medicine_form_controller.g.dart';
 class MedicineFormController = MedicineFormControllerBase with _$MedicineFormController;
 
 abstract class MedicineFormControllerBase with Store {
-  TextEditingController medicineNameController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController typeController = TextEditingController();
+  TextEditingController quantityController = TextEditingController();
+  TextEditingController unityController = TextEditingController();
+  TextEditingController qtyByPackageController = TextEditingController();
+
+  TextEditingController valuePaidController = TextEditingController();
+  TextEditingController expirationDateController = TextEditingController();
+  TextEditingController importanceLevelController = TextEditingController();
+  TextEditingController drawerNumberController = TextEditingController();
 
   @observable
   String name = '';

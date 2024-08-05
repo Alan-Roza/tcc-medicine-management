@@ -43,41 +43,39 @@ class MedicineStockBasicFormWidgetState extends State<MedicineStockBasicFormWidg
           ),
           Observer(
             builder: (_) => CustomTextFieldWidget(
-              textEditingController: _formController.medicineNameController,
-              icon: Icons.streetview_outlined,
-              label: 'Medicamento',
+              textEditingController: _formController.nameController,
+              icon: Icons.health_and_safety_outlined,
+              label: 'Nome do Medicamento',
             ),
           ),
-          Observer(builder: (_) {
-            return TextFormField(
-              decoration: const InputDecoration(labelText: 'Name'),
-              onChanged: _formController.setName,
-            );
-          }),
-          Observer(builder: (_) {
-            return TextFormField(
-              decoration: const InputDecoration(labelText: 'Type'),
-              onChanged: _formController.setType,
-            );
-          }),
-          Observer(builder: (_) {
-            return TextFormField(
-              decoration: const InputDecoration(labelText: 'Quantity'),
-              onChanged: _formController.setQuantity,
-            );
-          }),
-          Observer(builder: (_) {
-            return TextFormField(
-              decoration: const InputDecoration(labelText: 'Unity'),
-              onChanged: _formController.setUnity,
-            );
-          }),
-          Observer(builder: (_) {
-            return TextFormField(
-              decoration: const InputDecoration(labelText: 'Qty by package'),
-              onChanged: _formController.setQtyByPackage,
-            );
-          }),
+           Observer(
+            builder: (_) => CustomTextFieldWidget(
+              textEditingController: _formController.typeController,
+              icon: Icons.medical_information_outlined,
+              label: 'Tipo',
+            ),
+          ),
+           Observer(
+            builder: (_) => CustomTextFieldWidget(
+              textEditingController: _formController.quantityController,
+              icon: Icons.tune_outlined,
+              label: 'Quantidade',
+            ),
+          ),
+           Observer(
+            builder: (_) => CustomTextFieldWidget(
+              textEditingController: _formController.unityController,
+              icon: Icons.medication_rounded,
+              label: 'Unidade',
+            ),
+          ),
+           Observer(
+            builder: (_) => CustomTextFieldWidget(
+              textEditingController: _formController.qtyByPackageController,
+              icon: Icons.medical_services_outlined,
+              label: 'Quantidade Por Embalagem',
+            ),
+          ),
         ],
       ),
     );
