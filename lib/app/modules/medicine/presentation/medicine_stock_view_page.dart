@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/controllers/medicine_view_controller.dart';
@@ -26,6 +27,18 @@ class _MedicineStockViewPageState extends State<MedicineStockViewPage> with Tick
 
     return Scaffold(
       appBar: AppBar(
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent, 
+          systemNavigationBarColor: Colors.white,
+          statusBarIconBrightness: Brightness.light, 
+          statusBarBrightness: Brightness.light,
+        ),
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios), // Change the icon here
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
         foregroundColor: Colors.white,
         title: const Text('Visualizar Medicamento', style: TextStyle(color: Colors.white)),
         actions: [
