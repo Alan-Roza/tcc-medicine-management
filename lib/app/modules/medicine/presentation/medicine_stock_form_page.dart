@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/presentation/controllers/medicine_form_controller.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/presentation/widgets/medicine_stock_basic_form_widget.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/presentation/widgets/medicine_stock_optional_form_widget.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/controllers/medicine_form_controller.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/widgets/medicine_stock_basic_form_widget.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/widgets/medicine_stock_optional_form_widget.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/controller/step_progress_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/presentation/step_progress_widget.dart';

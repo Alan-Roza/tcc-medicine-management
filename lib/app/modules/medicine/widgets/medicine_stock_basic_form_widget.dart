@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/presentation/controllers/medicine_form_controller.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/controllers/medicine_form_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/custom_text_field/custom_text_field_widget.dart';
 
 class MedicineStockBasicFormWidget extends StatefulWidget {

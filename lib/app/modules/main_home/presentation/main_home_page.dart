@@ -4,9 +4,9 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/controller/main_home_controller.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/presentation/controllers/medicine_stock_list_controller.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/presentation/pages/medicine_stock_list_page.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/presentation/widgets/medicine_card_widget.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/controllers/medicine_stock_list_controller.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/presentation/medicine_stock_list_page.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/widgets/medicine_card_widget.dart';
 
 class MainHomePage extends StatefulWidget {
   const MainHomePage({super.key});
@@ -310,6 +310,9 @@ class _MainHomePageState extends State<MainHomePage> {
                       expirationDate: item.expirationDate,
                       price: item.price,
                       priority: item.priority,
+                      onTap: () {
+                        context.goNamed('MedicineStockView');
+                      },
                     );
                   },
                 ),
