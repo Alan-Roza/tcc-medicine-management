@@ -10,6 +10,7 @@ class MedicineCardWidget extends StatelessWidget {
   final double price;
   final String priority;
   Function? onTap;
+  Function? onLongPress;
 
   MedicineCardWidget({
     super.key,
@@ -20,7 +21,8 @@ class MedicineCardWidget extends StatelessWidget {
     required this.price,
     required this.priority,
     this.imageUrl,
-    this.onTap
+    this.onTap,
+    this.onLongPress,
   });
 
   @override
@@ -31,6 +33,11 @@ class MedicineCardWidget extends StatelessWidget {
       onTap: () => {
         if (onTap != null) {
           onTap!() // TODO: pass the medicine id as parameter
+        }
+      },
+      onLongPress: () => {
+        if (onLongPress != null) {
+          onLongPress!() // TODO: pass the medicine id as parameter
         }
       },
       child: Card(
