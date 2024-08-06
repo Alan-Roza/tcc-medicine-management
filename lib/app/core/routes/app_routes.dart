@@ -11,9 +11,9 @@ import 'package:tcc_medicine_management/app/modules/first_access/menu_assistance
 import 'package:tcc_medicine_management/app/modules/first_access/user_info/presentation/user_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/user_level_assistance/presentation/user_level_assistance_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/presentation/main_home_page.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/presentation/medicine_stock_form_page.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/presentation/medicine_stock_list_page.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/presentation/medicine_stock_view_page.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/form/presentation/medicine_stock_form_page.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/list/presentation/medicine_stock_list_page.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/view/presentation/medicine_stock_view_page.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/home/presentation/unauth_home_page.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/login/presentation/unauth_login_page.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/signup/presentation/unauth_signup_page.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/controllers/medicine_form_controller.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/custom_text_field/custom_text_field_widget.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/profile_picture_widget/presentation/profile_picture_widget.dart';
 
@@ -54,7 +54,7 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
           Observer(
             builder: (_) => CustomTextFieldWidget(
               textEditingController: _formController.valuePaidController,
-              icon: Icons.money_outlined,
+              icon: Icons.attach_money,
               label: 'Valor Total Pago',
             ),
           ),

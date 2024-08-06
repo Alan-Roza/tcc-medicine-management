@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/controllers/medicine_view_controller.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/widgets/medicine_stock_basic_form_widget.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/widgets/medicine_stock_optional_form_widget.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/view/controllers/medicine_view_controller.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_basic_form_widget.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_optional_form_widget.dart';
 
 class MedicineStockViewPage extends StatefulWidget {
   const MedicineStockViewPage({super.key});
