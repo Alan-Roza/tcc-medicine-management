@@ -4,9 +4,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tcc_medicine_management/app/modules/main_home/controller/main_home_controller.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/controllers/main_home_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/presentation/medicine_card_widget.dart';
 
 class MainHomePage extends StatefulWidget {
   const MainHomePage({super.key});
@@ -30,9 +30,10 @@ class _MainHomePageState extends State<MainHomePage> {
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
                 title: const Text('Tela Inicial'),
-                actions: [
-                  IconButton(icon: const Badge(child: Icon(Icons.notifications_outlined)), onPressed: () {}),
-                ],
+                // actions: [
+                //   IconButton(icon: const Badge(child: Icon(Icons.notifications_outlined)), onPressed: () {}),
+                // ],
+                // actions: [_buildAppBarActions()],
               )
             : null,
         drawer: Drawer(
@@ -94,33 +95,62 @@ class _MainHomePageState extends State<MainHomePage> {
     );
   }
 
+  _buildAppBarActions() {
+    var actions = <Widget>[];
+
+    actions.add(Observer(
+      builder: (_) {
+        return medicineStockListController.multiSelectionIsEnabled
+            ? IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: medicineStockListController.removeSelectedTasks,
+              )
+            : Container();
+      },
+    ));
+
+    actions.add(Observer(
+      builder: (_) {
+        return medicineStockListController.multiSelectionIsEnabled
+            ? IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: medicineStockListController.disableMultiSelection,
+              )
+            : Container();
+      },
+    ));
+
+    return actions;
+  }
+
   Widget _buildFloatingActionButton(int selectedIndex) {
     switch (selectedIndex) {
       case 0:
         return FloatingActionButton(
           onPressed: () {
-            medicineStockListController.addCard(CardItem(
-              type: "Comprimido",
-              name: 'Início',
-              quantity: 1,
-              expirationDate: '29/07/2024',
-              price: 15.75,
-              priority: 'normal',
-            ));
+            medicineStockListController.createMedicineCardList();
+            // medicineStockListController.addCard(CardItem(
+            //   type: "Comprimido",
+            //   name: 'Início',
+            //   quantity: 1,
+            //   expirationDate: '29/07/2024',
+            //   price: 15.75,
+            //   priority: 'normal',
+            // ));
           },
           child: const Icon(Icons.home),
         );
       case 1:
         return FloatingActionButton(
           onPressed: () {
-            medicineStockListController.addCard(CardItem(
-              name: 'Tratamento',
-              type: "Comprimido",
-              quantity: 1,
-              expirationDate: '29/07/2024',
-              price: 15.75,
-              priority: 'high',
-            ));
+            // medicineStockListController.addCard(CardItem(
+            //   name: 'Tratamento',
+            //   type: "Comprimido",
+            //   quantity: 1,
+            //   expirationDate: '29/07/2024',
+            //   price: 15.75,
+            //   priority: 'high',
+            // ));
           },
           child: const Icon(Icons.calendar_today),
         );
@@ -182,14 +212,14 @@ class _MainHomePageState extends State<MainHomePage> {
       case 3:
         return FloatingActionButton(
           onPressed: () {
-            medicineStockListController.addCard(CardItem(
-              name: 'Perfil',
-              quantity: 1,
-              type: "Comprimido",
-              expirationDate: '29/07/2024',
-              price: 15.75,
-              priority: 'normal',
-            ));
+            // medicineStockListController.addCard(CardItem(
+            //   name: 'Perfil',
+            //   quantity: 1,
+            //   type: "Comprimido",
+            //   expirationDate: '29/07/2024',
+            //   price: 15.75,
+            //   priority: 'normal',
+            // ));
           },
           child: const Icon(Icons.person),
         );
@@ -300,19 +330,12 @@ class _MainHomePageState extends State<MainHomePage> {
               child: Observer(
                 builder: (_) => ListView.builder(
                   padding: const EdgeInsets.only(bottom: 50.0),
-                  itemCount: medicineStockListController.cardItems.length,
+                  itemCount: medicineStockListController.medicineCards.length,
                   itemBuilder: (context, index) {
-                    final item = medicineStockListController.cardItems[index];
+                    final item = medicineStockListController.medicineCards[index];
                     return MedicineCardWidget(
-                      type: item.type,
-                      name: item.name,
-                      quantity: index,
-                      expirationDate: item.expirationDate,
-                      price: item.price,
-                      priority: item.priority,
-                      onTap: () {
-                        context.goNamed('MedicineStockView');
-                      },
+                      key: Key(item.hashCode.toString()),
+                      medicineCard: item,
                     );
                   },
                 ),
