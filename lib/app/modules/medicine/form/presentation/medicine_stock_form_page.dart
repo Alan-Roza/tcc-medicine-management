@@ -64,7 +64,7 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
                     const SizedBox(
                       height: 10,
                     ),
-                    GestureDetector(
+                    stepProgressController.currentStep > 0 ? GestureDetector(
                       onTap: () {
                         stepProgressController.decreaseCurrentStep();
                       },
@@ -73,7 +73,7 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
                         style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
                         // Change color to indicate it's clickable
                       ),
-                    ),
+                    ) : Container(),
                   ],
                 ),
               ),

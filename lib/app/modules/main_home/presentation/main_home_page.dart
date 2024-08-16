@@ -308,9 +308,9 @@ class _MainHomePageState extends State<MainHomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Estoque de\nMedicamentos ${medicineStockListController.multiSelectionIsEnabled.toString()}',
-                          style: const TextStyle(
+                        const Text(
+                          'Estoque de\nMedicamentos',
+                          style: TextStyle(
                               fontSize: 26, // Set the font family to Roboto
                               fontWeight: FontWeight.bold,
                               color: Colors.black87,
