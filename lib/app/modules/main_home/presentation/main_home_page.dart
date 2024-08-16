@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/controllers/main_home_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/presentation/medicine_card_widget.dart';
@@ -18,10 +19,10 @@ class MainHomePage extends StatefulWidget {
 class _MainHomePageState extends State<MainHomePage> {
   final MainHomeController mainHomeController = MainHomeController();
 
-  final MedicineStockListController medicineStockListController = MedicineStockListController();
-
   @override
   Widget build(BuildContext context) {
+  final medicineStockListController = Provider.of<MedicineStockListController>(context);
+
     return Observer(
       builder: (_) => Scaffold(
         appBar: mainHomeController.selectedIndex == 0
@@ -30,13 +31,20 @@ class _MainHomePageState extends State<MainHomePage> {
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
                 title: const Text('Tela Inicial'),
-                // actions: [
-                //   IconButton(icon: const Badge(child: Icon(Icons.notifications_outlined)), onPressed: () {}),
-                // ],
+                actions: [
+                  IconButton(icon: const Badge(child: Icon(Icons.notifications_outlined)), onPressed: () {}),
+                ],
                 // actions: [_buildAppBarActions()],
               )
-            : null,
-        drawer: Drawer(
+            : mainHomeController.selectedIndex == 2 && medicineStockListController.multiSelectionIsEnabled ? AppBar(
+                // centerTitle: true,
+                backgroundColor: Colors.blue,
+                surfaceTintColor: Colors.blue,
+                actionsIconTheme: const IconThemeData(color: Colors.white),
+                title: Text('${medicineStockListController.medicineCards.where((element) => element.isSelected).length} Selecionado(s)', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
+                actions: _buildAppBarActions(medicineStockListController),
+              ) : null,
+        drawer: mainHomeController.selectedIndex == 0 ? Drawer(
           child: ListView(
             children: [
               ListTile(
@@ -61,7 +69,7 @@ class _MainHomePageState extends State<MainHomePage> {
               ),
             ],
           ),
-        ),
+        ) : null,
         body: _buildBody(mainHomeController.selectedIndex),
         bottomNavigationBar: BottomNavigationBar(
           elevation: 0,
@@ -90,12 +98,12 @@ class _MainHomePageState extends State<MainHomePage> {
             ),
           ],
         ),
-        floatingActionButton: _buildFloatingActionButton(mainHomeController.selectedIndex),
+        floatingActionButton: _buildFloatingActionButton(medicineStockListController, mainHomeController.selectedIndex),
       ),
     );
   }
 
-  _buildAppBarActions() {
+  _buildAppBarActions(MedicineStockListController medicineStockListController) {
     var actions = <Widget>[];
 
     actions.add(Observer(
@@ -123,7 +131,7 @@ class _MainHomePageState extends State<MainHomePage> {
     return actions;
   }
 
-  Widget _buildFloatingActionButton(int selectedIndex) {
+  Widget _buildFloatingActionButton(MedicineStockListController medicineStockListController, int selectedIndex) {
     switch (selectedIndex) {
       case 0:
         return FloatingActionButton(
@@ -229,13 +237,15 @@ class _MainHomePageState extends State<MainHomePage> {
   }
 
   Widget _buildBody(int index) {
+    final medicineStockListController = Provider.of<MedicineStockListController>(context);
+
     switch (index) {
       case 0:
         return _buildHomePage();
       case 1:
         return const Center(child: Text('Tratamento Page'));
       case 2:
-        return _buildMedicinePage();
+        return _buildMedicinePage(medicineStockListController);
       case 3:
         return const Center(child: Text('Perfil Page'));
       default:
@@ -243,19 +253,19 @@ class _MainHomePageState extends State<MainHomePage> {
     }
   }
 
-  Widget _buildMedicinePage() {
+  Widget _buildMedicinePage(MedicineStockListController medicineStockListController) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
         child: Expanded(
           flex: 3,
-          child: _medicineStockListPage(),
+          child: _medicineStockListPage(medicineStockListController),
         ),
       ),
     );
   }
 
-  Widget _medicineStockListPage() {
+  Widget _medicineStockListPage(MedicineStockListController medicineStockListController) {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -278,9 +288,9 @@ class _MainHomePageState extends State<MainHomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Estoque de\nMedicamentos',
-                          style: TextStyle(
+                        Text(
+                          'Estoque de\nMedicamentos ${medicineStockListController.multiSelectionIsEnabled.toString()}',
+                          style: const TextStyle(
                               fontSize: 26, // Set the font family to Roboto
                               fontWeight: FontWeight.bold,
                               color: Colors.black87,

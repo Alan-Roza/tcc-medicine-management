@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/controllers/medicine_card_controller.dart';
 
 class MedicineCardWidget extends StatelessWidget {
-  final store = MedicineStockListController();
 
   @override
   final Key key;
@@ -20,37 +21,40 @@ class MedicineCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final medicineStockListController = Provider.of<MedicineStockListController>(context);
     Map<String, dynamic> priorityData = _getPriorityData(medicineCard.priority);
 
     return Observer(
       builder: (_) {
-      leadingIcon = null;
+      // leadingIcon = null;
 
-      if (store.multiSelectionIsEnabled) {
-          if (medicineCard.isSelected) {
-            leadingIcon = const Icon(
-              Icons.check_circle,
-              color: Colors.green,
-            );
-          } else {
-            leadingIcon = const Icon(Icons.check_circle_outline);
-          }
-        }
+      // if (store.multiSelectionIsEnabled) {
+      //     if (medicineCard.isSelected) {
+      //       leadingIcon = const Icon(
+      //         Icons.check_circle,
+      //         color: Colors.green,
+      //       );
+      //     } else {
+      //       leadingIcon = const Icon(Icons.check_circle_outline);
+      //     }
+      //   }
 
         return GestureDetector(
           onTap: () => {
-            medicineCard.toggleSelection(),
+            if (medicineStockListController.multiSelectionIsEnabled) {medicineCard.toggleSelection()}
+            else context.goNamed('MedicineStockForm'),
           },
           onLongPress: () => {
             // if (onLongPress != null)
               // {
-                print(leadingIcon),
+                medicineStockListController.enableMultiSelection(),
                 medicineCard.addSelection(),
-                store.enableMultiSelection()
+                print('before'),
+                print(medicineStockListController.multiSelectionIsEnabled),
               // }
           },
           child: Card(
-            color: medicineCard.isSelected ? Colors.amber : Colors.white,
+            color: medicineCard.isSelected ? Colors.black26 : Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
             ),

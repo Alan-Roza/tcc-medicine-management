@@ -21,9 +21,9 @@ abstract class _MedicineStockListController with Store {
   @observable
   bool multiSelectionIsEnabled = false;
 
-  _MedicineControllerBase() {
-    createMedicineCardList();
-  }
+  // _MedicineControllerBase() {
+  //   createMedicineCardList();
+  // }
 
   @action
   void createMedicineCardList() {
