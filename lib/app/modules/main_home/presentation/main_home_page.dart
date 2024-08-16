@@ -21,7 +21,7 @@ class _MainHomePageState extends State<MainHomePage> {
 
   @override
   Widget build(BuildContext context) {
-  final medicineStockListController = Provider.of<MedicineStockListController>(context);
+    final medicineStockListController = Provider.of<MedicineStockListController>(context);
 
     return Observer(
       builder: (_) => Scaffold(
@@ -36,40 +36,48 @@ class _MainHomePageState extends State<MainHomePage> {
                 ],
                 // actions: [_buildAppBarActions()],
               )
-            : mainHomeController.selectedIndex == 2 && medicineStockListController.multiSelectionIsEnabled ? AppBar(
-                // centerTitle: true,
-                backgroundColor: Colors.blue,
-                surfaceTintColor: Colors.blue,
-                actionsIconTheme: const IconThemeData(color: Colors.white),
-                title: Text('${medicineStockListController.medicineCards.where((element) => element.isSelected).length} Selecionado(s)', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
-                actions: _buildAppBarActions(medicineStockListController),
-              ) : null,
-        drawer: mainHomeController.selectedIndex == 0 ? Drawer(
-          child: ListView(
-            children: [
-              ListTile(
-                leading: const Icon(Icons.home),
-                title: const Text('Início'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(Icons.calendar_today),
-                title: const Text('Tratamento'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(Icons.medical_services),
-                title: const Text('Medicamentos'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(Icons.person),
-                title: const Text('Perfil'),
-                onTap: () {},
-              ),
-            ],
-          ),
-        ) : null,
+            : mainHomeController.selectedIndex == 2 && medicineStockListController.multiSelectionIsEnabled
+                ? AppBar(
+                    // centerTitle: true,
+                    backgroundColor: Colors.blue,
+                    surfaceTintColor: Colors.blue,
+                    actionsIconTheme: const IconThemeData(
+                      color: Colors.white,
+                    ),
+                    title: Text(
+                        '${medicineStockListController.medicineCards.where((element) => element.isSelected).length} Selecionado(s)',
+                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
+                    actions: _buildAppBarActions(medicineStockListController),
+                  )
+                : null,
+        drawer: mainHomeController.selectedIndex == 0
+            ? Drawer(
+                child: ListView(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.home),
+                      title: const Text('Início'),
+                      onTap: () {},
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.calendar_today),
+                      title: const Text('Tratamento'),
+                      onTap: () {},
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.medical_services),
+                      title: const Text('Medicamentos'),
+                      onTap: () {},
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.person),
+                      title: const Text('Perfil'),
+                      onTap: () {},
+                    ),
+                  ],
+                ),
+              )
+            : null,
         body: _buildBody(mainHomeController.selectedIndex),
         bottomNavigationBar: BottomNavigationBar(
           elevation: 0,
@@ -112,6 +120,18 @@ class _MainHomePageState extends State<MainHomePage> {
             ? IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: medicineStockListController.removeSelectedTasks,
+              )
+            : Container();
+      },
+    ));
+
+    actions.add(Observer(
+      builder: (_) {
+        return medicineStockListController.multiSelectionIsEnabled &&
+                medicineStockListController.medicineCards.where((element) => element.isSelected).length == 1
+            ? IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () => context.goNamed('MedicineStockForm'),
               )
             : Container();
       },

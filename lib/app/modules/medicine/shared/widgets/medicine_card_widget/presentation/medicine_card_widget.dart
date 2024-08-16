@@ -54,7 +54,7 @@ class MedicineCardWidget extends StatelessWidget {
               // }
           },
           child: Card(
-            color: medicineCard.isSelected ? Colors.black26 : Colors.white,
+            color: medicineCard.isSelected ? const Color.fromARGB(75, 0, 170, 255) : Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
             ),
