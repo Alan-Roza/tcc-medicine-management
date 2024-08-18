@@ -7,6 +7,7 @@ class CustomTextFieldWidget extends StatelessWidget {
   final IconData? icon;
   final Function? onClear;
   final bool? clearable;
+  final bool readOnly;
 
   const CustomTextFieldWidget({super.key, 
     required this.label,
@@ -15,6 +16,7 @@ class CustomTextFieldWidget extends StatelessWidget {
     this.icon,
     this.onClear,
     this.clearable,
+    this.readOnly = false,
   });
 
   @override
@@ -22,6 +24,7 @@ class CustomTextFieldWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
+        readOnly: readOnly,
         decoration: InputDecoration(
           prefixIcon: Icon(icon),
           suffixIcon: clearable == true && clearable!

@@ -96,4 +96,29 @@ abstract class MedicineFormControllerBase with Store {
 
   @action
   void setTotalPaid(String value) => totalPaid = value;
+
+  void dispose() {
+    nameController.dispose();
+    typeController.dispose();
+    quantityController.dispose();
+    unityController.dispose();
+    qtyByPackageController.dispose();
+    valuePaidController.dispose();
+    expirationDateController.dispose();
+    importanceLevelController.dispose();
+    drawerNumberController.dispose();
+  }
+
+  @action
+  void resetForm() {
+    nameController.clear();
+    typeController.clear();
+    quantityController.clear();
+    unityController.clear();
+    qtyByPackageController.clear();
+    valuePaidController.clear();
+    expirationDateController.clear();
+    importanceLevelController.clear();
+    drawerNumberController.clear();
+  }
 }

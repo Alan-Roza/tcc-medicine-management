@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/custom_text_field/custom_text_field_widget.dart';
 
 class MedicineStockBasicFormWidget extends StatefulWidget {
-  const MedicineStockBasicFormWidget({super.key});
+  final bool readOnly;
+
+  const MedicineStockBasicFormWidget({super.key, this.readOnly = false});
 
   @override
   MedicineStockBasicFormWidgetState createState() => MedicineStockBasicFormWidgetState();
@@ -12,10 +15,10 @@ class MedicineStockBasicFormWidget extends StatefulWidget {
 
 class MedicineStockBasicFormWidgetState extends State<MedicineStockBasicFormWidget>
     with SingleTickerProviderStateMixin {
-  final MedicineFormController _formController = MedicineFormController();
-
   @override
   Widget build(BuildContext context) {
+    final MedicineFormController formController = Provider.of<MedicineFormController>(context);
+
     return Form(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,37 +46,42 @@ class MedicineStockBasicFormWidgetState extends State<MedicineStockBasicFormWidg
           ),
           Observer(
             builder: (_) => CustomTextFieldWidget(
-              textEditingController: _formController.nameController,
+              textEditingController: formController.nameController,
               icon: Icons.health_and_safety_outlined,
               label: 'Nome do Medicamento',
+              readOnly: widget.readOnly,
             ),
           ),
-           Observer(
+          Observer(
             builder: (_) => CustomTextFieldWidget(
-              textEditingController: _formController.typeController,
+              textEditingController: formController.typeController,
               icon: Icons.medical_information_outlined,
               label: 'Tipo',
+              readOnly: widget.readOnly,
             ),
           ),
-           Observer(
+          Observer(
             builder: (_) => CustomTextFieldWidget(
-              textEditingController: _formController.quantityController,
+              textEditingController: formController.quantityController,
               icon: Icons.tune_outlined,
               label: 'Quantidade',
+              readOnly: widget.readOnly,
             ),
           ),
-           Observer(
+          Observer(
             builder: (_) => CustomTextFieldWidget(
-              textEditingController: _formController.unityController,
+              textEditingController: formController.unityController,
               icon: Icons.medication_rounded,
               label: 'Unidade',
+              readOnly: widget.readOnly,
             ),
           ),
-           Observer(
+          Observer(
             builder: (_) => CustomTextFieldWidget(
-              textEditingController: _formController.qtyByPackageController,
+              textEditingController: formController.qtyByPackageController,
               icon: Icons.medical_services_outlined,
               label: 'Quantidade Por Embalagem',
+              readOnly: widget.readOnly,
             ),
           ),
         ],
