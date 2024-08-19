@@ -7,23 +7,12 @@ part 'medicine_stock_list_controller.g.dart';
 class MedicineStockListController = _MedicineStockListController with _$MedicineStockListController;
 
 abstract class _MedicineStockListController with Store {
-  // @observable
-  // ObservableList<CardItem> cardItems = ObservableList<CardItem>();
-
-  // @action
-  // void addCard(CardItem item) {
-  //   cardItems.add(item);
-  // }
 
   @observable
   ObservableList<MedicineCardController> medicineCards = ObservableList<MedicineCardController>();
 
   @observable
   bool multiSelectionIsEnabled = false;
-
-  // _MedicineControllerBase() {
-  //   createMedicineCardList();
-  // }
 
   @action
   void createMedicineCardList() {

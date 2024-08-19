@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_basic_form_widget.dart';
@@ -36,6 +37,8 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
 
   @override
   Widget build(BuildContext context) {
+    MedicineFormController formController = Provider.of<MedicineFormController>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Adicionar Medicamento'),
@@ -72,6 +75,12 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
                               children: [
                                 ElevatedButton(
                                   onPressed: () {
+                                    if (stepProgressController.currentStep == _formWidgets.length -1) {
+                                      formController.saveMedicine().then((saveResponse) {
+                                        context.pop(); // TODO: verify if is the best pratice
+                                      });
+                                      return;
+                                    }
                                     stepProgressController.increaseCurrentStep();
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -79,7 +88,11 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
                                     minimumSize: const Size(double.infinity, 40),
                                     textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
                                   ),
-                                  child: const Text('PRÓXIMO'),
+                                  child: stepProgressController.currentStep < _formWidgets.length -2
+                                      ? const Text('PRÓXIMO')
+                                      : stepProgressController.currentStep == _formWidgets.length -2
+                                          ? const Text('PRÓXIMO E REVISAR')
+                                          : const Text('SALVAR'),
                                 ),
                                 const SizedBox(
                                   height: 10,

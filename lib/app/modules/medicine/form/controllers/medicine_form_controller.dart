@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/form/model/medicine_model.dart';
 
 part 'medicine_form_controller.g.dart';
 
@@ -17,85 +18,55 @@ abstract class MedicineFormControllerBase with Store {
   TextEditingController importanceLevelController = TextEditingController();
   TextEditingController drawerNumberController = TextEditingController();
 
-  @observable
-  String name = '';
+  // @computed
+  // bool get isFormValid =>
+  //   name.isNotEmpty &&
+  //   type.isNotEmpty &&
+  //   quantity.isNotEmpty &&
+  //   unity.isNotEmpty &&
+  //   qtyByPackage.isNotEmpty &&
+  //   expirationDate.isNotEmpty &&
+  //   number.isNotEmpty &&
+  //   totalPaid.isNotEmpty;
 
-  @observable
-  String type = '';
+  // @action
+  // Future<bool> submitForm() async {
+  //   if (isFormValid) {
+  //   // Se o formulário for válido, processe os dados aqui...
+  //   print('Formulário enviado com sucesso!');
+  //   print('Nome: $name');
+  //   print('Tipo: $type');
+  //   print('Quantidade: $quantity');
+  //   print('Unidade: $unity');
+  //   print('Quantidade por pacote: $qtyByPackage');
+  //   print('Data de validade: $expirationDate');
+  //   print('Número: $number');
+  //   print('Total pago: $totalPaid');
 
-  @observable
-  String quantity = '';
-
-  @observable
-  String unity = '';
-
-  @observable
-  String qtyByPackage = '';
-
-  @observable
-  String expirationDate = '';
-
-  @observable
-  String number = '';
-
-  @observable
-  String totalPaid = '';
-
-  @computed
-  bool get isFormValid => 
-    name.isNotEmpty && 
-    type.isNotEmpty && 
-    quantity.isNotEmpty && 
-    unity.isNotEmpty && 
-    qtyByPackage.isNotEmpty && 
-    expirationDate.isNotEmpty && 
-    number.isNotEmpty && 
-    totalPaid.isNotEmpty;
+  //   return true;
+  // } else {
+  //   // Se o formulário não for válido, você pode lançar uma exceção ou lidar com o erro de alguma outra maneira...
+  //   return false;
+  // }
+  // }
 
   @action
-  Future<bool> submitForm() async {
-    if (isFormValid) {
-    // Se o formulário for válido, processe os dados aqui...
-    print('Formulário enviado com sucesso!');
-    print('Nome: $name');
-    print('Tipo: $type');
-    print('Quantidade: $quantity');
-    print('Unidade: $unity');
-    print('Quantidade por pacote: $qtyByPackage');
-    print('Data de validade: $expirationDate');
-    print('Número: $number');
-    print('Total pago: $totalPaid');
+  Future<bool> saveMedicine() async {
+    final medicine = Medicine(
+      name: nameController.text,
+      type: typeController.text,
+      quantity: int.parse(quantityController.text),
+      unity: int.parse(unityController.text),
+      qtyByPackage: int.parse(qtyByPackageController.text),
+      valuePaid: double.parse(valuePaidController.text),
+      expirationDate: expirationDateController.text,
+      drawerNumber: int.parse(drawerNumberController.text),
+      importanceLevel: importanceLevelController.text,
+    );
 
+    print(medicine);
     return true;
-  } else {
-    // Se o formulário não for válido, você pode lançar uma exceção ou lidar com o erro de alguma outra maneira...
-    return false;
   }
-  }
-
-  @action
-  void setName(String value) => name = value;
-
-  @action
-  void setType(String value) => type = value;
-
-  @action
-  void setQuantity(String value) => quantity = value;
-
-  @action
-  void setUnity(String value) => unity = value;
-
-  @action
-  void setQtyByPackage(String value) => qtyByPackage = value;
-
-  @action
-  void setExpirationDate(String value) => expirationDate = value;
-
-  @action
-  void setNumber(String value) => number = value;
-
-  @action
-  void setTotalPaid(String value) => totalPaid = value;
 
   void dispose() {
     nameController.dispose();
