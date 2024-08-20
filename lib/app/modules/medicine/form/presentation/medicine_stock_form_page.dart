@@ -11,7 +11,9 @@ import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/
 import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/presentation/step_progress_widget.dart';
 
 class MedicineStockFormPage extends StatefulWidget {
-  const MedicineStockFormPage({super.key});
+  late bool readOnly;
+  
+  MedicineStockFormPage({super.key, bool readOnly = false});
 
   @override
   MedicineStockFormPageState createState() => MedicineStockFormPageState();
@@ -22,8 +24,8 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
 
   final List<String> titles = ['Dados\nBásicos', 'Dados\nComplementares', 'Revisão'];
   final List<Widget> _formWidgets = [
-    const MedicineStockBasicFormWidget(),
-    const MedicineStockOptionalFormWidget(),
+    MedicineStockBasicFormWidget(readOnly: readOnly),
+    MedicineStockOptionalFormWidget(readOnly: readOnly),
     const MedicineStockReviewFormWidget(),
   ];
 

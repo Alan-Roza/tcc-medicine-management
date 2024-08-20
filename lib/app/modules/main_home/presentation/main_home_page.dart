@@ -227,13 +227,13 @@ class _MainHomePageState extends State<MainHomePage> {
               child: const Icon(Icons.edit, color: Colors.white),
               backgroundColor: const Color(0xFFC99B08),
               label: 'Editar',
-              onTap: () => print('Edit Tapped'),
+              onTap: () => medicineStockListController.enableMultiSelection(),
             ),
             SpeedDialChild(
               child: const Icon(Icons.delete, color: Colors.white),
               backgroundColor: const Color(0xFFB3261E),
               label: 'Remover',
-              onTap: () => print('Remove Tapped'),
+              onTap: () => medicineStockListController.enableMultiSelection(),
             ),
           ],
         );
