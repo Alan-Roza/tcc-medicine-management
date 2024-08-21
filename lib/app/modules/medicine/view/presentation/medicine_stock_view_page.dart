@@ -7,7 +7,9 @@ import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medi
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_optional_form_widget.dart';
 
 class MedicineStockViewPage extends StatefulWidget {
-  const MedicineStockViewPage({super.key});
+  bool? readOnly;
+
+  MedicineStockViewPage({super.key, this.readOnly});
 
   @override
   State<MedicineStockViewPage> createState() => _MedicineStockViewPageState();
@@ -67,9 +69,9 @@ class _MedicineStockViewPageState extends State<MedicineStockViewPage> with Tick
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
             child: IndexedStack(
               index: medicineViewController.selectedIndex,
-              children: const [
-                MedicineStockBasicFormWidget(),
-                MedicineStockOptionalFormWidget(readOnly: true),
+              children: [
+                MedicineStockBasicFormWidget(readOnly: widget.readOnly ?? true),
+                MedicineStockOptionalFormWidget(readOnly: widget.readOnly ?? true),
               ],
             ),
           );

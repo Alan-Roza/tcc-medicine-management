@@ -42,7 +42,7 @@ class MedicineCardWidget extends StatelessWidget {
         return GestureDetector(
           onTap: () => {
             if (medicineStockListController.multiSelectionIsEnabled) {medicineCard.toggleSelection()}
-            else context.goNamed('MedicineStockForm', queryParameters: {'readOnly': 'true',}),
+            else context.goNamed('MedicineStockView', queryParameters: {'readOnly': 'true',}),
           },
           onLongPress: () => {
             // if (onLongPress != null)

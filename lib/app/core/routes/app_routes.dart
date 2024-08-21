@@ -151,18 +151,18 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: 'medicine-stock-form',
           name: 'MedicineStockForm',
-            builder: (BuildContext context, GoRouterState state) {
-              Map<String, String> params = state.uri.queryParameters;
-              bool readOnly = params['readOnly'] == 'true';
-              print(readOnly);
-              return MedicineStockFormPage(readOnly: readOnly);
-            },
+          builder: (BuildContext context, GoRouterState state) {
+            return MedicineStockFormPage();
+          },
         ),
         GoRoute(
           path: 'medicine-stock-view',
           name: 'MedicineStockView',
           builder: (BuildContext context, GoRouterState state) {
-            return const MedicineStockViewPage();
+            Map<String, String> params = state.uri.queryParameters;
+            bool readOnly = params['readOnly'] == 'true';
+            
+            return MedicineStockViewPage(readOnly: readOnly);
           },
         ),
       ],
