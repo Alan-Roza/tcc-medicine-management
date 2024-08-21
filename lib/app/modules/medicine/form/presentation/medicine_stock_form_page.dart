@@ -11,9 +11,9 @@ import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/
 import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/presentation/step_progress_widget.dart';
 
 class MedicineStockFormPage extends StatefulWidget {
-  bool? readOnly;
+  final bool? readOnly;
 
-  MedicineStockFormPage({super.key, this.readOnly});
+  const MedicineStockFormPage({super.key, this.readOnly});
 
 
   @override
