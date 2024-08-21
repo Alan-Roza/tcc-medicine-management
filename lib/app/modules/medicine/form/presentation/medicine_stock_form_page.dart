@@ -11,9 +11,10 @@ import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/
 import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/presentation/step_progress_widget.dart';
 
 class MedicineStockFormPage extends StatefulWidget {
-  late bool readOnly;
-  
-  MedicineStockFormPage({super.key, bool readOnly = false});
+  bool? readOnly;
+
+  MedicineStockFormPage({super.key, this.readOnly});
+
 
   @override
   MedicineStockFormPageState createState() => MedicineStockFormPageState();
@@ -23,11 +24,7 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
   final StepProgressController stepProgressController = StepProgressController();
 
   final List<String> titles = ['Dados\nBásicos', 'Dados\nComplementares', 'Revisão'];
-  final List<Widget> _formWidgets = [
-    MedicineStockBasicFormWidget(readOnly: readOnly),
-    MedicineStockOptionalFormWidget(readOnly: readOnly),
-    const MedicineStockReviewFormWidget(),
-  ];
+  List<Widget> _formWidgets = [];
 
   @override
   void initState() {
@@ -40,6 +37,12 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
   @override
   Widget build(BuildContext context) {
     MedicineFormController formController = Provider.of<MedicineFormController>(context);
+
+    _formWidgets = [
+      MedicineStockBasicFormWidget(readOnly: widget.readOnly ?? false),
+      MedicineStockOptionalFormWidget(readOnly: widget.readOnly ?? false),
+      const MedicineStockReviewFormWidget(),
+    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -77,7 +80,7 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
                               children: [
                                 ElevatedButton(
                                   onPressed: () {
-                                    if (stepProgressController.currentStep == _formWidgets.length -1) {
+                                    if (stepProgressController.currentStep == _formWidgets.length - 1) {
                                       formController.saveMedicine().then((saveResponse) {
                                         context.pop(); // TODO: verify if is the best pratice
                                       });
@@ -90,9 +93,9 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
                                     minimumSize: const Size(double.infinity, 40),
                                     textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
                                   ),
-                                  child: stepProgressController.currentStep < _formWidgets.length -2
+                                  child: stepProgressController.currentStep < _formWidgets.length - 2
                                       ? const Text('PRÓXIMO')
-                                      : stepProgressController.currentStep == _formWidgets.length -2
+                                      : stepProgressController.currentStep == _formWidgets.length - 2
                                           ? const Text('PRÓXIMO E REVISAR')
                                           : const Text('SALVAR'),
                                 ),

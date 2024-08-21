@@ -49,6 +49,13 @@ abstract class _MedicineStockListController with Store {
   }
 
   @action
+  void selectAllCards(bool? value) {
+    for (var card in medicineCards) {
+      card.isSelected = value ?? false;
+    }
+  }
+
+  @action
   void removeSelectedTasks() {
     medicineCards.removeWhere((element) => element.isSelected);
 

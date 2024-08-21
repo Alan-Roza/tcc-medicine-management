@@ -44,9 +44,20 @@ class _MainHomePageState extends State<MainHomePage> {
                     actionsIconTheme: const IconThemeData(
                       color: Colors.white,
                     ),
-                    title: Text(
-                        '${medicineStockListController.medicineCards.where((element) => element.isSelected).length} Selecionado(s)',
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
+                    title: Row(
+                      children: [
+                        Checkbox(
+                          value: medicineStockListController.medicineCards.every((card) => card.isSelected),
+                          onChanged: (value) {
+                            medicineStockListController.selectAllCards(value);
+                          },
+                        ),
+                        Text(
+                          '${medicineStockListController.medicineCards.where((element) => element.isSelected).length} Selecionado(s)',
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                      ],
+                    ),
                     actions: _buildAppBarActions(medicineStockListController),
                   )
                 : null,
@@ -116,7 +127,8 @@ class _MainHomePageState extends State<MainHomePage> {
 
     actions.add(Observer(
       builder: (_) {
-        return medicineStockListController.multiSelectionIsEnabled
+        return medicineStockListController.multiSelectionIsEnabled &&
+                medicineStockListController.medicineCards.where((element) => element.isSelected).isNotEmpty
             ? IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: medicineStockListController.removeSelectedTasks,
@@ -131,7 +143,7 @@ class _MainHomePageState extends State<MainHomePage> {
                 medicineStockListController.medicineCards.where((element) => element.isSelected).length == 1
             ? IconButton(
                 icon: const Icon(Icons.edit),
-                onPressed: () => context.goNamed('MedicineStockForm'),
+                onPressed: () => context.goNamed('MedicineStockForm', queryParameters: {'readOnly': 'true'}),
               )
             : Container();
       },
@@ -343,7 +355,13 @@ class _MainHomePageState extends State<MainHomePage> {
                       filled: true,
                       hintText: 'Busque seu medicamento',
                       prefixIcon: const Icon(Icons.search),
-                      suffixIcon: const Icon(Icons.filter_list),
+                      // TODO: Implement the filter list
+                      // suffixIcon: IconButton(
+                      //   icon: const Icon(Icons.filter_list),
+                      //   onPressed: () {
+                      //     _buildFilterBottomSheet(context);
+                      //   },
+                      // ),
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(20),
@@ -356,21 +374,32 @@ class _MainHomePageState extends State<MainHomePage> {
             ),
             const SizedBox(height: 30.0),
             SizedBox(
-              height: MediaQuery.of(context).size.height - 250,
-              child: Observer(
-                builder: (_) => ListView.builder(
-                  padding: const EdgeInsets.only(bottom: 50.0),
-                  itemCount: medicineStockListController.medicineCards.length,
-                  itemBuilder: (context, index) {
-                    final item = medicineStockListController.medicineCards[index];
-                    return MedicineCardWidget(
-                      key: Key(item.hashCode.toString()),
-                      medicineCard: item,
-                    );
-                  },
-                ),
-              ),
-            ),
+  height: MediaQuery.of(context).size.height - 250,
+  child: Observer(
+    builder: (_) {
+      if (medicineStockListController.medicineCards.isEmpty) {
+        return const Center(
+          child: Text(
+            'Nenhum dado encontrado',
+            style: TextStyle(fontSize: 18, color: Colors.grey),
+          ),
+        );
+      } else {
+        return ListView.builder(
+          padding: const EdgeInsets.only(bottom: 50.0),
+          itemCount: medicineStockListController.medicineCards.length,
+          itemBuilder: (context, index) {
+            final item = medicineStockListController.medicineCards[index];
+            return MedicineCardWidget(
+              key: Key(item.hashCode.toString()),
+              medicineCard: item,
+            );
+          },
+        );
+      }
+    },
+  ),
+),
           ],
         ),
       ),
@@ -468,6 +497,105 @@ class _MainHomePageState extends State<MainHomePage> {
         ),
       ),
     );
+  }
+
+  void _buildFilterBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Sort and Filter', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 16),
+              const Text('Sort by', style: TextStyle(fontSize: 16)),
+              Wrap(
+                spacing: 8.0,
+                children: [
+                  ChoiceChip(
+                    label: const Text('Alphabetical order'),
+                    selected: _isSelected('Alphabetical order'),
+                    onSelected: (selected) {
+                      _onSelectedSort('Alphabetical order');
+                    },
+                  ),
+                  ChoiceChip(
+                    label: const Text('Population'),
+                    selected: _isSelected('Population'),
+                    onSelected: (selected) {
+                      _onSelectedSort('Population');
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              const Text('Subregion', style: TextStyle(fontSize: 16)),
+              Wrap(
+                spacing: 8.0,
+                children: [
+                  FilterChip(
+                    label: const Text('Northern Europe'),
+                    selected: _isSelected('Northern Europe'),
+                    onSelected: (selected) {
+                      _onSelectedRegion('Northern Europe');
+                    },
+                  ),
+                  FilterChip(
+                    label: const Text('Western Europe'),
+                    selected: _isSelected('Western Europe'),
+                    onSelected: (selected) {
+                      _onSelectedRegion('Western Europe');
+                    },
+                  ),
+                  // Add more FilterChips for other regions
+                ],
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: _resetFilters,
+                    child: const Text('Reset All'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _applyFilters();
+                    },
+                    child: const Text('Apply'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  bool _isSelected(String filter) {
+    return true;
+    // Implement your logic to check if a filter is selected
+  }
+
+  void _onSelectedSort(String sortOption) {
+    // Implement your logic for sorting
+  }
+
+  void _onSelectedRegion(String region) {
+    // Implement your logic for region selection
+  }
+
+  void _resetFilters() {
+    // Implement your logic for resetting filters
+  }
+
+  void _applyFilters() {
+    // Implement your logic to apply filters
   }
 
   Widget _buildMenuRow() {

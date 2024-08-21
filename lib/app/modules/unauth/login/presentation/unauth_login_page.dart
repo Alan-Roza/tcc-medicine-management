@@ -168,15 +168,16 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
 
                                       response.then(
                                         (value) {
-                                          if (value != null &&
-                                              value.isNotEmpty) {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                content: Text(value),
-                                              ),
-                                            );
-                                          } else {
+                                          // TODO: validation, use after finished
+                                          // if (value != null &&
+                                          //     value.isNotEmpty) {
+                                          //   ScaffoldMessenger.of(context)
+                                          //       .showSnackBar(
+                                          //     SnackBar(
+                                          //       content: Text(value),
+                                          //     ),
+                                          //   );
+                                          // } else {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               const SnackBar(
@@ -186,7 +187,7 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                             );
                                             // context.goNamed('FirstAccess'); // TODO - Add conditional 
                                             context.goNamed('MainHome');
-                                          }
+                                          // }
                                         },
                                       );
                                     },
