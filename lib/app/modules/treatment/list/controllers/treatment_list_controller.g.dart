@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'medicine_stock_list_controller.dart';
+part of 'treatment_list_controller.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,9 +8,9 @@ part of 'medicine_stock_list_controller.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$MedicineStockListController on _MedicineStockListController, Store {
-  late final _$medicineCardsAtom = Atom(
-      name: '_MedicineStockListController.medicineCards', context: context);
+mixin _$TreatmentListController on _TreatmentListController, Store {
+  late final _$medicineCardsAtom =
+      Atom(name: '_TreatmentListController.medicineCards', context: context);
 
   @override
   ObservableList<MedicineCardController> get medicineCards {
@@ -26,7 +26,7 @@ mixin _$MedicineStockListController on _MedicineStockListController, Store {
   }
 
   late final _$multiSelectionIsEnabledAtom = Atom(
-      name: '_MedicineStockListController.multiSelectionIsEnabled',
+      name: '_TreatmentListController.multiSelectionIsEnabled',
       context: context);
 
   @override
@@ -43,74 +43,72 @@ mixin _$MedicineStockListController on _MedicineStockListController, Store {
     });
   }
 
-  late final _$_MedicineStockListControllerActionController =
-      ActionController(name: '_MedicineStockListController', context: context);
+  late final _$_TreatmentListControllerActionController =
+      ActionController(name: '_TreatmentListController', context: context);
 
   @override
   void createMedicineCardList() {
-    final _$actionInfo =
-        _$_MedicineStockListControllerActionController.startAction(
-            name: '_MedicineStockListController.createMedicineCardList');
+    final _$actionInfo = _$_TreatmentListControllerActionController.startAction(
+        name: '_TreatmentListController.createMedicineCardList');
     try {
       return super.createMedicineCardList();
     } finally {
-      _$_MedicineStockListControllerActionController.endAction(_$actionInfo);
+      _$_TreatmentListControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void enableMultiSelection() {
-    final _$actionInfo = _$_MedicineStockListControllerActionController
-        .startAction(name: '_MedicineStockListController.enableMultiSelection');
+    final _$actionInfo = _$_TreatmentListControllerActionController.startAction(
+        name: '_TreatmentListController.enableMultiSelection');
     try {
       return super.enableMultiSelection();
     } finally {
-      _$_MedicineStockListControllerActionController.endAction(_$actionInfo);
+      _$_TreatmentListControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void disableMultiSelection() {
-    final _$actionInfo =
-        _$_MedicineStockListControllerActionController.startAction(
-            name: '_MedicineStockListController.disableMultiSelection');
+    final _$actionInfo = _$_TreatmentListControllerActionController.startAction(
+        name: '_TreatmentListController.disableMultiSelection');
     try {
       return super.disableMultiSelection();
     } finally {
-      _$_MedicineStockListControllerActionController.endAction(_$actionInfo);
+      _$_TreatmentListControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void _resetSelectedTasks() {
-    final _$actionInfo = _$_MedicineStockListControllerActionController
-        .startAction(name: '_MedicineStockListController._resetSelectedTasks');
+    final _$actionInfo = _$_TreatmentListControllerActionController.startAction(
+        name: '_TreatmentListController._resetSelectedTasks');
     try {
       return super._resetSelectedTasks();
     } finally {
-      _$_MedicineStockListControllerActionController.endAction(_$actionInfo);
+      _$_TreatmentListControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void selectAllCards(bool? value) {
-    final _$actionInfo = _$_MedicineStockListControllerActionController
-        .startAction(name: '_MedicineStockListController.selectAllCards');
+    final _$actionInfo = _$_TreatmentListControllerActionController.startAction(
+        name: '_TreatmentListController.selectAllCards');
     try {
       return super.selectAllCards(value);
     } finally {
-      _$_MedicineStockListControllerActionController.endAction(_$actionInfo);
+      _$_TreatmentListControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void removeSelectedTasks() {
-    final _$actionInfo = _$_MedicineStockListControllerActionController
-        .startAction(name: '_MedicineStockListController.removeSelectedTasks');
+    final _$actionInfo = _$_TreatmentListControllerActionController.startAction(
+        name: '_TreatmentListController.removeSelectedTasks');
     try {
       return super.removeSelectedTasks();
     } finally {
-      _$_MedicineStockListControllerActionController.endAction(_$actionInfo);
+      _$_TreatmentListControllerActionController.endAction(_$actionInfo);
     }
   }
 

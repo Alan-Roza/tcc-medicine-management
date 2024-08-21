@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/controllers/main_home_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/presentation/medicine_card_widget.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/treatment_list_controller.dart';
 
 class MainHomePage extends StatefulWidget {
   const MainHomePage({super.key});
@@ -270,12 +271,13 @@ class _MainHomePageState extends State<MainHomePage> {
 
   Widget _buildBody(int index) {
     final medicineStockListController = Provider.of<MedicineStockListController>(context);
+    final treatmentListController = Provider.of<TreatmentListController>(context);
 
     switch (index) {
       case 0:
         return _buildHomePage();
       case 1:
-        return const Center(child: Text('Tratamento Page'));
+        return _buildTreatmentPage(treatmentListController);
       case 2:
         return _buildMedicinePage(medicineStockListController);
       case 3:
@@ -283,6 +285,127 @@ class _MainHomePageState extends State<MainHomePage> {
       default:
         return _buildHomePage();
     }
+  }
+
+  Widget _buildTreatmentPage(TreatmentListController treatmentListController) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SingleChildScrollView(
+        child: Expanded(
+          flex: 3,
+          child: _treatmentListPage(treatmentListController),
+        ),
+      ),
+    );
+  }
+
+  Widget _treatmentListPage(TreatmentListController treatmentListController) {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            Stack(
+              clipBehavior: Clip.none,
+              children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    color: const Color(0x9900A8FF),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                  child: Container(
+                    padding: const EdgeInsets.only(bottom: 12.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Tratamentos com\nMedicamentos',
+                          style: TextStyle(
+                              fontSize: 26, // Set the font family to Roboto
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                              height: 1),
+                        ),
+                        Container(
+                          width: 65,
+                          height: 6,
+                          margin: const EdgeInsets.only(top: 5),
+                          decoration: BoxDecoration(
+                            color: Colors.black87,
+                            border: Border.all(
+                              color: Colors.black87, // Set border color
+                              width: 2, // Set border width
+                            ),
+                            borderRadius: BorderRadius.circular(10), // Add a border radius
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 120, // Adjust this value as needed
+                  left: 16, // Adjust this value as needed
+                  right: 16, // Adjust this value as needed
+                  child: TextField(
+                    decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'Busque seu medicamento',
+                      prefixIcon: const Icon(Icons.search),
+                      // TODO: Implement the filter list
+                      // suffixIcon: IconButton(
+                      //   icon: const Icon(Icons.filter_list),
+                      //   onPressed: () {
+                      //     _buildFilterBottomSheet(context);
+                      //   },
+                      // ),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      hintStyle: const TextStyle(color: Colors.grey, fontWeight: FontWeight.normal),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 30.0),
+            SizedBox(
+              height: MediaQuery.of(context).size.height - 250,
+              child: Observer(
+                builder: (_) {
+                  if (treatmentListController.medicineCards.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'Nenhum dado encontrado',
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                      ),
+                    );
+                  } else {
+                    return ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 50.0),
+                      itemCount: treatmentListController.medicineCards.length,
+                      itemBuilder: (context, index) {
+                        final item = treatmentListController.medicineCards[index];
+                        return MedicineCardWidget(
+                          key: Key(item.hashCode.toString()),
+                          medicineCard: item,
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildMedicinePage(MedicineStockListController medicineStockListController) {
@@ -374,32 +497,32 @@ class _MainHomePageState extends State<MainHomePage> {
             ),
             const SizedBox(height: 30.0),
             SizedBox(
-  height: MediaQuery.of(context).size.height - 250,
-  child: Observer(
-    builder: (_) {
-      if (medicineStockListController.medicineCards.isEmpty) {
-        return const Center(
-          child: Text(
-            'Nenhum dado encontrado',
-            style: TextStyle(fontSize: 18, color: Colors.grey),
-          ),
-        );
-      } else {
-        return ListView.builder(
-          padding: const EdgeInsets.only(bottom: 50.0),
-          itemCount: medicineStockListController.medicineCards.length,
-          itemBuilder: (context, index) {
-            final item = medicineStockListController.medicineCards[index];
-            return MedicineCardWidget(
-              key: Key(item.hashCode.toString()),
-              medicineCard: item,
-            );
-          },
-        );
-      }
-    },
-  ),
-),
+              height: MediaQuery.of(context).size.height - 250,
+              child: Observer(
+                builder: (_) {
+                  if (medicineStockListController.medicineCards.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'Nenhum dado encontrado',
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                      ),
+                    );
+                  } else {
+                    return ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 50.0),
+                      itemCount: medicineStockListController.medicineCards.length,
+                      itemBuilder: (context, index) {
+                        final item = medicineStockListController.medicineCards[index];
+                        return MedicineCardWidget(
+                          key: Key(item.hashCode.toString()),
+                          medicineCard: item,
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
+            ),
           ],
         ),
       ),
