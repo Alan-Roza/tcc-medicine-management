@@ -33,6 +33,10 @@ class MyApp extends StatelessWidget {
           dispose: (_, MedicineFormController controller) => controller.dispose(),
         ),
         Provider<TreatmentListController>(create: (_) => TreatmentListController()),
+        // Provider<TreatmentFormController>(
+        //   create: (_) => TreatmentFormController(),
+        //   dispose: (_, TreatmentFormController controller) => controller.dispose(),
+        // ),
       ],
       child: MaterialApp.router(
           debugShowCheckedModeBanner: false,

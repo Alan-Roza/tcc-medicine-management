@@ -9,19 +9,19 @@ part of 'treatment_list_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$TreatmentListController on _TreatmentListController, Store {
-  late final _$medicineCardsAtom =
-      Atom(name: '_TreatmentListController.medicineCards', context: context);
+  late final _$treatmentCardsAtom =
+      Atom(name: '_TreatmentListController.treatmentCards', context: context);
 
   @override
-  ObservableList<MedicineCardController> get medicineCards {
-    _$medicineCardsAtom.reportRead();
-    return super.medicineCards;
+  ObservableList<TreatmentCardController> get treatmentCards {
+    _$treatmentCardsAtom.reportRead();
+    return super.treatmentCards;
   }
 
   @override
-  set medicineCards(ObservableList<MedicineCardController> value) {
-    _$medicineCardsAtom.reportWrite(value, super.medicineCards, () {
-      super.medicineCards = value;
+  set treatmentCards(ObservableList<TreatmentCardController> value) {
+    _$treatmentCardsAtom.reportWrite(value, super.treatmentCards, () {
+      super.treatmentCards = value;
     });
   }
 
@@ -115,7 +115,7 @@ mixin _$TreatmentListController on _TreatmentListController, Store {
   @override
   String toString() {
     return '''
-medicineCards: ${medicineCards},
+treatmentCards: ${treatmentCards},
 multiSelectionIsEnabled: ${multiSelectionIsEnabled}
     ''';
   }

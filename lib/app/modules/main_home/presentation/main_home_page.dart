@@ -9,6 +9,7 @@ import 'package:tcc_medicine_management/app/modules/main_home/controllers/main_h
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/presentation/medicine_card_widget.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/treatment_list_controller.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/medicine_card_widget/presentation/treatment_card_widget.dart';
 
 class MainHomePage extends StatefulWidget {
   const MainHomePage({super.key});
@@ -118,7 +119,7 @@ class _MainHomePageState extends State<MainHomePage> {
             ),
           ],
         ),
-        floatingActionButton: _buildFloatingActionButton(medicineStockListController, mainHomeController.selectedIndex),
+        floatingActionButton: _buildFloatingActionButton(mainHomeController.selectedIndex),
       ),
     );
   }
@@ -164,12 +165,15 @@ class _MainHomePageState extends State<MainHomePage> {
     return actions;
   }
 
-  Widget _buildFloatingActionButton(MedicineStockListController medicineStockListController, int selectedIndex) {
+  Widget _buildFloatingActionButton(int selectedIndex) {
+    final medicineStockListController = Provider.of<MedicineStockListController>(context);
+    final treatmentListController = Provider.of<TreatmentListController>(context);
+
     switch (selectedIndex) {
       case 0:
         return FloatingActionButton(
           onPressed: () {
-            medicineStockListController.createMedicineCardList();
+            treatmentListController.createMedicineCardList();
             // medicineStockListController.addCard(CardItem(
             //   type: "Comprimido",
             //   name: 'Início',
@@ -182,18 +186,65 @@ class _MainHomePageState extends State<MainHomePage> {
           child: const Icon(Icons.home),
         );
       case 1:
-        return FloatingActionButton(
-          onPressed: () {
-            // medicineStockListController.addCard(CardItem(
-            //   name: 'Tratamento',
-            //   type: "Comprimido",
-            //   quantity: 1,
-            //   expirationDate: '29/07/2024',
-            //   price: 15.75,
-            //   priority: 'high',
-            // ));
-          },
-          child: const Icon(Icons.calendar_today),
+        return SpeedDial(
+          icon: Icons.more_vert,
+          activeIcon: Icons.close,
+          backgroundColor: const Color(0xFF00A8FF),
+          activeBackgroundColor: Colors.black87,
+          foregroundColor: Colors.white,
+          activeForegroundColor: Colors.white,
+          overlayColor: Colors.black,
+          overlayOpacity: 0.3,
+          elevation: 0,
+          spacing: 3,
+          childPadding: const EdgeInsets.all(5),
+          spaceBetweenChildren: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          // TODO: if needed, Implement the dialRoot
+          // dialRoot: (ctx, open, toggleChildren) {
+          //   return ElevatedButton(
+          //     onPressed: toggleChildren,
+          //     style: ElevatedButton.styleFrom(
+          //       shape: RoundedRectangleBorder(
+          //         borderRadius: BorderRadius.circular(16),
+          //       ),
+          //       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          //       minimumSize: const Size(56, 56),
+          //       maximumSize:  const Size(56, 56)
+          //     ),
+          //     child: const Icon(Icons.more_vert, color: Colors.white),
+          //   );
+          // },
+          children: [
+            SpeedDialChild(
+              child: const Icon(Icons.add, color: Colors.white),
+              backgroundColor: Colors.blue,
+              label: 'Novo Tratamento',
+              onTap: () {
+                context.goNamed('TreatmentForm');
+              },
+            ),
+            SpeedDialChild(
+              child: const Icon(Icons.edit, color: Colors.white),
+              backgroundColor: const Color(0xFFC99B08),
+              label: 'Editar',
+              onTap: () => treatmentListController.enableMultiSelection(),
+            ),
+            SpeedDialChild(
+              child: const Icon(Icons.delete, color: Colors.white),
+              backgroundColor: const Color(0xFFB3261E),
+              label: 'Remover',
+              onTap: () => treatmentListController.enableMultiSelection(),
+            ),
+            SpeedDialChild(
+              child: const Icon(Icons.calendar_month_outlined, color: Colors.white),
+              backgroundColor: const Color(0xFF21005D),
+              label: 'Agenda',
+              onTap: () => context.goNamed('TreatmentSchedule'),
+            ),
+          ],
         );
       case 2:
         return SpeedDial(
@@ -355,7 +406,7 @@ class _MainHomePageState extends State<MainHomePage> {
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
-                      hintText: 'Busque seu medicamento',
+                      hintText: 'Busque seu tratamento',
                       prefixIcon: const Icon(Icons.search),
                       // TODO: Implement the filter list
                       // suffixIcon: IconButton(
@@ -379,7 +430,7 @@ class _MainHomePageState extends State<MainHomePage> {
               height: MediaQuery.of(context).size.height - 250,
               child: Observer(
                 builder: (_) {
-                  if (treatmentListController.medicineCards.isEmpty) {
+                  if (treatmentListController.treatmentCards.isEmpty) {
                     return const Center(
                       child: Text(
                         'Nenhum dado encontrado',
@@ -389,12 +440,12 @@ class _MainHomePageState extends State<MainHomePage> {
                   } else {
                     return ListView.builder(
                       padding: const EdgeInsets.only(bottom: 50.0),
-                      itemCount: treatmentListController.medicineCards.length,
+                      itemCount: treatmentListController.treatmentCards.length,
                       itemBuilder: (context, index) {
-                        final item = treatmentListController.medicineCards[index];
-                        return MedicineCardWidget(
+                        final item = treatmentListController.treatmentCards[index];
+                        return TreatmentCardWidget(
                           key: Key(item.hashCode.toString()),
-                          medicineCard: item,
+                          treatmentCard: item,
                         );
                       },
                     );

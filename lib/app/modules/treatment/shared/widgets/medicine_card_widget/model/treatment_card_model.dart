@@ -1,20 +1,16 @@
-class MedicineCard {
+class TreatmentCard {
   final bool isSelected;
-  final String? imageUrl;
   final String name;
-  final String type;
   final int quantity;
   final String expirationDate;
-  final double price;
   final String priority;
+  final String patientName;
 
-  MedicineCard({
-    this.imageUrl,
+  TreatmentCard({
     required this.name,
-    required this.type,
     required this.quantity,
     required this.expirationDate,
-    required this.price,
+    required this.patientName,
     required this.priority,
     this.isSelected = false
   });

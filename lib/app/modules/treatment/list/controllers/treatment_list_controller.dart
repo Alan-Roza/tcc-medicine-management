@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/controllers/medicine_card_controller.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/model/medicine_card_model.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/medicine_card_widget/controllers/treatment_card_controller.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/medicine_card_widget/model/treatment_card_model.dart';
 
 part 'treatment_list_controller.g.dart';
 
@@ -9,7 +9,7 @@ class TreatmentListController = _TreatmentListController with _$TreatmentListCon
 abstract class _TreatmentListController with Store {
 
   @observable
-  ObservableList<MedicineCardController> medicineCards = ObservableList<MedicineCardController>();
+  ObservableList<TreatmentCardController> treatmentCards = ObservableList<TreatmentCardController>();
 
   @observable
   bool multiSelectionIsEnabled = false;
@@ -17,14 +17,13 @@ abstract class _TreatmentListController with Store {
   @action
   void createMedicineCardList() {
     for (int i = 0; i <= 20; i++) {
-      medicineCards.add(
-        MedicineCardController(
-          MedicineCard(
+      treatmentCards.add(
+        TreatmentCardController(
+          TreatmentCard(
             name: 'Medicine $i',
-            type: 'Type $i',
             quantity: i,
             expirationDate: '2022-12-31',
-            price: 10.0 * i,
+            patientName: 'Luna Roza',
             priority: 'High',
           ),
         ),
@@ -43,40 +42,22 @@ abstract class _TreatmentListController with Store {
 
   @action
   void _resetSelectedTasks() {
-    medicineCards.where((element) => element.isSelected).forEach((element) {
+    treatmentCards.where((element) => element.isSelected).forEach((element) {
       element.removeSelection();
     });
   }
 
   @action
   void selectAllCards(bool? value) {
-    for (var card in medicineCards) {
+    for (var card in treatmentCards) {
       card.isSelected = value ?? false;
     }
   }
 
   @action
   void removeSelectedTasks() {
-    medicineCards.removeWhere((element) => element.isSelected);
+    treatmentCards.removeWhere((element) => element.isSelected);
 
     disableMultiSelection();
   }
 }
-
-// class CardItem {
-//   String name;
-//   String type;
-//   int quantity;
-//   String expirationDate;
-//   double price;
-//   String priority;
-
-//   CardItem({
-//     required this.name,
-//     required this.type,
-//     required this.quantity,
-//     required this.expirationDate,
-//     required this.price,
-//     required this.priority,
-//   });
-// }

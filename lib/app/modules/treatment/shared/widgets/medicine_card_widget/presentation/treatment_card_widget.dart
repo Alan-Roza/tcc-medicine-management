@@ -1,60 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/controllers/medicine_card_controller.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/treatment_list_controller.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/medicine_card_widget/controllers/treatment_card_controller.dart';
 
-class MedicineCardWidget extends StatelessWidget {
-
+class TreatmentCardWidget extends StatelessWidget {
   @override
   final Key key;
-  final MedicineCardController medicineCard;
+  final TreatmentCardController treatmentCard;
 
-  MedicineCardWidget({
+  const TreatmentCardWidget({
     required this.key,
-    required this.medicineCard,
+    required this.treatmentCard,
   }) : super(key: key);
-
-  var leadingIcon;
 
   @override
   Widget build(BuildContext context) {
-    final medicineStockListController = Provider.of<MedicineStockListController>(context);
-    Map<String, dynamic> priorityData = _getPriorityData(medicineCard.priority);
+    final treatmentListController = Provider.of<TreatmentListController>(context);
+    Map<String, dynamic> priorityData = _getPriorityData(treatmentCard.priority);
 
     return Observer(
       builder: (_) {
-      // leadingIcon = null;
+        // leadingIcon = null;
 
-      // if (store.multiSelectionIsEnabled) {
-      //     if (medicineCard.isSelected) {
-      //       leadingIcon = const Icon(
-      //         Icons.check_circle,
-      //         color: Colors.green,
-      //       );
-      //     } else {
-      //       leadingIcon = const Icon(Icons.check_circle_outline);
-      //     }
-      //   }
+        // if (store.multiSelectionIsEnabled) {
+        //     if (treatmentCard.isSelected) {
+        //       leadingIcon = const Icon(
+        //         Icons.check_circle,
+        //         color: Colors.green,
+        //       );
+        //     } else {
+        //       leadingIcon = const Icon(Icons.check_circle_outline);
+        //     }
+        //   }
 
         return GestureDetector(
           onTap: () => {
-            if (medicineStockListController.multiSelectionIsEnabled) {medicineCard.toggleSelection()}
-            else context.goNamed('MedicineStockView', queryParameters: {'readOnly': 'true',}),
+            if (treatmentListController.multiSelectionIsEnabled)
+              {treatmentCard.toggleSelection()}
+            else
+              context.goNamed('TreatmentView', queryParameters: {
+                'readOnly': 'true',
+              }),
           },
           onLongPress: () => {
-            // if (onLongPress != null)
-              // {
-                medicineStockListController.enableMultiSelection(),
-                medicineCard.addSelection(),
-                print('before'),
-                print(medicineStockListController.multiSelectionIsEnabled),
-              // }
+            treatmentListController.enableMultiSelection(),
+            treatmentCard.addSelection(),
           },
           child: Card(
-            color: medicineCard.isSelected ? const Color.fromARGB(75, 0, 170, 255) : Colors.white,
+            color: treatmentCard.isSelected ? const Color.fromARGB(75, 0, 170, 255) : Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
             ),
@@ -66,20 +61,51 @@ class MedicineCardWidget extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Padding(
+                      Container(
+                        color: const Color(0xFFFF5334),
                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: medicineCard.imageUrl != null && medicineCard.imageUrl!.isNotEmpty
-                            ? Image.network(
-                                medicineCard.imageUrl!,
-                                fit: BoxFit.cover,
-                                width: 55,
-                              )
-                            : Image.asset(
-                                'assets/images/generic_medicine.png',
-                                fit: BoxFit.cover,
-                                width: 55,
+                        // height: 150, // Adjust height according to your needs
+                        // width: 100, // Adjust width according to your needs
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            const Text(
+                              'Paciente',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
                               ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              treatmentCard.patientName,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
+                      // Container(
+                      //   decoration: const BoxDecoration(color: Color(0x00ff5334)),
+                      //   child: Center(
+                      //     child: Column(
+                      //       children: [
+                      //         const Text(
+                      //           'Paciente',
+                      //           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
+                      //         ),
+                      //         Text(
+                      //           treatmentCard.patientName,
+                      //           style: const TextStyle(color: Colors.white),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                       const SizedBox(width: 8.0),
                       Expanded(
                         flex: 8,
@@ -91,7 +117,7 @@ class MedicineCardWidget extends StatelessWidget {
                               style: TextStyle(fontWeight: FontWeight.w300),
                             ),
                             Text(
-                              medicineCard.name,
+                              treatmentCard.name,
                               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 8),
@@ -104,22 +130,23 @@ class MedicineCardWidget extends StatelessWidget {
                                     style: TextStyle(fontWeight: FontWeight.normal),
                                   ),
                                   TextSpan(
-                                    text: "${medicineCard.quantity} unidade",
+                                    text: "${treatmentCard.quantity} medicamento(s)",
                                   ),
                                   const TextSpan(
                                     text: "\nVencimento: ",
                                     style: TextStyle(fontWeight: FontWeight.normal),
                                   ),
                                   TextSpan(
-                                    text: medicineCard.expirationDate,
+                                    text: treatmentCard.expirationDate,
                                   ),
-                                  const TextSpan(
-                                    text: "\nÚltimo Preço: ",
-                                    style: TextStyle(fontWeight: FontWeight.normal),
-                                  ),
-                                  TextSpan(
-                                    text: "R\$${medicineCard.price.toStringAsFixed(2)}",
-                                  ),
+                                  // TODO: verify what text put instead of price
+                                  // const TextSpan(
+                                  //   text: "\nÚltimo Preço: ",
+                                  //   style: TextStyle(fontWeight: FontWeight.normal),
+                                  // ),
+                                  // TextSpan(
+                                  //   text: "R\$${treatmentCard.price.toStringAsFixed(2)}",
+                                  // ),
                                 ],
                               ),
                             ),
