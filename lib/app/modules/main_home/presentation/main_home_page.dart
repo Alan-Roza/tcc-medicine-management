@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,7 +8,7 @@ import 'package:tcc_medicine_management/app/modules/main_home/controllers/main_h
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/presentation/medicine_card_widget.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/treatment_list_controller.dart';
-import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/medicine_card_widget/presentation/treatment_card_widget.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_card_widget/presentation/treatment_card_widget.dart';
 
 class MainHomePage extends StatefulWidget {
   const MainHomePage({super.key});
@@ -24,6 +23,7 @@ class _MainHomePageState extends State<MainHomePage> {
   @override
   Widget build(BuildContext context) {
     final medicineStockListController = Provider.of<MedicineStockListController>(context);
+    final treatmentListController = Provider.of<TreatmentListController>(context);
 
     return Observer(
       builder: (_) => Scaffold(
@@ -38,7 +38,7 @@ class _MainHomePageState extends State<MainHomePage> {
                 ],
                 // actions: [_buildAppBarActions()],
               )
-            : mainHomeController.selectedIndex == 2 && medicineStockListController.multiSelectionIsEnabled
+            : mainHomeController.selectedIndex == 1 && treatmentListController.multiSelectionIsEnabled
                 ? AppBar(
                     // centerTitle: true,
                     backgroundColor: Colors.blue,
@@ -49,20 +49,44 @@ class _MainHomePageState extends State<MainHomePage> {
                     title: Row(
                       children: [
                         Checkbox(
-                          value: medicineStockListController.medicineCards.every((card) => card.isSelected),
+                          value: treatmentListController.treatmentCards.every((card) => card.isSelected),
                           onChanged: (value) {
-                            medicineStockListController.selectAllCards(value);
+                            treatmentListController.selectAllCards(value);
                           },
                         ),
                         Text(
-                          '${medicineStockListController.medicineCards.where((element) => element.isSelected).length} Selecionado(s)',
+                          '${treatmentListController.treatmentCards.where((element) => element.isSelected).length} Selecionado(s)',
                           style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                       ],
                     ),
-                    actions: _buildAppBarActions(medicineStockListController),
+                    actions: _buildTreatmentAppBarActions(treatmentListController),
                   )
-                : null,
+                : mainHomeController.selectedIndex == 2 && medicineStockListController.multiSelectionIsEnabled
+                    ? AppBar(
+                        // centerTitle: true,
+                        backgroundColor: Colors.blue,
+                        surfaceTintColor: Colors.blue,
+                        actionsIconTheme: const IconThemeData(
+                          color: Colors.white,
+                        ),
+                        title: Row(
+                          children: [
+                            Checkbox(
+                              value: medicineStockListController.medicineCards.every((card) => card.isSelected),
+                              onChanged: (value) {
+                                medicineStockListController.selectAllCards(value);
+                              },
+                            ),
+                            Text(
+                              '${medicineStockListController.medicineCards.where((element) => element.isSelected).length} Selecionado(s)',
+                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                            ),
+                          ],
+                        ),
+                        actions: _buildAppBarActions(medicineStockListController),
+                      )
+                    : null,
         drawer: mainHomeController.selectedIndex == 0
             ? Drawer(
                 child: ListView(
@@ -122,6 +146,47 @@ class _MainHomePageState extends State<MainHomePage> {
         floatingActionButton: _buildFloatingActionButton(mainHomeController.selectedIndex),
       ),
     );
+  }
+
+  _buildTreatmentAppBarActions(TreatmentListController treatmentListController) {
+    var actions = <Widget>[];
+
+    actions.add(Observer(
+      builder: (_) {
+        return treatmentListController.multiSelectionIsEnabled &&
+                treatmentListController.treatmentCards.where((element) => element.isSelected).isNotEmpty
+            ? IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: treatmentListController.removeSelectedTasks,
+              )
+            : Container();
+      },
+    ));
+
+    actions.add(Observer(
+      builder: (_) {
+        return treatmentListController.multiSelectionIsEnabled &&
+                treatmentListController.treatmentCards.where((element) => element.isSelected).length == 1
+            ? IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () => context.goNamed('TreatmentForm', queryParameters: {'readOnly': 'true'}),
+              )
+            : Container();
+      },
+    ));
+
+    actions.add(Observer(
+      builder: (_) {
+        return treatmentListController.multiSelectionIsEnabled
+            ? IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: treatmentListController.disableMultiSelection,
+              )
+            : Container();
+      },
+    ));
+
+    return actions;
   }
 
   _buildAppBarActions(MedicineStockListController medicineStockListController) {

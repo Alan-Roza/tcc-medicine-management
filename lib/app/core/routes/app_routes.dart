@@ -14,6 +14,7 @@ import 'package:tcc_medicine_management/app/modules/main_home/presentation/main_
 import 'package:tcc_medicine_management/app/modules/medicine/form/presentation/medicine_stock_form_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/presentation/medicine_stock_list_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/view/presentation/medicine_stock_view_page.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/form/presentation/treatment_form_page.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/home/presentation/unauth_home_page.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/login/presentation/unauth_login_page.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/signup/presentation/unauth_signup_page.dart';
@@ -152,7 +153,7 @@ final GoRouter appRouter = GoRouter(
           path: 'medicine-stock-form',
           name: 'MedicineStockForm',
           builder: (BuildContext context, GoRouterState state) {
-            return MedicineStockFormPage();
+            return const MedicineStockFormPage();
           },
         ),
         GoRoute(
@@ -165,6 +166,23 @@ final GoRouter appRouter = GoRouter(
             return MedicineStockViewPage(readOnly: readOnly);
           },
         ),
+        GoRoute(
+          path: 'treatment-form',
+          name: 'TreatmentForm',
+          builder: (BuildContext context, GoRouterState state) {
+            return const TreatmentFormPage();
+          },
+        ),
+        // GoRoute(
+        //   path: 'treatment-view',
+        //   name: 'TreatmentView',
+        //   builder: (BuildContext context, GoRouterState state) {
+        //     Map<String, String> params = state.uri.queryParameters;
+        //     bool readOnly = params['readOnly'] == 'true';
+            
+        //     return TreatmentViewPage(readOnly: readOnly);
+        //   },
+        // ),
       ],
     ),
     // GoRoute(

@@ -1,5 +1,5 @@
 import 'package:mobx/mobx.dart';
-import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/medicine_card_widget/model/treatment_card_model.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_card_widget/model/treatment_card_model.dart';
 
 part 'treatment_card_controller.g.dart';
 
@@ -14,8 +14,7 @@ abstract class TreatmentCardControllerBase with Store {
   late String patientName;
   late String priority;
 
-
-   TreatmentCardControllerBase(TreatmentCard? treatment) {
+  TreatmentCardControllerBase(TreatmentCard? treatment) {
     if (treatment == null) return;
 
     name = treatment.name;
@@ -34,5 +33,4 @@ abstract class TreatmentCardControllerBase with Store {
 
   @action
   void addSelection() => isSelected = true;
-
 }

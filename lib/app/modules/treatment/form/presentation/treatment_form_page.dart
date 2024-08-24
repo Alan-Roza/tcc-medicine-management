@@ -2,44 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_basic_form_widget.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_optional_form_widget.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_review_form_widget.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/form/controllers/treatment_form_controller.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_basic_form_widget.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/controller/step_progress_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/presentation/step_progress_widget.dart';
 
-class MedicineStockFormPage extends StatefulWidget {
+class TreatmentFormPage extends StatefulWidget {
   final bool? readOnly;
 
-  const MedicineStockFormPage({super.key, this.readOnly});
+  const TreatmentFormPage({super.key, this.readOnly});
 
 
   @override
-  MedicineStockFormPageState createState() => MedicineStockFormPageState();
+  TreatmentFormPageState createState() => TreatmentFormPageState();
 }
 
-class MedicineStockFormPageState extends State<MedicineStockFormPage> with SingleTickerProviderStateMixin {
+class TreatmentFormPageState extends State<TreatmentFormPage> with SingleTickerProviderStateMixin {
   final StepProgressController stepProgressController = StepProgressController();
 
-  final List<String> titles = ['Dados\nBásicos', 'Dados\nComplementares', 'Revisão'];
+  final List<String> titles = ['Dados\nBásicos', 'Medicamentos', 'Revisão'];
   List<Widget> _formWidgets = [];
 
   @override
   void initState() {
     super.initState();
 
-    MedicineFormController formController = Provider.of<MedicineFormController>(context, listen: false);
+    TreatmentFormController formController = Provider.of<TreatmentFormController>(context, listen: false);
     formController.resetForm();
   }
 
   @override
   Widget build(BuildContext context) {
-    MedicineFormController formController = Provider.of<MedicineFormController>(context);
+    TreatmentFormController formController = Provider.of<TreatmentFormController>(context);
 
     _formWidgets = [
-      MedicineStockBasicFormWidget(readOnly: widget.readOnly ?? false),
+      TreatmentBasicFormWidget(readOnly: widget.readOnly ?? false),
       MedicineStockOptionalFormWidget(readOnly: widget.readOnly ?? false),
       const MedicineStockReviewFormWidget(),
     ];
@@ -81,7 +81,7 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
                                 ElevatedButton(
                                   onPressed: () {
                                     if (stepProgressController.currentStep == _formWidgets.length - 1) {
-                                      formController.saveMedicine().then((saveResponse) {
+                                      formController.saveTreatment().then((saveResponse) {
                                         context.pop(); // TODO: verify if is the best pratice
                                       });
                                       return;

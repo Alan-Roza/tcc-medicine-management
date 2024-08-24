@@ -1,25 +1,13 @@
-class Medicine {
-  final String? imageUrl;
-  final String name;
-  final String type;
-  final int quantity;
-  final String expirationDate;
-  final int qtyByPackage;
-  final int unity;
-  final double valuePaid;
-  final String importanceLevel;
-  final int drawerNumber;
+import 'package:tcc_medicine_management/app/modules/treatment/form/model/treatment_medicine_model.dart';
 
-  Medicine({
-    this.imageUrl,
+class Treatment {
+  final String name;
+  final String importanceLevel;
+  final List<TreatmentMedicine> medicines;
+
+  Treatment({
     required this.name,
-    required this.type,
-    required this.quantity,
-    required this.expirationDate,
-    required this.qtyByPackage,
-    required this.unity,
-    required this.valuePaid,
     required this.importanceLevel,
-    required this.drawerNumber,
+    required this.medicines,
   });
 }

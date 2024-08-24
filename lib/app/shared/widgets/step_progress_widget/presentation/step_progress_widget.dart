@@ -55,7 +55,7 @@ class StepProgressWidgetState extends State<StepProgressWidget> {
         finishedStepBackgroundColor: Colors.blue,
         unreachedStepBorderColor: Colors.black26,
         unreachedStepTextColor: Colors.black26,
-        unreachedStepBackgroundColor: Colors.black26,
+        unreachedStepBackgroundColor: Colors.grey[400],
         activeStepBorderColor: Colors.blue,
         activeStepBorderType: BorderType.normal,
         activeStepTextColor: Colors.black87,

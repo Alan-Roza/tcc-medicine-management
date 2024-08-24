@@ -3,7 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/treatment_list_controller.dart';
-import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/medicine_card_widget/controllers/treatment_card_controller.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_card_widget/controllers/treatment_card_controller.dart';
 
 class TreatmentCardWidget extends StatelessWidget {
   @override
@@ -22,19 +22,6 @@ class TreatmentCardWidget extends StatelessWidget {
 
     return Observer(
       builder: (_) {
-        // leadingIcon = null;
-
-        // if (store.multiSelectionIsEnabled) {
-        //     if (treatmentCard.isSelected) {
-        //       leadingIcon = const Icon(
-        //         Icons.check_circle,
-        //         color: Colors.green,
-        //       );
-        //     } else {
-        //       leadingIcon = const Icon(Icons.check_circle_outline);
-        //     }
-        //   }
-
         return GestureDetector(
           onTap: () => {
             if (treatmentListController.multiSelectionIsEnabled)
@@ -56,58 +43,60 @@ class TreatmentCardWidget extends StatelessWidget {
             elevation: 0,
             child: Stack(
               children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.0),
                         color: const Color(0xFFFF5334),
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        // height: 150, // Adjust height according to your needs
-                        // width: 100, // Adjust width according to your needs
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            const Text(
-                              'Paciente',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              treatmentCard.patientName,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
-                      // Container(
-                      //   decoration: const BoxDecoration(color: Color(0x00ff5334)),
-                      //   child: Center(
-                      //     child: Column(
-                      //       children: [
-                      //         const Text(
-                      //           'Paciente',
-                      //           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
-                      //         ),
-                      //         Text(
-                      //           treatmentCard.patientName,
-                      //           style: const TextStyle(color: Colors.white),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
-                      const SizedBox(width: 8.0),
-                      Expanded(
+                      padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      width: 100,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          const Text(
+                            'Paciente',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          Text(
+                            treatmentCard.patientName,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Container(
+                    //   decoration: const BoxDecoration(color: Color(0x00ff5334)),
+                    //   child: Center(
+                    //     child: Column(
+                    //       children: [
+                    //         const Text(
+                    //           'Paciente',
+                    //           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
+                    //         ),
+                    //         Text(
+                    //           treatmentCard.patientName,
+                    //           style: const TextStyle(color: Colors.white),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    const SizedBox(width: 8.0),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+                      child: Expanded(
                         flex: 8,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,8 +142,8 @@ class TreatmentCardWidget extends StatelessWidget {
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 Positioned(
                   top: 12,

@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
-import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/medicine_card_widget/controllers/treatment_card_controller.dart';
-import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/medicine_card_widget/model/treatment_card_model.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_card_widget/controllers/treatment_card_controller.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_card_widget/model/treatment_card_model.dart';
 
 part 'treatment_list_controller.g.dart';
 
@@ -24,7 +24,7 @@ abstract class _TreatmentListController with Store {
             quantity: i,
             expirationDate: '2022-12-31',
             patientName: 'Luna Roza',
-            priority: 'High',
+            priority: 'high',
           ),
         ),
       );
