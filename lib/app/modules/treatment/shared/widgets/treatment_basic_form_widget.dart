@@ -49,13 +49,14 @@ class TreatmentBasicFormWidgetState extends State<TreatmentBasicFormWidget> with
               icon: Icons.health_and_safety_outlined,
               label: 'Nome do Tratamento',
               readOnly: widget.readOnly,
+              enabled: !widget.readOnly,
             ),
           ),
           const SizedBox(height: 16),
           Observer(
             builder: (_) => DropdownButtonFormField<String>(
               value: formController.importanceLevel,
-              onChanged: (value) {
+              onChanged: widget.readOnly ? null : (value) {
                 if (value != null) formController.importanceLevel = value;
               },
               items: const [
@@ -80,7 +81,7 @@ class TreatmentBasicFormWidgetState extends State<TreatmentBasicFormWidget> with
             ),
           ),
           const SizedBox(height: 16),
-          Observer(
+          widget.readOnly ? Container() : Observer(
             builder: (_) => DropdownButtonFormField<String>(
               value: formController.selectedMedicine,
               onChanged: (value) {
@@ -129,9 +130,9 @@ class TreatmentBasicFormWidgetState extends State<TreatmentBasicFormWidget> with
                             contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                             title: Padding(
                               padding: const EdgeInsets.only(left: 16.0),
-                              child: Text(formController.selectedMedicines[index].name),
+                              child: Text(formController.selectedMedicines[index].name, style: const TextStyle(fontWeight: FontWeight.w500)),
                             ),
-                            trailing: IconButton(
+                            trailing: widget.readOnly ? null : IconButton(
                               icon: const Icon(Icons.close),
                               onPressed: () {
                                 showDialog(

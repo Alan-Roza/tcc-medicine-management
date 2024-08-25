@@ -13,9 +13,10 @@ abstract class MedicineFormControllerBase with Store {
   TextEditingController unityController = TextEditingController();
   TextEditingController qtyByPackageController = TextEditingController();
 
+  @observable
+  String importanceLevel = 'low';
   TextEditingController valuePaidController = TextEditingController();
   TextEditingController expirationDateController = TextEditingController();
-  TextEditingController importanceLevelController = TextEditingController();
   TextEditingController drawerNumberController = TextEditingController();
 
   // @computed
@@ -61,7 +62,7 @@ abstract class MedicineFormControllerBase with Store {
       valuePaid: double.parse(valuePaidController.text),
       expirationDate: expirationDateController.text,
       drawerNumber: int.parse(drawerNumberController.text),
-      importanceLevel: importanceLevelController.text,
+      importanceLevel: importanceLevel,
     );
 
     print(medicine);
@@ -76,7 +77,7 @@ abstract class MedicineFormControllerBase with Store {
     qtyByPackageController.dispose();
     valuePaidController.dispose();
     expirationDateController.dispose();
-    importanceLevelController.dispose();
+    importanceLevel = 'low';
     drawerNumberController.dispose();
   }
 
@@ -89,7 +90,7 @@ abstract class MedicineFormControllerBase with Store {
     qtyByPackageController.clear();
     valuePaidController.clear();
     expirationDateController.clear();
-    importanceLevelController.clear();
+    importanceLevel = 'low';
     drawerNumberController.clear();
   }
 }

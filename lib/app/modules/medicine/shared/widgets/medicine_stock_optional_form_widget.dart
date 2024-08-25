@@ -51,6 +51,7 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
               icon: Icons.calendar_month_outlined,
               label: 'Data de Validade',
               readOnly: widget.readOnly,
+              enabled: !widget.readOnly,
             ),
           ),
           Observer(
@@ -58,15 +59,35 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
               textEditingController: formController.valuePaidController,
               icon: Icons.attach_money,
               label: 'Valor Total Pago',
+              enabled: !widget.readOnly,
               readOnly: widget.readOnly,
             ),
           ),
           Observer(
-            builder: (_) => CustomTextFieldWidget(
-              textEditingController: formController.importanceLevelController,
-              icon: Icons.star_outline,
-              label: 'Nível de Importância',
-              readOnly: widget.readOnly,
+            builder: (_) => DropdownButtonFormField<String>(
+              value: formController.importanceLevel,
+              onChanged: widget.readOnly ? null : (value) {
+                if (value != null) formController.importanceLevel = value;
+              },
+              items: const [
+                DropdownMenuItem(
+                  value: 'high',
+                  child: Text('Importante'),
+                ),
+                DropdownMenuItem(
+                  value: 'medium',
+                  child: Text('Normal'),
+                ),
+                DropdownMenuItem(
+                  value: 'low',
+                  child: Text('Baixo'),
+                ),
+              ],
+              decoration: const InputDecoration(
+                labelText: 'Nível de Importância',
+                border: UnderlineInputBorder(),
+                prefixIcon: Icon(Icons.star_purple500_sharp),
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -97,6 +118,7 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
               icon: Icons.medication_rounded,
               label: 'Número da Gaveta',
               readOnly: widget.readOnly,
+              enabled: !widget.readOnly,
             ),
           ),
           const SizedBox(height: 20),

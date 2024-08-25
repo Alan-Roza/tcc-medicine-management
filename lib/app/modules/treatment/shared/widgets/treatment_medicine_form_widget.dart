@@ -48,22 +48,15 @@ class TreatmentMedicineFormWidgetState extends State<TreatmentMedicineFormWidget
                           icon: Icons.medication_liquid_rounded,
                           label: 'Dosagem',
                           readOnly: widget.readOnly,
+                          enabled: !widget.readOnly,
                         ),
                       ),
-                      // Observer(
-                      //   builder: (_) => CustomTextFieldWidget(
-                      //     textEditingController: formController.frequencyType,
-                      //     icon: Icons.av_timer,
-                      //     label: 'Tipo de Frequência',
-                      //     readOnly: widget.readOnly,
-                      //   ),
-                      // ),
                       Observer(
                         builder: (_) => Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: DropdownButtonFormField<String>(
                             value: formController.frequencyType,
-                            onChanged: (value) {
+                            onChanged: widget.readOnly ? null : (value) {
                               if (value != null) formController.frequencyType = value;
                             },
                             items: const [
@@ -98,7 +91,7 @@ class TreatmentMedicineFormWidgetState extends State<TreatmentMedicineFormWidget
                                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                                 child: DropdownButtonFormField<String>(
                                   value: formController.frequency,
-                                  onChanged: (value) {
+                                  onChanged: widget.readOnly ? null : (value) {
                                     if (value != null) formController.frequency = value;
                                   },
                                   items: List<DropdownMenuItem<String>>.generate(
@@ -120,6 +113,7 @@ class TreatmentMedicineFormWidgetState extends State<TreatmentMedicineFormWidget
                                 icon: Icons.timelapse_sharp,
                                 label: 'Frequência (a cada x tempo)',
                                 readOnly: widget.readOnly,
+                                enabled: !widget.readOnly,
                                 onTap: () {
                                   showTimePicker(
                                     context: context,
@@ -145,6 +139,7 @@ class TreatmentMedicineFormWidgetState extends State<TreatmentMedicineFormWidget
                           icon: Icons.access_time,
                           label: 'Início do Tratamento',
                           readOnly: widget.readOnly,
+                          enabled: !widget.readOnly,
                           onTap: () {
                             showDatePicker(
                               context: context,
@@ -183,7 +178,7 @@ class TreatmentMedicineFormWidgetState extends State<TreatmentMedicineFormWidget
                           textEditingController: formController.endDateDisplayController,
                           icon: Icons.access_time,
                           label: 'Fim do Tratamento',
-                          enabled: !formController.endlessTreatment,
+                          enabled: !formController.endlessTreatment && !widget.readOnly,
                           readOnly: widget.readOnly,
                           onTap: () {
                             showDatePicker(
@@ -222,6 +217,7 @@ class TreatmentMedicineFormWidgetState extends State<TreatmentMedicineFormWidget
                         builder: (_) => CheckboxListTile(
                           title: const Text('Tratamento sem fim'),
                           value: formController.endlessTreatment,
+                          enabled: !widget.readOnly,
                           onChanged: (value) {
                             formController.setEndlessTreatment();
                           },

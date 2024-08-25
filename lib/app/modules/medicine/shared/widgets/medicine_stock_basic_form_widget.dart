@@ -50,6 +50,7 @@ class MedicineStockBasicFormWidgetState extends State<MedicineStockBasicFormWidg
               icon: Icons.health_and_safety_outlined,
               label: 'Nome do Medicamento',
               readOnly: widget.readOnly,
+              enabled: !widget.readOnly,
             ),
           ),
           Observer(
@@ -58,6 +59,7 @@ class MedicineStockBasicFormWidgetState extends State<MedicineStockBasicFormWidg
               icon: Icons.medical_information_outlined,
               label: 'Tipo',
               readOnly: widget.readOnly,
+              enabled: !widget.readOnly,
             ),
           ),
           Observer(
@@ -66,6 +68,7 @@ class MedicineStockBasicFormWidgetState extends State<MedicineStockBasicFormWidg
               icon: Icons.tune_outlined,
               label: 'Quantidade',
               readOnly: widget.readOnly,
+              enabled: !widget.readOnly,
             ),
           ),
           Observer(
@@ -74,6 +77,7 @@ class MedicineStockBasicFormWidgetState extends State<MedicineStockBasicFormWidg
               icon: Icons.medication_rounded,
               label: 'Unidade',
               readOnly: widget.readOnly,
+              enabled: !widget.readOnly,
             ),
           ),
           Observer(
@@ -82,6 +86,7 @@ class MedicineStockBasicFormWidgetState extends State<MedicineStockBasicFormWidg
               icon: Icons.medical_services_outlined,
               label: 'Quantidade Por Embalagem',
               readOnly: widget.readOnly,
+              enabled: !widget.readOnly,
             ),
           ),
         ],
