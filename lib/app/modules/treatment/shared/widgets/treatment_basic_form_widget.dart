@@ -75,10 +75,101 @@ class TreatmentBasicFormWidgetState extends State<TreatmentBasicFormWidget> with
               decoration: const InputDecoration(
                 labelText: 'Nível de Importância',
                 border: UnderlineInputBorder(),
-                prefixIcon: Icon(Icons.star_border_rounded),
+                prefixIcon: Icon(Icons.star_purple500_sharp),
               ),
             ),
           ),
+          const SizedBox(height: 16),
+          Observer(
+            builder: (_) => DropdownButtonFormField<String>(
+              value: formController.selectedMedicine,
+              onChanged: (value) {
+                if (value != null &&
+                    value.isNotEmpty &&
+                    !formController.selectedMedicines.any((medicine) => medicine.name == value)) {
+                  formController.addTreatmentMedicine(value);
+                  print(formController.selectedMedicines[0].name);
+                }
+              },
+              items: [
+                const DropdownMenuItem(
+                  value: '',
+                  child: Text('Selecione um medicamento'),
+                ),
+                ...formController.medicines.map((medicine) {
+                  return DropdownMenuItem(
+                    value: medicine.name,
+                    child: Text(medicine.name),
+                  );
+                }),
+              ],
+              decoration: const InputDecoration(
+                labelText: 'Medicamentos',
+                border: UnderlineInputBorder(),
+                prefixIcon: Icon(Icons.medical_services),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Observer(builder: (_) {
+            return formController.selectedMedicines.isNotEmpty
+                ? Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    elevation: 0,
+                    color: Colors.white,
+                    child: SizedBox(
+                      height: formController.selectedMedicines.length * 55.0,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: formController.selectedMedicines.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                            title: Padding(
+                              padding: const EdgeInsets.only(left: 16.0),
+                              child: Text(formController.selectedMedicines[index].name),
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.close),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Remover Medicamento',
+                                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500)),
+                                      content: const Text('Vocẽ tem certeza que deseja remover este item?'),
+                                      actionsPadding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                      buttonPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('Cancelar', style: TextStyle(color: Colors.black38)),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            formController.removeTreatmentMedicine(index);
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('Remover'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  )
+                : const SizedBox();
+          }),
         ],
       ),
     );

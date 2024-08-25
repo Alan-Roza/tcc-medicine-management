@@ -6,17 +6,22 @@ class CustomTextFieldWidget extends StatelessWidget {
   final Function? onChanged;
   final IconData? icon;
   final Function? onClear;
+  final Function? onTap;
   final bool? clearable;
   final bool readOnly;
+  final bool? enabled;
 
-  const CustomTextFieldWidget({super.key, 
+  const CustomTextFieldWidget({
+    super.key,
     required this.label,
     this.textEditingController,
     this.onChanged,
     this.icon,
     this.onClear,
     this.clearable,
+    this.onTap,
     this.readOnly = false,
+    this.enabled = true,
   });
 
   @override
@@ -24,6 +29,10 @@ class CustomTextFieldWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
+        onTap: () {
+          if (onTap != null) onTap!();
+        },
+        enabled: enabled,
         readOnly: readOnly,
         decoration: InputDecoration(
           prefixIcon: Icon(icon),

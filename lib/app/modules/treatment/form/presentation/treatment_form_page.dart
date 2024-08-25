@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_optional_form_widget.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_review_form_widget.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/form/controllers/treatment_form_controller.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_basic_form_widget.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_medicine_form_widget.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/controller/step_progress_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/presentation/step_progress_widget.dart';
@@ -14,7 +15,6 @@ class TreatmentFormPage extends StatefulWidget {
   final bool? readOnly;
 
   const TreatmentFormPage({super.key, this.readOnly});
-
 
   @override
   TreatmentFormPageState createState() => TreatmentFormPageState();
@@ -32,6 +32,8 @@ class TreatmentFormPageState extends State<TreatmentFormPage> with SingleTickerP
 
     TreatmentFormController formController = Provider.of<TreatmentFormController>(context, listen: false);
     formController.resetForm();
+
+    formController.startDateDisplayController.text = DateFormat('dd-MM-yyyy HH:mm').format(DateTime.now());
   }
 
   @override
@@ -40,7 +42,7 @@ class TreatmentFormPageState extends State<TreatmentFormPage> with SingleTickerP
 
     _formWidgets = [
       TreatmentBasicFormWidget(readOnly: widget.readOnly ?? false),
-      MedicineStockOptionalFormWidget(readOnly: widget.readOnly ?? false),
+      TreatmentMedicineFormWidget(readOnly: widget.readOnly ?? false),
       const MedicineStockReviewFormWidget(),
     ];
 
@@ -84,6 +86,18 @@ class TreatmentFormPageState extends State<TreatmentFormPage> with SingleTickerP
                                       formController.saveTreatment().then((saveResponse) {
                                         context.pop(); // TODO: verify if is the best pratice
                                       });
+                                      return;
+                                    }
+                                    if (stepProgressController.currentStep == 0 &&
+                                        formController.selectedMedicines.isEmpty) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          backgroundColor: Colors.red, 
+                                          content: Text(
+                                            'É necessário ter pelo menos um medicamento.',
+                                          ),
+                                        ),
+                                      );
                                       return;
                                     }
                                     stepProgressController.increaseCurrentStep();
