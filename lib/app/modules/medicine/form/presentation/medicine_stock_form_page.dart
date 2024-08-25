@@ -15,7 +15,6 @@ class MedicineStockFormPage extends StatefulWidget {
 
   const MedicineStockFormPage({super.key, this.readOnly});
 
-
   @override
   MedicineStockFormPageState createState() => MedicineStockFormPageState();
 }
@@ -46,8 +45,10 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Adicionar Medicamento'),
+        centerTitle: true,
         backgroundColor: Colors.grey[200],
+        surfaceTintColor: Colors.grey[200],
+        title: const Text('Adicionar Medicamento'),
       ),
       body: Observer(builder: (_) {
         return Column(

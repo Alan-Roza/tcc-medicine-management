@@ -22,13 +22,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Intl.defaultLocale = 'pt_BR';
-// final brightness = View.of(context).platformDispatcher.platformBrightness; // TODO - Will be used at the future
+    // final brightness = View.of(context).platformDispatcher.platformBrightness; // TODO - Will be used at the future
 
     TextTheme textTheme = createTextTheme(context, "Roboto", "Roboto");
 
     MaterialTheme theme = MaterialTheme(textTheme);
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -53,7 +54,6 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: MaterialApp.router(
-            debugShowCheckedModeBanner: false,
             routerConfig: appRouter,
             // theme: AppTheme.lightTheme
             // theme: brightness == Brightness.light ? theme.light() : theme.dark() // TODO - Will be used at the future

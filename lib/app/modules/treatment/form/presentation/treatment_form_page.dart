@@ -49,8 +49,10 @@ class TreatmentFormPageState extends State<TreatmentFormPage> with SingleTickerP
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Adicionar Medicamento'),
+        title: const Text('Adicionar Tratamento'),
+        centerTitle: true,
         backgroundColor: Colors.grey[200],
+        surfaceTintColor: Colors.grey[200],
       ),
       body: Observer(builder: (_) {
         return Column(
@@ -93,7 +95,7 @@ class TreatmentFormPageState extends State<TreatmentFormPage> with SingleTickerP
                                         formController.selectedMedicines.isEmpty) {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
-                                          backgroundColor: Colors.red, 
+                                          backgroundColor: Colors.red,
                                           content: Text(
                                             'É necessário ter pelo menos um medicamento.',
                                           ),

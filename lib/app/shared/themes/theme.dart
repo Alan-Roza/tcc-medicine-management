@@ -11,7 +11,7 @@ class MaterialTheme {
       foregroundColor: Colors.white,
       backgroundColor: const Color(0xFF00A8FF), // Set the background color
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4), // Set the border radius
+        borderRadius: BorderRadius.circular(8), // Set the border radius
       ),
     ),
   );
