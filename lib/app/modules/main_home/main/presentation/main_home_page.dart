@@ -4,7 +4,8 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:tcc_medicine_management/app/modules/main_home/controllers/main_home_controller.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/main/controllers/main_home_controller.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/main/presentation/user_profile_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/presentation/medicine_card_widget.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/treatment_list_controller.dart';
@@ -367,19 +368,7 @@ class _MainHomePageState extends State<MainHomePage> {
           ],
         );
       case 3:
-        return FloatingActionButton(
-          onPressed: () {
-            // medicineStockListController.addCard(CardItem(
-            //   name: 'Perfil',
-            //   quantity: 1,
-            //   type: "Comprimido",
-            //   expirationDate: '29/07/2024',
-            //   price: 15.75,
-            //   priority: 'normal',
-            // ));
-          },
-          child: const Icon(Icons.person),
-        );
+        return Container();
       default:
         return Container();
     }
@@ -397,7 +386,7 @@ class _MainHomePageState extends State<MainHomePage> {
       case 2:
         return _buildMedicinePage(medicineStockListController);
       case 3:
-        return const Center(child: Text('Perfil Page'));
+        return UserProfilePage();
       default:
         return _buildHomePage();
     }
