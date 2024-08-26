@@ -668,71 +668,74 @@ class _MainHomePageState extends State<MainHomePage> {
   }
 
   Widget _buildAlertCard() {
-    return Card(
-      color: const Color(0xFFB3261E),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      elevation: 0,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            SvgPicture.asset(
-              'assets/images/graphic_down.svg',
-              fit: BoxFit.cover,
-              height: 80,
-            ),
-            const SizedBox(width: 12.0),
-            Expanded(
-              flex: 5,
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 18.0),
-                child: Column(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Existem pontos que precisam de atenção',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            height: 1.1,
-                          ),
-                        ),
-                        Container(
-                          width: 40,
-                          height: 6,
-                          margin: const EdgeInsets.only(top: 6.0),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(
-                              color: Colors.white, // Set border color
-                              width: 2, // Set border width
+    return GestureDetector(
+      onTap: () => context.goNamed('DailySummary'),
+      child: Card(
+        color: const Color(0xFFB3261E),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        elevation: 0,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              SvgPicture.asset(
+                'assets/images/graphic_down.svg',
+                fit: BoxFit.cover,
+                height: 80,
+              ),
+              const SizedBox(width: 12.0),
+              Expanded(
+                flex: 5,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 18.0),
+                  child: Column(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Existem pontos que precisam de atenção',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              height: 1.1,
                             ),
-                            borderRadius: BorderRadius.circular(10), // Add a border radius
                           ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    const Text(
-                      'Houve medicamentos não ingeridos, clique aqui para mais detalhes',
-                      style: TextStyle(
-                        color: Colors.white,
-                        height: 1.1,
+                          Container(
+                            width: 40,
+                            height: 6,
+                            margin: const EdgeInsets.only(top: 6.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                color: Colors.white, // Set border color
+                                width: 2, // Set border width
+                              ),
+                              borderRadius: BorderRadius.circular(10), // Add a border radius
+                            ),
+                          )
+                        ],
                       ),
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      const Text(
+                        'Houve medicamentos não ingeridos, clique aqui para mais detalhes',
+                        style: TextStyle(
+                          color: Colors.white,
+                          height: 1.1,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
