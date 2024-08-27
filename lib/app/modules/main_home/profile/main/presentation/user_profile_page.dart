@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/main/controllers/user_profile_controller.dart';
 
 class UserProfilePage extends StatelessWidget {
@@ -51,7 +52,7 @@ class UserProfilePage extends StatelessWidget {
                 Icons.person_outline, 'Meus dados', 'Minhas informações da conta', context, false, () => {}),
               _buildMenuItem(Icons.health_and_safety, 'Informações de Saúde', 'Minhas informações de saúde', context,
                 false, () => {}),
-              _buildMenuItem(Icons.wifi, 'Conexão', 'Gerencie seus widgets', context, false, () => {}),
+              _buildMenuItem(Icons.wifi, 'Conexão', 'Gerencie seus widgets', context, false, () => context.goNamed('Connection')),
               _buildMenuItem(Icons.people_outlined, 'Pacientes', 'Gerencie seus pacientes', context, false, () => {}),
               ],
             ),
