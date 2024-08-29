@@ -53,7 +53,7 @@ class UserProfilePage extends StatelessWidget {
               _buildMenuItem(Icons.health_and_safety, 'Informações de Saúde', 'Minhas informações de saúde', context,
                 false, () => {}),
               _buildMenuItem(Icons.wifi, 'Conexão', 'Gerencie seus widgets', context, false, () => context.goNamed('Connection')),
-              _buildMenuItem(Icons.people_outlined, 'Pacientes', 'Gerencie seus pacientes', context, false, () => {}),
+              _buildMenuItem(Icons.people_outlined, 'Pacientes', 'Gerencie seus pacientes', context, false, () => context.goNamed('Patients')),
               ],
             ),
             ),

@@ -13,6 +13,7 @@ import 'package:tcc_medicine_management/app/modules/first_access/user_level_assi
 import 'package:tcc_medicine_management/app/modules/main_home/daily_summary/presentation/daily_summary_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/main/presentation/main_home_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/presentation/connection_page.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/patient/presentation/patient_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/presentation/medicine_stock_form_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/presentation/medicine_stock_list_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/view/presentation/medicine_stock_view_page.dart';
@@ -187,6 +188,13 @@ final GoRouter appRouter = GoRouter(
           name: 'Connection',
           builder: (BuildContext context, GoRouterState state) {
             return ConnectionPage();
+          },
+        ),
+        GoRoute(
+          path: 'patients',
+          name: 'Patients',
+          builder: (BuildContext context, GoRouterState state) {
+            return PatientPage();
           },
         ),
         // GoRoute(
