@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobx/mobx.dart';
+import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/chronical_disease_info/controller/chronical_disease_info_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 
@@ -13,11 +14,12 @@ class ChronicalDiseaseInfoPage extends StatefulWidget {
 }
 
 class _ChronicalDiseaseInfoPageState extends State<ChronicalDiseaseInfoPage> {
-  final ChronicalDiseaseInfoController chronicalDiseaseInfoController = ChronicalDiseaseInfoController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+  final ChronicalDiseaseInfoController chronicalDiseaseInfoController = Provider.of<ChronicalDiseaseInfoController>(context);
+
     return Scaffold(
       body: SafeArea(
         child: PaddedScreen(

@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/core/routes/app_routes.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/address_info/controller/address_info_controller.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/administrator_info/controller/administrator_info_controller.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/allergy_info/controller/allergy_info_controller.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/chronical_disease_info/controller/chronical_disease_info_controller.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/configurations/controller/configurations_controller.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/health_info/controller/health_info_controller.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/user_info/controller/user_info_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/view/controllers/medicine_view_controller.dart';
@@ -52,6 +59,14 @@ class MyApp extends StatelessWidget {
             create: (_) => TreatmentFormController(),
             dispose: (_, TreatmentFormController controller) => controller.dispose(),
           ),
+          Provider<AddressInfoController>(create: (_) => AddressInfoController()),
+          Provider<AdministratorInfoController>(create: (_) => AdministratorInfoController()),
+          Provider<AllergyInfoController>(create: (_) => AllergyInfoController()),
+          Provider<ChronicalDiseaseInfoController>(create: (_) => ChronicalDiseaseInfoController()),
+          Provider<ConfigurationsController>(create: (_) => ConfigurationsController()),
+          Provider<HealthInfoController>(create: (_) => HealthInfoController()),
+          Provider<UserInfoController>(create: (_) => UserInfoController()),
+          Provider<AllergyInfoController>(create: (_) => AllergyInfoController()),
         ],
         child: MaterialApp.router(
             routerConfig: appRouter,
