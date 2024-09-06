@@ -45,11 +45,11 @@ class UserProfilePage extends StatelessWidget {
         ),
             Expanded(
             child: ListView(
-              padding: const EdgeInsets.only(top: 0), // Add this line to remove the top padding
+              padding: const EdgeInsets.only(top: 0),
               children: [
               // Menu options
               _buildMenuItem(
-                Icons.person_outline, 'Meus dados', 'Minhas informações da conta', context, false, () => {}),
+                Icons.person_outline, 'Meus dados', 'Minhas informações da conta', context, false, () => context.goNamed('UserGeneralInfo')),
               _buildMenuItem(Icons.health_and_safety, 'Informações de Saúde', 'Minhas informações de saúde', context,
                 false, () => {}),
               _buildMenuItem(Icons.wifi, 'Conexão', 'Gerencie seus widgets', context, false, () => context.goNamed('Connection')),
