@@ -13,6 +13,10 @@ import 'package:tcc_medicine_management/app/modules/first_access/user_level_assi
 import 'package:tcc_medicine_management/app/modules/main_home/daily_summary/presentation/daily_summary_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/main/presentation/main_home_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/presentation/connection_page.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/health_info/presentation/general_health_info_page.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/health_info/presentation/user_allergy_info_page.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/health_info/presentation/user_chronical_disease_info_page.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/health_info/presentation/user_health_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/main/presentation/user_profile_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/patient/presentation/patient_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/user_general_info/presentation/general_info_page.dart';
@@ -178,27 +182,58 @@ final GoRouter appRouter = GoRouter(
           },
         ),
         GoRoute(
-            path: 'userGeneralInfo',
-            name: 'UserGeneralInfo',
-            builder: (BuildContext context, GoRouterState state) {
-              return const UserGeneralInfoPage();
-            },
-            routes: [
-              GoRoute(
-                path: 'generalUserInfo',
-                name: 'GeneralUserInfo',
-                builder: (BuildContext context, GoRouterState state) {
-                  return const GeneralInfoPage();
-                },
-              ),
-              GoRoute(
-                path: 'userAddressInfo',
-                name: 'UserAddressInfo',
-                builder: (BuildContext context, GoRouterState state) {
-                  return const UserAddressInfoPage();
-                },
-              ),
-            ]),
+          path: 'userGeneralInfo',
+          name: 'UserGeneralInfo',
+          builder: (BuildContext context, GoRouterState state) {
+            return const UserGeneralInfoPage();
+          },
+          routes: [
+            GoRoute(
+              path: 'generalUserInfo',
+              name: 'GeneralUserInfo',
+              builder: (BuildContext context, GoRouterState state) {
+                return const GeneralInfoPage();
+              },
+            ),
+            GoRoute(
+              path: 'userAddressInfo',
+              name: 'UserAddressInfo',
+              builder: (BuildContext context, GoRouterState state) {
+                return const UserAddressInfoPage();
+              },
+            ),
+          ],
+        ),
+        GoRoute(
+          path: 'userHealthInfoPage',
+          name: 'UserHealthInfoPage',
+          builder: (BuildContext context, GoRouterState state) {
+            return const UserHealthInfoPage();
+          },
+          routes: [
+            GoRoute(
+              path: 'generalHealthInfo',
+              name: 'GeneralHealthInfo',
+              builder: (BuildContext context, GoRouterState state) {
+                return const GeneralHealthInfoPage();
+              },
+            ),
+            GoRoute(
+              path: 'userAllergyInfoPage',
+              name: 'UserAllergyInfoPage',
+              builder: (BuildContext context, GoRouterState state) {
+                return const UserAllergyInfoPage();
+              },
+            ),
+            GoRoute(
+              path: 'userChronicalDiseaseInfoPage',
+              name: 'UserChronicalDiseaseInfoPage',
+              builder: (BuildContext context, GoRouterState state) {
+                return const UserChronicalDiseaseInfoPage();
+              },
+            ),
+          ],
+        ),
         // GoRoute(
         //   path: 'treatment-view',
         //   name: 'TreatmentView',
