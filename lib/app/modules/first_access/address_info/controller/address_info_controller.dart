@@ -5,9 +5,6 @@ import 'dart:convert';
 
 part 'address_info_controller.g.dart';
 
-// ignore: constant_identifier_names
-enum Gender { Masculino, Feminino }
-
 class AddressInfoController = _AddressInfoController with _$AddressInfoController;
 
 abstract class _AddressInfoController with Store {

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobx/mobx.dart';
-import 'package:provider/provider.dart';
-import 'package:tcc_medicine_management/app/modules/first_access/health_info/controller/health_info_controller.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/health_info/widget/form/health_info_form.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 
 class HealthInfoPage extends StatefulWidget {
@@ -14,12 +11,8 @@ class HealthInfoPage extends StatefulWidget {
 }
 
 class _HealthInfoPageState extends State<HealthInfoPage> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
-  final HealthInfoController healthInfoController = Provider.of<HealthInfoController>(context);
-
     return Scaffold(
       body: SafeArea(
         child: PaddedScreen(
@@ -62,173 +55,10 @@ class _HealthInfoPageState extends State<HealthInfoPage> {
                 ],
               ),
               const SizedBox(height: 30.0),
-              Expanded(
+              const Expanded(
                 flex: 10,
                 child: SingleChildScrollView(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        Observer(
-                          builder: (_) => buildTextField(
-                            context,
-                            healthInfoController.height,
-                            icon: Icons.local_post_office_rounded,
-                            label: 'Altura (metros)',
-                          ),
-                        ),
-                    
-                         Observer(
-                          builder: (_) => buildTextField(
-                            context,
-                            healthInfoController.weight,
-                            icon: Icons.streetview_outlined,
-                            label: 'Peso (kg)',
-                          ),
-                        ),
-                    
-                         Observer(
-                            builder: (_) => Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
-                              child: DropdownButtonFormField<bool>(
-                                value: healthInfoController.isPregnant,
-                                decoration: const InputDecoration(
-                                  prefixIcon: Icon(Icons.people_outline),
-                                  labelText: 'É Gestante?',
-                                ),
-                                items: const [
-                                    DropdownMenuItem<bool>(
-                                      value: true,
-                                      child: Text('SIM'),
-                                    ),
-                                    DropdownMenuItem<bool>(
-                                      value: false,
-                                      child: Text('NÃO'),
-                                    ),
-                                  ],
-                                onChanged: (bool? value) {
-                                  if (value != null) {
-                                    healthInfoController.setPregnant(value);
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
-
-                          Observer(
-                            builder: (_) => Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
-                              child: DropdownButtonFormField<bool>(
-                                value: healthInfoController.isSmoker,
-                                decoration: const InputDecoration(
-                                  prefixIcon: Icon(Icons.people_outline),
-                                  labelText: 'É Fumante?',
-                                ),
-                                items: const [
-                                    DropdownMenuItem<bool>(
-                                      value: true,
-                                      child: Text('SIM'),
-                                    ),
-                                    DropdownMenuItem<bool>(
-                                      value: false,
-                                      child: Text('NÃO'),
-                                    ),
-                                  ],
-                                onChanged: (bool? value) {
-                                  if (value != null) {
-                                    healthInfoController.setSmoker(value);
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
-
-                          Observer(
-                            builder: (_) => Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
-                              child: DropdownButtonFormField<bool>(
-                                value: healthInfoController.isAlcohol,
-                                decoration: const InputDecoration(
-                                  prefixIcon: Icon(Icons.people_outline),
-                                  labelText: 'Faz Consumo de Álcool?',
-                                ),
-                                items: const [
-                                    DropdownMenuItem<bool>(
-                                      value: true,
-                                      child: Text('SIM'),
-                                    ),
-                                    DropdownMenuItem<bool>(
-                                      value: false,
-                                      child: Text('NÃO'),
-                                    ),
-                                  ],
-                                onChanged: (bool? value) {
-                                  if (value != null) {
-                                    healthInfoController.setAlcohol(value);
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
-
-                          Observer(
-                            builder: (_) => Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
-                              child: DropdownButtonFormField<bool>(
-                                value: healthInfoController.hasAllergy,
-                                decoration: const InputDecoration(
-                                  prefixIcon: Icon(Icons.people_outline),
-                                  labelText: 'Possui Alergia a Medicamentos?',
-                                ),
-                                items: const [
-                                    DropdownMenuItem<bool>(
-                                      value: true,
-                                      child: Text('SIM'),
-                                    ),
-                                    DropdownMenuItem<bool>(
-                                      value: false,
-                                      child: Text('NÃO'),
-                                    ),
-                                  ],
-                                onChanged: (bool? value) {
-                                  if (value != null) {
-                                    healthInfoController.setAllergy(value);
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
-
-                          Observer(
-                            builder: (_) => Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
-                              child: DropdownButtonFormField<bool>(
-                                value: healthInfoController.hasChronicDisease,
-                                decoration: const InputDecoration(
-                                  prefixIcon: Icon(Icons.people_outline),
-                                  labelText: 'Possui Doenças Crônicas? (diabetes, asma, etc...)',
-                                ),
-                                items: const [
-                                    DropdownMenuItem<bool>(
-                                      value: true,
-                                      child: Text('SIM'),
-                                    ),
-                                    DropdownMenuItem<bool>(
-                                      value: false,
-                                      child: Text('NÃO'),
-                                    ),
-                                  ],
-                                onChanged: (bool? value) {
-                                  if (value != null) {
-                                    healthInfoController.setChronicDisease(value);
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
+                  child: HealthInfoFormWidget()
                 ),
               ),
               Expanded(child: Container()),
@@ -262,40 +92,6 @@ class _HealthInfoPageState extends State<HealthInfoPage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  // Widget buildTextField(BuildContext context,
-  Widget buildTextField(
-    BuildContext context,
-    TextEditingController? textEditingController, {
-    required String label,
-    Function? onChanged,
-    IconData? icon,
-    Function? onClear,
-    bool? clearable,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextFormField(
-        decoration: InputDecoration(
-          prefixIcon: Icon(icon),
-          suffixIcon: clearable != null && clearable
-              ? IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    if (onClear != null) onClear();
-                    textEditingController?.clear(); // Clear the text field
-                  },
-                )
-              : null,
-          labelText: label,
-        ),
-        controller: textEditingController,
-        onChanged: (value) {
-          if (onChanged != null) onChanged(value);
-        },
       ),
     );
   }

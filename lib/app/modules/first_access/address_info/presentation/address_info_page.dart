@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:tcc_medicine_management/app/modules/first_access/address_info/controller/address_info_controller.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/address_info/widget/form/address_info_form.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 
 class AddressInfoPage extends StatefulWidget {
@@ -13,12 +11,9 @@ class AddressInfoPage extends StatefulWidget {
 }
 
 class _AddressInfoPageState extends State<AddressInfoPage> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-  final AddressInfoController addressInfoController = Provider.of<AddressInfoController>(context);
-  
     return Scaffold(
       body: SafeArea(
         child: PaddedScreen(
@@ -28,14 +23,13 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      context.goNamed('UserInfo');
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.only(bottom: 7.0),
-                      child: Icon(Icons.arrow_back_ios, size: 20),
-                    )
-                  ),
+                      onTap: () {
+                        context.goNamed('UserInfo');
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.only(bottom: 7.0),
+                        child: Icon(Icons.arrow_back_ios, size: 20),
+                      )),
                   const SizedBox(width: 6.0),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,65 +61,10 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.black54, height: 1.4),
               ),
               const SizedBox(height: 10.0),
-              Expanded(
+              const Expanded(
                 flex: 4,
                 child: SingleChildScrollView(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        Observer(
-                          builder: (_) => buildTextField(
-                            context,
-                            addressInfoController.postalCode,
-                            icon: Icons.local_post_office_rounded,
-                            label: 'CEP',
-                            onChanged: (value) {
-                              if (value.length == 8) {
-                                addressInfoController.getAddressInfo(value);
-                              }
-                            },
-                          ),
-                        ),
-                    
-                         Observer(
-                          builder: (_) => buildTextField(
-                            context,
-                            addressInfoController.street,
-                            icon: Icons.streetview_outlined,
-                            label: 'Logradouro',
-                          ),
-                        ),
-                    
-                         Observer(
-                          builder: (_) => buildTextField(
-                            context,
-                            addressInfoController.neighborhood,
-                            icon: Icons.location_city_outlined,
-                            label: 'Bairro',
-                          ),
-                        ),
-                    
-                         Observer(
-                          builder: (_) => buildTextField(
-                            context,
-                            addressInfoController.city,
-                            icon: Icons.location_pin,
-                            label: 'Município',
-                          ),
-                        ),
-                    
-                         Observer(
-                          builder: (_) => buildTextField(
-                            context,
-                            addressInfoController.state,
-                            icon: Icons.map,
-                            label: 'UF',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: AddressInfoFormWidget(),
                 ),
               ),
               Expanded(child: Container()),

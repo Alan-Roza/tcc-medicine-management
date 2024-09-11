@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobx/mobx.dart';
-import 'package:provider/provider.dart';
-import 'package:tcc_medicine_management/app/modules/first_access/allergy_info/controller/allergy_info_controller.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/allergy_info/widget/form/allergy_info_form.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 
 class AllergyInfoPage extends StatefulWidget {
@@ -14,12 +11,9 @@ class AllergyInfoPage extends StatefulWidget {
 }
 
 class _AllergyInfoPageState extends State<AllergyInfoPage> {
-  final TextEditingController _controller = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-  final AllergyInfoController allergyInfoController = Provider.of<AllergyInfoController>(context);
 
     return Scaffold(
       body: SafeArea(
@@ -62,63 +56,10 @@ class _AllergyInfoPageState extends State<AllergyInfoPage> {
                 ],
               ),
               const SizedBox(height: 30.0),
-              Expanded(
+              const Expanded(
                 flex: 10,
                 child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const Text(
-                        textAlign: TextAlign.justify,
-                        'Escreva todos os medicamentos que você possui alergia, separando-os por vírgula.',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.black54, height: 1.4),
-                      ),
-                      const SizedBox(height: 30.0),
-                      const Text(
-                        'Medicamentos',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      TextField(
-                        controller: _controller,
-                        decoration: InputDecoration(
-                          labelText: 'Digite os medicamentos',
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.add, color: Colors.blue,),
-                            onPressed: () {
-                              allergyInfoController.addMedicine(_controller.text);
-                              _controller.clear();
-                            },
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Observer(
-                        builder: (_) => Wrap(
-                          spacing: 8.0,
-                          children: allergyInfoController.medicines
-                              .map((medicine) => Chip(
-                                    label: Text(
-                                      medicine,
-                                      style: TextStyle(
-                                        color: Theme.of(context).primaryColor, // Set text color to primaryColor
-                                      ),
-                                    ),
-                                    onDeleted: () => allergyInfoController.removeMedicine(medicine),
-                                    shape: RoundedRectangleBorder(
-                                      side: BorderSide(
-                                      color: Theme.of(context).primaryColor, // Set border color to primaryColor
-                                      width: 1, // Set border width
-                                      ),
-                                      borderRadius: BorderRadius.circular(10), // Add a border radius
-                                    ),
-                                    deleteIconColor:
-                                        Theme.of(context).primaryColor, // Set delete icon color to primaryColor
-                                  ))
-                              .toList(),
-                        ),
-                      ),
-                    ],
-                  ),
+                  child: AllergyInfoFormWidget(),
                 ),
               ),
               Expanded(child: Container()),
