@@ -15,6 +15,8 @@ import 'package:tcc_medicine_management/app/modules/main_home/main/presentation/
 import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/presentation/connection_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/main/presentation/user_profile_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/patient/presentation/patient_page.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/user_general_info/presentation/general_info_page.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/user_general_info/presentation/user_address_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/user_general_info/presentation/user_general_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/presentation/medicine_stock_form_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/view/presentation/medicine_stock_view_page.dart';
@@ -150,7 +152,7 @@ final GoRouter appRouter = GoRouter(
           builder: (BuildContext context, GoRouterState state) {
             Map<String, String> params = state.uri.queryParameters;
             bool readOnly = params['readOnly'] == 'true';
-            
+
             return MedicineStockViewPage(readOnly: readOnly);
           },
         ),
@@ -176,19 +178,34 @@ final GoRouter appRouter = GoRouter(
           },
         ),
         GoRoute(
-          path: 'userGeneralInfo',
-          name: 'UserGeneralInfo',
-          builder: (BuildContext context, GoRouterState state) {
-            return const UserGeneralInfoPage();
-          },
-        ),
+            path: 'userGeneralInfo',
+            name: 'UserGeneralInfo',
+            builder: (BuildContext context, GoRouterState state) {
+              return const UserGeneralInfoPage();
+            },
+            routes: [
+              GoRoute(
+                path: 'generalUserInfo',
+                name: 'GeneralUserInfo',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const GeneralInfoPage();
+                },
+              ),
+              GoRoute(
+                path: 'userAddressInfo',
+                name: 'UserAddressInfo',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const UserAddressInfoPage();
+                },
+              ),
+            ]),
         // GoRoute(
         //   path: 'treatment-view',
         //   name: 'TreatmentView',
         //   builder: (BuildContext context, GoRouterState state) {
         //     Map<String, String> params = state.uri.queryParameters;
         //     bool readOnly = params['readOnly'] == 'true';
-            
+
         //     return TreatmentViewPage(readOnly: readOnly);
         //   },
         // ),

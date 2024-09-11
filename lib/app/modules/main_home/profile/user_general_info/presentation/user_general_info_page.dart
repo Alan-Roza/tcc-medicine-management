@@ -21,9 +21,9 @@ class UserGeneralInfoPage extends StatelessWidget {
               children: [
               // Menu options
               _buildMenuItem(
-                Icons.person_outline, 'Informações Gerais', '', context, false, () => context.goNamed('UserGeneralInfo')),
-              _buildMenuItem(Icons.health_and_safety, 'Endereço', '', context,
-                false, () => {}),
+                Icons.person_outline, 'Informações Gerais', '', context, false, () => context.goNamed('GeneralUserInfo')),
+              _buildMenuItem(Icons.house_outlined, 'Endereço', '', context,
+                false, () => context.goNamed('UserAddressInfo')),
               ],
             ),
             ),
