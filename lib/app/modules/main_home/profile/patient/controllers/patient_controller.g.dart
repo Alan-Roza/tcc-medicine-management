@@ -25,6 +25,20 @@ mixin _$PatientController on _PatientController, Store {
     });
   }
 
+  late final _$_PatientControllerActionController =
+      ActionController(name: '_PatientController', context: context);
+
+  @override
+  void createPatientCardList() {
+    final _$actionInfo = _$_PatientControllerActionController.startAction(
+        name: '_PatientController.createPatientCardList');
+    try {
+      return super.createPatientCardList();
+    } finally {
+      _$_PatientControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''

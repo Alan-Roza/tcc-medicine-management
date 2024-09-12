@@ -60,7 +60,7 @@ class UserProfilePage extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              _buildMenuItem(Icons.help_outline, 'Ajuda', '', context, true, () => {}),
+              _buildMenuItem(Icons.help_outline, 'Ajuda', '', context, true, () => context.goNamed('FaqHelp')),
               _buildMenuItem(Icons.security, 'Segurança', '', context, true, () => {}),
               _buildMenuItem(Icons.settings, 'Configurações', '', context, true, () => {}),
             ],

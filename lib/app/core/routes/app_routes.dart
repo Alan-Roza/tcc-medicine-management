@@ -13,6 +13,7 @@ import 'package:tcc_medicine_management/app/modules/first_access/user_level_assi
 import 'package:tcc_medicine_management/app/modules/main_home/daily_summary/presentation/daily_summary_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/main/presentation/main_home_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/presentation/connection_page.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/faq_help/presentation/faq_help_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/health_info/presentation/general_health_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/health_info/presentation/user_allergy_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/health_info/presentation/user_chronical_disease_info_page.dart';
@@ -182,21 +183,21 @@ final GoRouter appRouter = GoRouter(
           },
         ),
         GoRoute(
-          path: 'userGeneralInfo',
+          path: 'user-general-info',
           name: 'UserGeneralInfo',
           builder: (BuildContext context, GoRouterState state) {
             return const UserGeneralInfoPage();
           },
           routes: [
             GoRoute(
-              path: 'generalUserInfo',
+              path: 'general-user-info',
               name: 'GeneralUserInfo',
               builder: (BuildContext context, GoRouterState state) {
                 return const GeneralInfoPage();
               },
             ),
             GoRoute(
-              path: 'userAddressInfo',
+              path: 'user-address-info',
               name: 'UserAddressInfo',
               builder: (BuildContext context, GoRouterState state) {
                 return const UserAddressInfoPage();
@@ -205,34 +206,41 @@ final GoRouter appRouter = GoRouter(
           ],
         ),
         GoRoute(
-          path: 'userHealthInfoPage',
+          path: 'user-health-info-page',
           name: 'UserHealthInfoPage',
           builder: (BuildContext context, GoRouterState state) {
             return const UserHealthInfoPage();
           },
           routes: [
             GoRoute(
-              path: 'generalHealthInfo',
+              path: 'general-health-info',
               name: 'GeneralHealthInfo',
               builder: (BuildContext context, GoRouterState state) {
                 return const GeneralHealthInfoPage();
               },
             ),
             GoRoute(
-              path: 'userAllergyInfoPage',
+              path: 'user-allergy-info-page',
               name: 'UserAllergyInfoPage',
               builder: (BuildContext context, GoRouterState state) {
                 return const UserAllergyInfoPage();
               },
             ),
             GoRoute(
-              path: 'userChronicalDiseaseInfoPage',
+              path: 'user-chronical-disease-info-page',
               name: 'UserChronicalDiseaseInfoPage',
               builder: (BuildContext context, GoRouterState state) {
                 return const UserChronicalDiseaseInfoPage();
               },
             ),
           ],
+        ),
+        GoRoute(
+          path: 'faq-help',
+          name: 'FaqHelp',
+          builder: (BuildContext context, GoRouterState state) {
+            return FaqHelpPage();
+          },
         ),
         // GoRoute(
         //   path: 'treatment-view',
