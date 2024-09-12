@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/faq_help/controllers/faq_help_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 
-class FaqHelpPage extends StatelessWidget {
-  const FaqHelpPage({super.key});
+class FaqHelpItemPage extends StatelessWidget {
+  const FaqHelpItemPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class FaqHelpPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ajuda e Informações'),
+        title: Text(faqHelpController.selectedItem!.title ?? 'Ajuda e Informações'),
         centerTitle: true,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
@@ -22,28 +22,6 @@ class FaqHelpPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'COMO PODEMOS TE AJUDAR HOJE, --USUÁRIO--?',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                Container(
-                  width: 40,
-                  height: 6,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF00A8FF),
-                    border: Border.all(
-                      color: const Color(0xFF00A8FF), // Set border color
-                      width: 2, // Set border width
-                    ),
-                    borderRadius: BorderRadius.circular(10), // Add a border radius
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 26.0),
             TextField(
               decoration: InputDecoration(
                 fillColor: Colors.white,
@@ -71,18 +49,43 @@ class FaqHelpPage extends StatelessWidget {
             ),
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.only(top: 0), // Add this line to remove the top padding
+                padding: const EdgeInsets.only(top: 0),
                 children: [
-                  // Menu options
-                  for (var faqHelpItem in faqHelpController.faqHelpItems)
-                    _buildMenuItem(
-                      faqHelpItem.icon as IconData,
-                      faqHelpItem.title,
-                      faqHelpItem.subtitle ?? '',
-                      context,
-                      faqHelpItem.greyMode,
-                      () => {faqHelpController.onSelectItem(faqHelpItem), context.goNamed("FaqHelpAnswer")},
-                    ),
+                  if (faqHelpController.selectedItem!.answers.isNotEmpty)
+                    for (var answerItem in faqHelpController.selectedItem!.answers)
+                      Observer(
+                        builder: (_) => Column(
+                          children: [
+                            Theme(
+                              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                              child: ExpansionTile(
+                                title: Text(answerItem.question),
+                                initiallyExpanded: faqHelpController.isOpenList[0],
+                                onExpansionChanged: (bool expanded) {
+                                  faqHelpController.toggle(0);
+                                },
+                                tilePadding: EdgeInsets.zero,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(answerItem.answer),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: double.infinity,
+                              height: 1,
+                              color: Colors.black12,
+                            ),
+                          ],
+                        ),
+                      )
+                  else
+                    const SizedBox.shrink(),
                 ],
               ),
             ),

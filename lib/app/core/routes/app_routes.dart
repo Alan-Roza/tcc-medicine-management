@@ -13,6 +13,7 @@ import 'package:tcc_medicine_management/app/modules/first_access/user_level_assi
 import 'package:tcc_medicine_management/app/modules/main_home/daily_summary/presentation/daily_summary_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/main/presentation/main_home_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/presentation/connection_page.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/faq_help/presentation/faq_help_item_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/faq_help/presentation/faq_help_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/health_info/presentation/general_health_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/health_info/presentation/user_allergy_info_page.dart';
@@ -236,12 +237,20 @@ final GoRouter appRouter = GoRouter(
           ],
         ),
         GoRoute(
-          path: 'faq-help',
-          name: 'FaqHelp',
-          builder: (BuildContext context, GoRouterState state) {
-            return FaqHelpPage();
-          },
-        ),
+            path: 'faq-help',
+            name: 'FaqHelp',
+            builder: (BuildContext context, GoRouterState state) {
+              return const FaqHelpPage();
+            },
+            routes: [
+              GoRoute(
+                path: 'faq-help-answer',
+                name: 'FaqHelpAnswer',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const FaqHelpItemPage();
+                },
+              )
+            ]),
         // GoRoute(
         //   path: 'treatment-view',
         //   name: 'TreatmentView',

@@ -7,6 +7,7 @@ class FaqHelpItem {
   final String? subtitle;
   final bool greyMode;
   final Function? onTap;
+  final List<FaqHelpAnswer> answers;
 
   FaqHelpItem({
     this.icon,
@@ -14,5 +15,16 @@ class FaqHelpItem {
     this.subtitle,
     required this.greyMode,
     this.onTap,
+    required this.answers,
+  });
+}
+
+class FaqHelpAnswer {
+  final String question;
+  final String answer;
+
+  FaqHelpAnswer({
+    required this.question,
+    required this.answer,
   });
 }

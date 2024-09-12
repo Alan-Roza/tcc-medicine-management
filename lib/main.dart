@@ -9,6 +9,7 @@ import 'package:tcc_medicine_management/app/modules/first_access/chronical_disea
 import 'package:tcc_medicine_management/app/modules/first_access/configurations/controller/configurations_controller.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/health_info/controller/health_info_controller.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/user_info/controller/user_info_controller.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/faq_help/controllers/faq_help_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/view/controllers/medicine_view_controller.dart';
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
           Provider<HealthInfoController>(create: (_) => HealthInfoController()),
           Provider<UserInfoController>(create: (_) => UserInfoController()),
           Provider<AllergyInfoController>(create: (_) => AllergyInfoController()),
+          Provider<FaqHelpController>(create: (_) => FaqHelpController()),
         ],
         child: MaterialApp.router(
             routerConfig: appRouter,

@@ -25,8 +25,51 @@ mixin _$FaqHelpController on _FaqHelpController, Store {
     });
   }
 
+  late final _$selectedItemAtom =
+      Atom(name: '_FaqHelpController.selectedItem', context: context);
+
+  @override
+  FaqHelpItem? get selectedItem {
+    _$selectedItemAtom.reportRead();
+    return super.selectedItem;
+  }
+
+  @override
+  set selectedItem(FaqHelpItem? value) {
+    _$selectedItemAtom.reportWrite(value, super.selectedItem, () {
+      super.selectedItem = value;
+    });
+  }
+
+  late final _$isOpenListAtom =
+      Atom(name: '_FaqHelpController.isOpenList', context: context);
+
+  @override
+  ObservableList<bool> get isOpenList {
+    _$isOpenListAtom.reportRead();
+    return super.isOpenList;
+  }
+
+  @override
+  set isOpenList(ObservableList<bool> value) {
+    _$isOpenListAtom.reportWrite(value, super.isOpenList, () {
+      super.isOpenList = value;
+    });
+  }
+
   late final _$_FaqHelpControllerActionController =
       ActionController(name: '_FaqHelpController', context: context);
+
+  @override
+  void toggle(int index) {
+    final _$actionInfo = _$_FaqHelpControllerActionController.startAction(
+        name: '_FaqHelpController.toggle');
+    try {
+      return super.toggle(index);
+    } finally {
+      _$_FaqHelpControllerActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void onSearch(String value) {
@@ -40,9 +83,22 @@ mixin _$FaqHelpController on _FaqHelpController, Store {
   }
 
   @override
+  void onSelectItem(FaqHelpItem helpItem) {
+    final _$actionInfo = _$_FaqHelpControllerActionController.startAction(
+        name: '_FaqHelpController.onSelectItem');
+    try {
+      return super.onSelectItem(helpItem);
+    } finally {
+      _$_FaqHelpControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-currentPage: ${currentPage}
+currentPage: ${currentPage},
+selectedItem: ${selectedItem},
+isOpenList: ${isOpenList}
     ''';
   }
 }
