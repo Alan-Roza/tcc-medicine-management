@@ -12,6 +12,8 @@ import 'package:tcc_medicine_management/app/modules/first_access/user_info/prese
 import 'package:tcc_medicine_management/app/modules/first_access/user_level_assistance/presentation/user_level_assistance_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/daily_summary/presentation/daily_summary_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/main/presentation/main_home_page.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/configurations/presentation/general_configurations_page.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/configurations/presentation/user_configurations_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/presentation/connection_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/faq_help/presentation/faq_help_item_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/faq_help/presentation/faq_help_page.dart';
@@ -237,20 +239,37 @@ final GoRouter appRouter = GoRouter(
           ],
         ),
         GoRoute(
-            path: 'faq-help',
-            name: 'FaqHelp',
-            builder: (BuildContext context, GoRouterState state) {
-              return const FaqHelpPage();
-            },
-            routes: [
-              GoRoute(
-                path: 'faq-help-answer',
-                name: 'FaqHelpAnswer',
-                builder: (BuildContext context, GoRouterState state) {
-                  return const FaqHelpItemPage();
-                },
-              )
-            ]),
+          path: 'faq-help',
+          name: 'FaqHelp',
+          builder: (BuildContext context, GoRouterState state) {
+            return const FaqHelpPage();
+          },
+          routes: [
+            GoRoute(
+              path: 'faq-help-answer',
+              name: 'FaqHelpAnswer',
+              builder: (BuildContext context, GoRouterState state) {
+                return const FaqHelpItemPage();
+              },
+            )
+          ],
+        ),
+        GoRoute(
+          path: 'user-configurations',
+          name: 'UserConfigurations',
+          builder: (BuildContext context, GoRouterState state) {
+            return const UserConfigurationsPage();
+          },
+          routes: [
+            GoRoute(
+              path: 'user-general-configurations',
+              name: 'UserGeneralConfigurations',
+              builder: (BuildContext context, GoRouterState state) {
+                return const GeneralConfigurationsPage();
+              },
+            )
+          ],
+        )
         // GoRoute(
         //   path: 'treatment-view',
         //   name: 'TreatmentView',
