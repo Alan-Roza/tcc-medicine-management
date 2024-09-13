@@ -20,6 +20,7 @@ import 'package:tcc_medicine_management/app/shared/controllers/user/user_control
 import 'package:tcc_medicine_management/app/shared/themes/theme.dart';
 import 'package:tcc_medicine_management/app/shared/themes/util.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:tcc_medicine_management/app/shared/widgets/notification/controller/notification_controller.dart';
 
 void main() {
   runApp(const MyApp());
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
           Provider<UserInfoController>(create: (_) => UserInfoController()),
           Provider<AllergyInfoController>(create: (_) => AllergyInfoController()),
           Provider<FaqHelpController>(create: (_) => FaqHelpController()),
+          Provider<NotificationController>(create: (_) => NotificationController()),
         ],
         child: MaterialApp.router(
             routerConfig: appRouter,

@@ -32,6 +32,7 @@ import 'package:tcc_medicine_management/app/modules/treatment/form/presentation/
 import 'package:tcc_medicine_management/app/modules/unauth/home/presentation/unauth_home_page.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/login/presentation/unauth_login_page.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/signup/presentation/unauth_signup_page.dart';
+import 'package:tcc_medicine_management/app/shared/widgets/notification/presentation/notification_page.dart';
 
 final GoRouter appRouter = GoRouter(
   routes: <RouteBase>[
@@ -60,6 +61,13 @@ final GoRouter appRouter = GoRouter(
           },
         ),
       ],
+    ),
+    GoRoute(
+      path: '/notification',
+      name: 'Notification',
+      builder: (BuildContext context, GoRouterState state) {
+        return const NotificationPage();
+      },
     ),
     GoRoute(
       path: '/first-access',

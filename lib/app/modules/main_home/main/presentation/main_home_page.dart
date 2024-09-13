@@ -10,6 +10,7 @@ import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/me
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/presentation/medicine_card_widget.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/treatment_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_card_widget/presentation/treatment_card_widget.dart';
+import 'package:tcc_medicine_management/app/shared/widgets/notification/controller/notification_controller.dart';
 
 class MainHomePage extends StatefulWidget {
   const MainHomePage({super.key});
@@ -25,6 +26,7 @@ class _MainHomePageState extends State<MainHomePage> {
   Widget build(BuildContext context) {
     final medicineStockListController = Provider.of<MedicineStockListController>(context);
     final treatmentListController = Provider.of<TreatmentListController>(context);
+    final notificationController = Provider.of<NotificationController>(context);
 
     return Observer(
       builder: (_) => Scaffold(
@@ -35,7 +37,14 @@ class _MainHomePageState extends State<MainHomePage> {
                 surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
                 title: const Text('Tela Inicial'),
                 actions: [
-                  IconButton(icon: const Badge(child: Icon(Icons.notifications_outlined)), onPressed: () {}),
+                  IconButton(
+                    icon: Badge.count(
+                      isLabelVisible: notificationController.unreadNotificationCount > 0,
+                      count: notificationController.unreadNotificationCount,
+                      child: const Icon(Icons.notifications_outlined),
+                    ),
+                    onPressed: () => context.pushNamed('Notification'),
+                  ),
                 ],
                 // actions: [_buildAppBarActions()],
               )
