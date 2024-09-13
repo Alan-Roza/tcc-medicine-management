@@ -2,8 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/login/controller/login_controller.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/shared/widgets/unauth_layout_widget.dart';
+import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
 
 class UnauthLoginPage extends StatefulWidget {
   const UnauthLoginPage({super.key});
@@ -18,6 +20,8 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final userController = Provider.of<UserController>(context);
+
     double height = MediaQuery.of(context).size.height;
     var keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
@@ -57,8 +61,7 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       LayoutBuilder(
-                        builder:
-                            (BuildContext context, BoxConstraints constraints) {
+                        builder: (BuildContext context, BoxConstraints constraints) {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -66,8 +69,7 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                 'LOGIN',
                                 style: TextStyle(
                                     fontSize: 22,
-                                    fontFamily:
-                                        'Roboto', // Set the font family to Roboto
+                                    fontFamily: 'Roboto', // Set the font family to Roboto
                                     fontWeight: FontWeight.w500,
                                     height: 1.2),
                               ),
@@ -78,12 +80,10 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                 decoration: BoxDecoration(
                                   color: const Color(0xFF00A8FF),
                                   border: Border.all(
-                                    color: const Color(
-                                        0xFF00A8FF), // Set border color
+                                    color: const Color(0xFF00A8FF), // Set border color
                                     width: 2, // Set border width
                                   ),
-                                  borderRadius: BorderRadius.circular(
-                                      10), // Add a border radius
+                                  borderRadius: BorderRadius.circular(10), // Add a border radius
                                 ),
                               )
                             ],
@@ -99,8 +99,7 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                             child: Column(
                               children: [
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 5.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 5.0),
                                   child: Observer(
                                     builder: (_) => TextFormField(
                                       onChanged: loginController.setEmail,
@@ -108,36 +107,29 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                         labelText: 'Email',
                                         prefixIcon: Icon(Icons.email_outlined),
                                       ),
-                                      validator: (_) =>
-                                          loginController.emailError,
+                                      validator: (_) => loginController.emailError,
                                     ),
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 5.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 5.0),
                                   child: Observer(
                                     builder: (_) => TextFormField(
-                                      obscureText:
-                                          !loginController.isPasswordVisible,
+                                      obscureText: !loginController.isPasswordVisible,
                                       onChanged: loginController.setPassword,
                                       decoration: InputDecoration(
                                         labelText: 'Senha',
-                                        prefixIcon:
-                                            const Icon(Icons.lock_outline),
+                                        prefixIcon: const Icon(Icons.lock_outline),
                                         suffixIcon: IconButton(
-                                          icon: Icon(loginController
-                                                  .isPasswordVisible
+                                          icon: Icon(loginController.isPasswordVisible
                                               ? Icons.visibility_outlined
                                               : Icons.visibility_off_outlined),
                                           onPressed: () {
-                                            loginController
-                                                .togglePasswordVisibility();
+                                            loginController.togglePasswordVisibility();
                                           },
                                         ),
                                       ),
-                                      validator: (_) =>
-                                          loginController.passwordError,
+                                      validator: (_) => loginController.passwordError,
                                     ),
                                   ),
                                 ),
@@ -147,9 +139,7 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                     RichText(
                                       text: TextSpan(
                                         text: "Esqueci minha senha",
-                                        style: const TextStyle(
-                                            color: Colors.blue,
-                                            fontWeight: FontWeight.bold),
+                                        style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
                                             // Handle terms of use tap
@@ -159,12 +149,12 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                   ],
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 25.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 25.0),
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      final Future<String?> response =
-                                          loginController.submitLogin(_formKey);
+                                      userController.login("Alan Roza");
+                                      
+                                      final Future<String?> response = loginController.submitLogin(_formKey);
 
                                       response.then(
                                         (value) {
@@ -178,22 +168,20 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                           //     ),
                                           //   );
                                           // } else {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              const SnackBar(
-                                                content: Text(
-                                                    'Login realizado com sucesso!'),
-                                              ),
-                                            );
-                                            // context.goNamed('FirstAccess'); // TODO - Add conditional 
-                                            context.goNamed('MainHome');
+                                          
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              content: Text('Login realizado com sucesso!'),
+                                            ),
+                                          );
+                                          // context.goNamed('FirstAccess'); // TODO - Add conditional
+                                          context.goNamed('MainHome');
                                           // }
                                         },
                                       );
                                     },
                                     child: Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.75,
+                                      width: MediaQuery.of(context).size.width * 0.75,
                                       height: 51,
                                       alignment: Alignment.center,
                                       child: const Text(
@@ -206,21 +194,17 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 15.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 15.0),
                                   child: RichText(
                                     text: TextSpan(
                                       children: [
                                         const TextSpan(
                                           text: "Não possui uma conta? ",
-                                          style:
-                                              TextStyle(color: Colors.black54),
+                                          style: TextStyle(color: Colors.black54),
                                         ),
                                         TextSpan(
                                           text: "Cadastrar",
-                                          style: const TextStyle(
-                                              color: Colors.blue,
-                                              fontWeight: FontWeight.bold),
+                                          style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
                                           recognizer: TapGestureRecognizer()
                                             ..onTap = () {
                                               context.goNamed('Signup');

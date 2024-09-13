@@ -270,34 +270,7 @@ final GoRouter appRouter = GoRouter(
             )
           ],
         )
-        // GoRoute(
-        //   path: 'treatment-view',
-        //   name: 'TreatmentView',
-        //   builder: (BuildContext context, GoRouterState state) {
-        //     Map<String, String> params = state.uri.queryParameters;
-        //     bool readOnly = params['readOnly'] == 'true';
-
-        //     return TreatmentViewPage(readOnly: readOnly);
-        //   },
-        // ),
       ],
     ),
-    // GoRoute(
-    //   path: '/medicine-stock-list',
-    //   name: 'MedicineStockList',
-    //   builder: (BuildContext context, GoRouterState state) {
-    //     return MedicineStockListPage();
-    //   },
-    //   routes: [
-    //     GoRoute(
-    //       path: 'medicine-stock-form',
-    //       name: 'MedicineStockForm',
-    //       builder: (BuildContext context, GoRouterState state) {
-    //         return const MedicineStockFormPage();
-    //       },
-    //     ),
-    //     // Add more authenticated routes here.
-    //   ],
-    // ),
   ],
 );

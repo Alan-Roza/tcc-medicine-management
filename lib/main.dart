@@ -15,6 +15,7 @@ import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/me
 import 'package:tcc_medicine_management/app/modules/medicine/view/controllers/medicine_view_controller.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/form/controllers/treatment_form_controller.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/treatment_list_controller.dart';
+import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
 // import 'package:tcc_medicine_management/app/shared/style/app_theme.dart';
 import 'package:tcc_medicine_management/app/shared/themes/theme.dart';
 import 'package:tcc_medicine_management/app/shared/themes/util.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
       ],
       home: MultiProvider(
         providers: [
+           Provider<UserController>(create: (_) => UserController()),
           Provider<MedicineViewController>(create: (_) => MedicineViewController()),
           Provider<MedicineStockListController>(create: (_) => MedicineStockListController()),
           Provider<MedicineFormController>(

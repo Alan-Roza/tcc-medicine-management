@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/faq_help/controllers/faq_help_controller.dart';
+import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 
 class FaqHelpPage extends StatelessWidget {
@@ -10,6 +11,7 @@ class FaqHelpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final faqHelpController = Provider.of<FaqHelpController>(context);
+    final userController = Provider.of<UserController>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -25,9 +27,9 @@ class FaqHelpPage extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'COMO PODEMOS TE AJUDAR HOJE, --USUÁRIO--?',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                Text(
+                  'COMO PODEMOS TE AJUDAR HOJE, ${userController.name.toUpperCase()}?',
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 Container(
                   width: 40,
