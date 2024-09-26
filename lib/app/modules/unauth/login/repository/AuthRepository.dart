@@ -21,10 +21,34 @@ class AuthRepository {
           "password": password,
         };
         final response = await _apiService.post(endPoint: "/OAuth/Login", data: data);
-        // final response = await _apiService.post(endPoint: "/OAuth/Login", data: data);
-        // success
-        // return either right
-        // return data
+        // final data = BaseResponseDto.fromJson(response.data);
+
+        String token = response.data['token'];
+        
+        // Save token to SharedPreferences
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', token);
+
+        return Right(response.data);
+      } catch (error) {
+        return Left(Failure(400, "bad request"));
+        // return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      return Left(Failure(401, "bad request"));
+      // return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  // @override
+  Future<Either<Failure, dynamic>> signup(String login, String password) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        final data = {
+          "login": login,
+          "password": password,
+        };
+        final response = await _apiService.post(endPoint: "/User", data: data);
         // final data = BaseResponseDto.fromJson(response.data);
 
         String token = response.data['token'];

@@ -9,37 +9,48 @@ part of 'signup_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$SignupController on _SignupController, Store {
-  late final _$isPasswordVisibleAtom =
-      Atom(name: '_SignupController.isPasswordVisible', context: context);
+  Computed<bool>? _$isEmailValidComputed;
 
   @override
-  bool get isPasswordVisible {
-    _$isPasswordVisibleAtom.reportRead();
-    return super.isPasswordVisible;
-  }
+  bool get isEmailValid =>
+      (_$isEmailValidComputed ??= Computed<bool>(() => super.isEmailValid,
+              name: '_SignupController.isEmailValid'))
+          .value;
+  Computed<String?>? _$emailErrorComputed;
 
   @override
-  set isPasswordVisible(bool value) {
-    _$isPasswordVisibleAtom.reportWrite(value, super.isPasswordVisible, () {
-      super.isPasswordVisible = value;
-    });
-  }
-
-  late final _$isConfirmVisibleAtom =
-      Atom(name: '_SignupController.isConfirmVisible', context: context);
+  String? get emailError =>
+      (_$emailErrorComputed ??= Computed<String?>(() => super.emailError,
+              name: '_SignupController.emailError'))
+          .value;
+  Computed<bool>? _$isPasswordValidComputed;
 
   @override
-  bool get isConfirmVisible {
-    _$isConfirmVisibleAtom.reportRead();
-    return super.isConfirmVisible;
-  }
+  bool get isPasswordValid =>
+      (_$isPasswordValidComputed ??= Computed<bool>(() => super.isPasswordValid,
+              name: '_SignupController.isPasswordValid'))
+          .value;
+  Computed<String?>? _$passwordErrorComputed;
 
   @override
-  set isConfirmVisible(bool value) {
-    _$isConfirmVisibleAtom.reportWrite(value, super.isConfirmVisible, () {
-      super.isConfirmVisible = value;
-    });
-  }
+  String? get passwordError =>
+      (_$passwordErrorComputed ??= Computed<String?>(() => super.passwordError,
+              name: '_SignupController.passwordError'))
+          .value;
+  Computed<bool>? _$isConfirmPasswordValidComputed;
+
+  @override
+  bool get isConfirmPasswordValid => (_$isConfirmPasswordValidComputed ??=
+          Computed<bool>(() => super.isConfirmPasswordValid,
+              name: '_SignupController.isConfirmPasswordValid'))
+      .value;
+  Computed<String?>? _$confirmPasswordErrorComputed;
+
+  @override
+  String? get confirmPasswordError => (_$confirmPasswordErrorComputed ??=
+          Computed<String?>(() => super.confirmPasswordError,
+              name: '_SignupController.confirmPasswordError'))
+      .value;
 
   late final _$emailAtom =
       Atom(name: '_SignupController.email', context: context);
@@ -57,30 +68,48 @@ mixin _$SignupController on _SignupController, Store {
     });
   }
 
+  late final _$passwordAtom =
+      Atom(name: '_SignupController.password', context: context);
+
+  @override
+  String get password {
+    _$passwordAtom.reportRead();
+    return super.password;
+  }
+
+  @override
+  set password(String value) {
+    _$passwordAtom.reportWrite(value, super.password, () {
+      super.password = value;
+    });
+  }
+
+  late final _$confirmPasswordAtom =
+      Atom(name: '_SignupController.confirmPassword', context: context);
+
+  @override
+  String get confirmPassword {
+    _$confirmPasswordAtom.reportRead();
+    return super.confirmPassword;
+  }
+
+  @override
+  set confirmPassword(String value) {
+    _$confirmPasswordAtom.reportWrite(value, super.confirmPassword, () {
+      super.confirmPassword = value;
+    });
+  }
+
+  late final _$onSignupAsyncAction =
+      AsyncAction('_SignupController.onSignup', context: context);
+
+  @override
+  Future<String?> onSignup(GlobalKey<FormState> formKey) {
+    return _$onSignupAsyncAction.run(() => super.onSignup(formKey));
+  }
+
   late final _$_SignupControllerActionController =
       ActionController(name: '_SignupController', context: context);
-
-  @override
-  void togglePasswordVisibility() {
-    final _$actionInfo = _$_SignupControllerActionController.startAction(
-        name: '_SignupController.togglePasswordVisibility');
-    try {
-      return super.togglePasswordVisibility();
-    } finally {
-      _$_SignupControllerActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void toggleConfirmPasswordVisibility() {
-    final _$actionInfo = _$_SignupControllerActionController.startAction(
-        name: '_SignupController.toggleConfirmPasswordVisibility');
-    try {
-      return super.toggleConfirmPasswordVisibility();
-    } finally {
-      _$_SignupControllerActionController.endAction(_$actionInfo);
-    }
-  }
 
   @override
   void setEmail(String value) {
@@ -88,6 +117,28 @@ mixin _$SignupController on _SignupController, Store {
         name: '_SignupController.setEmail');
     try {
       return super.setEmail(value);
+    } finally {
+      _$_SignupControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPassword(String value) {
+    final _$actionInfo = _$_SignupControllerActionController.startAction(
+        name: '_SignupController.setPassword');
+    try {
+      return super.setPassword(value);
+    } finally {
+      _$_SignupControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setConfirmPassword(String value) {
+    final _$actionInfo = _$_SignupControllerActionController.startAction(
+        name: '_SignupController.setConfirmPassword');
+    try {
+      return super.setConfirmPassword(value);
     } finally {
       _$_SignupControllerActionController.endAction(_$actionInfo);
     }
@@ -107,9 +158,15 @@ mixin _$SignupController on _SignupController, Store {
   @override
   String toString() {
     return '''
-isPasswordVisible: ${isPasswordVisible},
-isConfirmVisible: ${isConfirmVisible},
-email: ${email}
+email: ${email},
+password: ${password},
+confirmPassword: ${confirmPassword},
+isEmailValid: ${isEmailValid},
+emailError: ${emailError},
+isPasswordValid: ${isPasswordValid},
+passwordError: ${passwordError},
+isConfirmPasswordValid: ${isConfirmPasswordValid},
+confirmPasswordError: ${confirmPasswordError}
     ''';
   }
 }

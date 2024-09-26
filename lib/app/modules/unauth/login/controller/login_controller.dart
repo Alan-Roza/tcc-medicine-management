@@ -10,7 +10,6 @@ class LoginController = _LoginController with _$LoginController;
 abstract class _LoginController with Store {
   final AuthRepository _authRepository = getIt<AuthRepository>();
 
-
   @observable
   bool isPasswordVisible = false;
 
@@ -31,7 +30,7 @@ abstract class _LoginController with Store {
   @action
   void setPassword(String value) => password = value;
 
-   @action
+  @action
   Future<String?> onSubmitLogin(GlobalKey<FormState> formKey) async {
     if (!formKey.currentState!.validate()) {
       return null;
@@ -45,13 +44,6 @@ abstract class _LoginController with Store {
       // Handle error
     }
     return null;
-  }
-
-  @action
-  Future<String?> submitLogin(GlobalKey<FormState> formKey) async {
-    
-
-    return 'Não foi possível realizar o login, tente novamente mais tarde.';
   }
 
   @computed

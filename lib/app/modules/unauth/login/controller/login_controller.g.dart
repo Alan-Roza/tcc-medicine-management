@@ -86,12 +86,12 @@ mixin _$LoginController on _LoginController, Store {
     });
   }
 
-  late final _$submitLoginAsyncAction =
-      AsyncAction('_LoginController.submitLogin', context: context);
+  late final _$onSubmitLoginAsyncAction =
+      AsyncAction('_LoginController.onSubmitLogin', context: context);
 
   @override
-  Future<String?> submitLogin(GlobalKey<FormState> formKey) {
-    return _$submitLoginAsyncAction.run(() => super.submitLogin(formKey));
+  Future<String?> onSubmitLogin(GlobalKey<FormState> formKey) {
+    return _$onSubmitLoginAsyncAction.run(() => super.onSubmitLogin(formKey));
   }
 
   late final _$_LoginControllerActionController =

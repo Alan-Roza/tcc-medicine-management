@@ -1,28 +1,23 @@
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/login/repository/AuthRepository.dart';
+import 'package:tcc_medicine_management/main.dart';
 
 part 'signup_controller.g.dart';
 
 class SignupController = _SignupController with _$SignupController;
 
 abstract class _SignupController with Store {
-  @observable
-  bool isPasswordVisible = false;
-
-  @observable
-  bool isConfirmVisible = false;
+  final AuthRepository _authRepository = getIt<AuthRepository>();
 
   @observable
   String email = '';
-  
-  @action
-  void togglePasswordVisibility() {
-    isPasswordVisible = !isPasswordVisible;
-  }
 
-  @action
-  void toggleConfirmPasswordVisibility() {
-    isConfirmVisible = !isConfirmVisible;
-  }
+  @observable
+  String password = '';
+
+  @observable
+  String confirmPassword = '';
 
   @action
   void setEmail(String value) {
@@ -30,7 +25,62 @@ abstract class _SignupController with Store {
   }
 
   @action
+  void setPassword(String value) => password = value;
+
+  @action
+  void setConfirmPassword(String value) => password = value;
+
+  @action
   void clearEmail() {
     email = '';
+  }
+
+  @action
+  Future<String?> onSignup(GlobalKey<FormState> formKey) async {
+    if (!formKey.currentState!.validate()) {
+      return null;
+    }
+
+    try {
+      await _authRepository.signup(email, password);
+      return 'Signup efetuado com sucesso';
+      // Update your observable properties with the user profile data
+    } catch (e) {
+      // Handle error
+    }
+    return null;
+  }
+
+  @computed
+  bool get isEmailValid => email.contains('@');
+
+  @computed
+  String? get emailError {
+    if (email.isEmpty || !isEmailValid) {
+      return 'Por favor, insira um e-mail válido';
+    }
+    return null;
+  }
+
+  @computed
+  bool get isPasswordValid => password.length >= 6;
+
+  @computed
+  String? get passwordError {
+    if (password.isEmpty || !isPasswordValid) {
+      return 'A senha deve conter pelo menos 6 caracteres';
+    }
+    return null;
+  }
+
+  @computed
+  bool get isConfirmPasswordValid => confirmPassword == password;
+
+  @computed
+  String? get confirmPasswordError {
+    if (password.isEmpty || !isPasswordValid) {
+      return 'As senhas não conferem';
+    }
+    return null;
   }
 }

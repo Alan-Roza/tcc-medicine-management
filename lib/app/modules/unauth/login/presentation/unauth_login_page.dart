@@ -104,7 +104,7 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                     builder: (_) => TextFormField(
                                       onChanged: loginController.setEmail,
                                       decoration: const InputDecoration(
-                                        labelText: 'Email',
+                                        labelText: 'E-mail',
                                         prefixIcon: Icon(Icons.email_outlined),
                                       ),
                                       validator: (_) => loginController.emailError,

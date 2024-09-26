@@ -1,13 +1,17 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/shared/widgets/unauth_layout_widget.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/signup/controller/signup_controller.dart';
 
 class UnauthSignupPage extends StatelessWidget {
   const UnauthSignupPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    final signupController = SignupController();
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
@@ -82,143 +86,166 @@ class UnauthSignupPage extends StatelessWidget {
                       SizedBox(
                         height: height / 2.3,
                         child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5.0),
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                    labelText: 'E-mail',
-                                    prefixIcon: const Icon(Icons.mail_outline),
-                                    suffixIcon: IconButton(
-                                      icon: const Icon(Icons.clear),
-                                      onPressed: () {
-                                        // Clear the text field
-                                      },
+                          child: Form(
+                            key: formKey,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                                  child: Observer(
+                                    builder: (_) => TextFormField(
+                                      onChanged: signupController.setEmail,
+                                      decoration: const InputDecoration(
+                                        labelText: 'E-mail',
+                                        prefixIcon: Icon(Icons.email_outlined),
+                                      ),
+                                      validator: (_) => signupController.emailError,
                                     ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5.0),
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Senha',
-                                    prefixIcon: const Icon(Icons.lock),
-                                    suffixIcon: IconButton(
-                                      icon: const Icon(Icons.clear),
-                                      onPressed: () {
-                                        // Clear the text field
-                                      },
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                                  child: Observer(
+                                    builder: (_) => TextFormField(
+                                      obscureText: true,
+                                      onChanged: signupController.setPassword,
+                                      decoration: const InputDecoration(
+                                        labelText: 'Senha',
+                                        prefixIcon: Icon(Icons.lock_outline),
+                                      ),
+                                      validator: (_) => signupController.passwordError,
                                     ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5.0),
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Confirmar Senha',
-                                    prefixIcon: const Icon(Icons.lock),
-                                    suffixIcon: IconButton(
-                                      icon: const Icon(Icons.clear),
-                                      onPressed: () {
-                                        // Clear the text field
-                                      },
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                                  child: Observer(
+                                    builder: (_) => TextFormField(
+                                      obscureText: true,
+                                      onChanged: signupController.setConfirmPassword,
+                                      decoration: const InputDecoration(
+                                        labelText: 'Confirmar Senha',
+                                        prefixIcon: Icon(Icons.lock_outline),
+                                      ),
+                                      validator: (_) => signupController.confirmPasswordError,
                                     ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 25.0),
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    foregroundColor: Colors.white,
-                                    backgroundColor: const Color(0xFF00A8FF),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    context.goNamed('Login');
-                                  },
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.75,
-                                    height: 51,
-                                    alignment: Alignment.center,
-                                    child: const Text(
-                                      'Entrar',
-                                      style: TextStyle(
-                                        fontSize: 16,
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 25.0),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      foregroundColor: Colors.white,
+                                      backgroundColor: const Color(0xFF00A8FF),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
+                                    onPressed: () {
+                                      // userController.login("Alan Roza");
+                                      
+                                      final Future<String?> response = signupController.onSignup(formKey);
+
+                                      response.then(
+                                        (value) {
+                                          // TODO: validation, use after finished
+                                          // if (value != null &&
+                                          //     value.isNotEmpty) {
+                                          //   ScaffoldMessenger.of(context)
+                                          //       .showSnackBar(
+                                          //     SnackBar(
+                                          //       content: Text(value),
+                                          //     ),
+                                          //   );
+                                          // } else {
+                                          if (value!.isNotEmpty) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(
+                                                content: Text('Cadastrado realizado com sucesso!'),
+                                              ),
+                                            );
+                                            // context.goNamed('FirstAccess'); // TODO - Add conditional
+                                            context.goNamed('MainHome');
+                                          }
+                                          // }
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.75,
+                                      height: 51,
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        'Entrar',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5.0),
-                                child: RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      const TextSpan(
-                                        text:
-                                            "Cadastrando-se com o TCC, você aceita os ",
-                                        style: TextStyle(color: Colors.black54),
-                                      ),
-                                      TextSpan(
-                                        text: "Termos de Uso",
-                                        style: const TextStyle(color: Colors.blue),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            // Handle terms of use tap
-                                          },
-                                      ),
-                                      const TextSpan(
-                                        text: " e a ",
-                                        style: TextStyle(color: Colors.black54),
-                                      ),
-                                      TextSpan(
-                                        text: "Política de Privacidade",
-                                        style: const TextStyle(color: Colors.blue),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            // Handle privacy policy tap
-                                          },
-                                      ),
-                                    ],
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5.0),
+                                  child: RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        const TextSpan(
+                                          text:
+                                              "Cadastrando-se com o TCC, você aceita os ",
+                                          style: TextStyle(color: Colors.black54),
+                                        ),
+                                        TextSpan(
+                                          text: "Termos de Uso",
+                                          style: const TextStyle(color: Colors.blue),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              // Handle terms of use tap
+                                            },
+                                        ),
+                                        const TextSpan(
+                                          text: " e a ",
+                                          style: TextStyle(color: Colors.black54),
+                                        ),
+                                        TextSpan(
+                                          text: "Política de Privacidade",
+                                          style: const TextStyle(color: Colors.blue),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              // Handle privacy policy tap
+                                            },
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 15.0),
-                                child: RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      const TextSpan(
-                                        text: "Já possui uma conta? ",
-                                        style: TextStyle(color: Colors.black54),
-                                      ),
-                                      TextSpan(
-                                        text: "Entrar",
-                                        style: const TextStyle(color: Colors.blue),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            context.goNamed('Home');
-                                            // Handle terms of use tap
-                                          },
-                                      ),
-                                    ],
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 15.0),
+                                  child: RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        const TextSpan(
+                                          text: "Já possui uma conta? ",
+                                          style: TextStyle(color: Colors.black54),
+                                        ),
+                                        TextSpan(
+                                          text: "Entrar",
+                                          style: const TextStyle(color: Colors.blue),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              context.goNamed('Home');
+                                              // Handle terms of use tap
+                                            },
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
