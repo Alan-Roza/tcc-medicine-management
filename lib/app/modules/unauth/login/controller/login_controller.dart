@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/login/repository/AuthRepository.dart';
+import 'package:tcc_medicine_management/main.dart';
 
 part 'login_controller.g.dart';
 
 class LoginController = _LoginController with _$LoginController;
 
 abstract class _LoginController with Store {
+  final AuthRepository _authRepository = getIt<AuthRepository>();
+
+
   @observable
   bool isPasswordVisible = false;
 
@@ -26,11 +31,25 @@ abstract class _LoginController with Store {
   @action
   void setPassword(String value) => password = value;
 
-  @action
-  Future<String?> submitLogin(GlobalKey<FormState> formKey) async {
-    if (formKey.currentState!.validate()) {
+   @action
+  Future<String?> onSubmitLogin(GlobalKey<FormState> formKey) async {
+    if (!formKey.currentState!.validate()) {
       return null;
     }
+
+    try {
+      await _authRepository.login(email, password);
+      return 'Login efetuado com sucesso';
+      // Update your observable properties with the user profile data
+    } catch (e) {
+      // Handle error
+    }
+    return null;
+  }
+
+  @action
+  Future<String?> submitLogin(GlobalKey<FormState> formKey) async {
+    
 
     return 'Não foi possível realizar o login, tente novamente mais tarde.';
   }

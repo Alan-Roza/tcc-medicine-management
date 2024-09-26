@@ -1,63 +1,36 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class HttpClient {
-  final http.Client _client;
-  final String _basePath = 'http://localhost:3000';
+class DioConfig {
+  late Dio _dio;
 
-  HttpClient() : _client = http.Client();
+  DioConfig() {
+    _dio = Dio(BaseOptions(
+      baseUrl: "http://localhost:7777",
+      // connectTimeout: const Duration(milliseconds: 5000),
+      // receiveTimeout: const Duration(milliseconds: 3000),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    ));
 
-  Future<http.Response> _sendRequest(String method, String endpoint,
-      {dynamic body}) async {
-    final url = Uri.parse('$_basePath$endpoint');
-    final headers = {'Content-Type': 'application/json'};
-    var response = http.Response('', 404);
+    // Attach interceptor for adding Bearer Token
+    _dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String? token = prefs.getString('token');
 
-    switch (method.toUpperCase()) {
-      case 'GET':
-        response = await _client.get(url, headers: headers);
-        break;
-      case 'POST':
-        response =
-            await _client.post(url, headers: headers, body: jsonEncode(body));
-        break;
-      case 'PATCH':
-        response =
-            await _client.patch(url, headers: headers, body: jsonEncode(body));
-        break;
-      case 'PUT':
-        response =
-            await _client.put(url, headers: headers, body: jsonEncode(body));
-        break;
-      case 'DELETE':
-        response = await _client.delete(url, headers: headers);
-        break;
-    }
-
-    return response;
+        if (token != null) {
+          options.headers['Authorization'] = 'Bearer $token';
+        }
+        return handler.next(options);
+      },
+      onError: (DioException error, handler) {
+        // Handle error
+        return handler.next(error);
+      },
+    ));
   }
 
-  Future<http.Response> get(String endpoint) async {
-    return await _sendRequest('GET', endpoint);
-  }
-
-  Future<http.Response> post(String endpoint, {dynamic body}) async {
-    return await _sendRequest('POST', endpoint, body: body);
-  }
-
-  Future<http.Response> patch(String endpoint, {dynamic body}) async {
-    return await _sendRequest('PATCH', endpoint, body: body);
-  }
-
-  Future<http.Response> put(String endpoint, {dynamic body}) async {
-    return await _sendRequest('PUT', endpoint, body: body);
-  }
-
-  Future<http.Response> delete(String endpoint) async {
-    return await _sendRequest('DELETE', endpoint);
-  }
-
-  void close() {
-    _client.close();
-  }
+  Dio get dio => _dio;
 }

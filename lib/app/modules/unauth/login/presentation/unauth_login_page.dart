@@ -154,7 +154,7 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                     onPressed: () {
                                       userController.login("Alan Roza");
                                       
-                                      final Future<String?> response = loginController.submitLogin(_formKey);
+                                      final Future<String?> response = loginController.onSubmitLogin(_formKey);
 
                                       response.then(
                                         (value) {
@@ -168,14 +168,15 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                           //     ),
                                           //   );
                                           // } else {
-                                          
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
-                                              content: Text('Login realizado com sucesso!'),
-                                            ),
-                                          );
-                                          // context.goNamed('FirstAccess'); // TODO - Add conditional
-                                          context.goNamed('MainHome');
+                                          if (value!.isNotEmpty) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(
+                                                content: Text('Login realizado com sucesso!'),
+                                              ),
+                                            );
+                                            // context.goNamed('FirstAccess'); // TODO - Add conditional
+                                            context.goNamed('MainHome');
+                                          }
                                           // }
                                         },
                                       );
