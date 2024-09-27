@@ -1,7 +1,6 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:tcc_medicine_management/app/modules/unauth/login/repository/AuthRepository.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/login/repository/auth_repository.dart';
 import 'package:tcc_medicine_management/main.dart';
 
 part 'login_controller.g.dart';
@@ -15,10 +14,10 @@ abstract class _LoginController with Store {
   bool isPasswordVisible = false;
 
   @observable
-  String email = '';
+  String email = 'alan2@teste.com'; // TODO: dont forget to remove this default value
 
   @observable
-  String password = '';
+  String password = 'alan123'; // TODO: dont forget to remove this default value
 
   @action
   void togglePasswordVisibility() {

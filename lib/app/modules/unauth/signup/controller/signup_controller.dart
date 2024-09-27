@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:tcc_medicine_management/app/modules/unauth/login/repository/AuthRepository.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/login/repository/auth_repository.dart';
 import 'package:tcc_medicine_management/main.dart';
 
 part 'signup_controller.g.dart';
@@ -44,7 +44,7 @@ abstract class _SignupController with Store {
 
     try {
       // Faz a chamada para o login usando o repositório
-      final signupResponse = await _authRepository.login(email, password);
+      final signupResponse = await _authRepository.signup(email, password);
       // Atualiza propriedades observáveis com os dados do perfil do usuário, se necessário
       // Exemplo:
       // userProfile = loginResponse.userProfile;

@@ -25,6 +25,14 @@ mixin _$UserInfoController on _UserInfoController, Store {
     });
   }
 
+  late final _$onSubmitAsyncAction =
+      AsyncAction('_UserInfoController.onSubmit', context: context);
+
+  @override
+  Future<UserInfoDto> onSubmit(GlobalKey<FormState>? formKey) {
+    return _$onSubmitAsyncAction.run(() => super.onSubmit(formKey));
+  }
+
   late final _$_UserInfoControllerActionController =
       ActionController(name: '_UserInfoController', context: context);
 

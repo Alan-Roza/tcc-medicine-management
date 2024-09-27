@@ -14,7 +14,7 @@ class DioFactory {
 
   // DioFactory(this._appPreferences);
 
-  Future<Dio> getDio() async {
+  Dio getDio() {
     Dio dio = Dio();
 
     // String language = await _appPreferences.getAppLanguage();

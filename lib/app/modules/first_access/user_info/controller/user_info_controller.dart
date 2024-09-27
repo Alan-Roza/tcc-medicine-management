@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/user_info/model/dto/user_info_dto.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/user_info/model/entity/user_info.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/user_info/repository/user_info_repository.dart';
+import 'package:tcc_medicine_management/main.dart';
 
 part 'user_info_controller.g.dart';
 
@@ -10,6 +14,8 @@ enum Gender { Masculino, Feminino }
 class UserInfoController = _UserInfoController with _$UserInfoController;
 
 abstract class _UserInfoController with Store {
+  final UserInfoRepository _userInfoRepository = getIt<UserInfoRepository>();
+
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController birthDateController = TextEditingController();
@@ -50,6 +56,37 @@ abstract class _UserInfoController with Store {
   @action
   void clearPhone() {
     phoneController.clear();
+  }
+
+  @action
+  Future<UserInfoDto> onSubmit(GlobalKey<FormState>? formKey) async {
+    // TODO: will be implemented at future
+    // if (!formKey.currentState!.validate()) {
+    //   return Future.error('Formulário inválido');
+    // }
+
+    try {
+      final String name = nameController.text;
+      final String? phone = phoneController.text.isNotEmpty ? phoneController.text : null;
+      final String? birthDate = birthDateController.text.isNotEmpty ? DateFormat('yyyy-MM-ddTHH:mm:ss.SSSZ').format(DateFormat('dd/MM/yyyy').parse(birthDateController.text)) : null;
+      final UserInfoDto userInfo = UserInfoDto(
+        name: name,
+        telephone: phone,
+        birthdate: birthDate,
+        gender: gender.toString().split('.').last,
+      );
+      // final UserInfo userInfo = UserInfo(
+      //   name: name,
+      //   telephone: phone,
+      //   birthdate: birthDate,
+      //   gender: gender as String?,
+      // );
+
+      final UserInfoDto dataResponse = await _userInfoRepository.exec(userInfo);
+      return dataResponse;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
   }
 
   void dispose() {

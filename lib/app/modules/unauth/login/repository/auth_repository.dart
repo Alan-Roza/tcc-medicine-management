@@ -1,12 +1,9 @@
-import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tcc_medicine_management/app/core/infra/api_service.dart';
-import 'package:tcc_medicine_management/app/core/infra/failure.dart';
 import 'package:tcc_medicine_management/app/core/infra/network_info.dart';
-import 'package:tcc_medicine_management/app/modules/unauth/login/model/dto/LoginResponseDto.dart';
-import 'package:tcc_medicine_management/app/modules/unauth/login/model/dto/SignupResponseDto.dart';
-import 'package:tcc_medicine_management/app/shared/constants/constants.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/login/model/dto/login_response_dto.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/login/model/dto/signup_response_dto.dart';
 
 class AuthRepository {
   final NetworkInfo _networkInfo;

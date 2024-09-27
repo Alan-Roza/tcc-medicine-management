@@ -16,6 +16,8 @@ class UserInfoFormWidget extends StatefulWidget {
 class UserInfoFormWidgetState extends State<UserInfoFormWidget> with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  GlobalKey<FormState> get formKey => _formKey;
+
   @override
   Widget build(BuildContext context) {
     final UserInfoController userInfoController = Provider.of<UserInfoController>(context);

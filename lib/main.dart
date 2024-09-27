@@ -5,6 +5,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/core/infra/api_service.dart';
+import 'package:tcc_medicine_management/app/core/infra/dio_factory.dart';
 import 'package:tcc_medicine_management/app/core/infra/http_client.dart';
 import 'package:tcc_medicine_management/app/core/infra/network_info.dart';
 import 'package:tcc_medicine_management/app/core/routes/app_routes.dart';
@@ -15,13 +16,14 @@ import 'package:tcc_medicine_management/app/modules/first_access/chronical_disea
 import 'package:tcc_medicine_management/app/modules/first_access/configurations/controller/configurations_controller.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/health_info/controller/health_info_controller.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/user_info/controller/user_info_controller.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/user_info/repository/user_info_repository.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/faq_help/controllers/faq_help_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/view/controllers/medicine_view_controller.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/form/controllers/treatment_form_controller.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/treatment_list_controller.dart';
-import 'package:tcc_medicine_management/app/modules/unauth/login/repository/AuthRepository.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/login/repository/auth_repository.dart';
 import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
 // import 'package:tcc_medicine_management/app/shared/style/app_theme.dart';
 import 'package:tcc_medicine_management/app/shared/themes/theme.dart';
@@ -60,7 +62,7 @@ class MyApp extends StatelessWidget {
       ],
       home: MultiProvider(
         providers: [
-           Provider<UserController>(create: (_) => UserController()),
+          Provider<UserController>(create: (_) => UserController()),
           Provider<MedicineViewController>(create: (_) => MedicineViewController()),
           Provider<MedicineStockListController>(create: (_) => MedicineStockListController()),
           Provider<MedicineFormController>(
@@ -99,5 +101,11 @@ void setupDependencies() {
   // Register Dio instance
   getIt.registerLazySingleton<DioConfig>(() => DioConfig());
 
-  getIt.registerLazySingleton<AuthRepository>(() => AuthRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(Dio())));
+  // Register AuthRepository with a Dio instance from DioFactory
+  getIt.registerLazySingleton<AuthRepository>(
+      () => AuthRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(DioFactory().getDio())));
+
+  // Register UserInfoRepository with a new Dio instance
+  getIt.registerLazySingleton<UserInfoRepository>(
+      () => UserInfoRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(DioFactory().getDio())));
 }
