@@ -90,7 +90,7 @@ mixin _$LoginController on _LoginController, Store {
       AsyncAction('_LoginController.onSubmitLogin', context: context);
 
   @override
-  Future<String?> onSubmitLogin(GlobalKey<FormState> formKey) {
+  Future<dynamic> onSubmitLogin(GlobalKey<FormState> formKey) {
     return _$onSubmitLoginAsyncAction.run(() => super.onSubmitLogin(formKey));
   }
 

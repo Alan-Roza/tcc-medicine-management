@@ -36,19 +36,24 @@ abstract class _SignupController with Store {
   }
 
   @action
-  Future<String?> onSignup(GlobalKey<FormState> formKey) async {
+  Future<dynamic> onSignup(GlobalKey<FormState> formKey) async {
+    // Verifica se o formulário é válido
     if (!formKey.currentState!.validate()) {
       return null;
     }
 
     try {
-      await _authRepository.signup(email, password);
-      return 'Signup efetuado com sucesso';
-      // Update your observable properties with the user profile data
+      // Faz a chamada para o login usando o repositório
+      final signupResponse = await _authRepository.login(email, password);
+      // Atualiza propriedades observáveis com os dados do perfil do usuário, se necessário
+      // Exemplo:
+      // userProfile = loginResponse.userProfile;
+
+      // Retorna uma mensagem de sucesso
+      return 'Cadastro efetuado com sucesso';
     } catch (e) {
-      // Handle error
+      return e.toString();
     }
-    return null;
   }
 
   @computed

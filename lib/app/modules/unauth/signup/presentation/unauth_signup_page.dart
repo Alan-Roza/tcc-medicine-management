@@ -49,8 +49,7 @@ class UnauthSignupPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       LayoutBuilder(
-                        builder:
-                            (BuildContext context, BoxConstraints constraints) {
+                        builder: (BuildContext context, BoxConstraints constraints) {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -58,8 +57,7 @@ class UnauthSignupPage extends StatelessWidget {
                                 'Cadastrar'.toUpperCase(),
                                 style: const TextStyle(
                                     fontSize: 22,
-                                    fontFamily:
-                                        'Roboto', // Set the font family to Roboto
+                                    fontFamily: 'Roboto', // Set the font family to Roboto
                                     fontWeight: FontWeight.w500,
                                     height: 1.2),
                               ),
@@ -70,12 +68,10 @@ class UnauthSignupPage extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   color: const Color(0xFF00A8FF),
                                   border: Border.all(
-                                    color: const Color(
-                                        0xFF00A8FF), // Set border color
+                                    color: const Color(0xFF00A8FF), // Set border color
                                     width: 2, // Set border width
                                   ),
-                                  borderRadius: BorderRadius.circular(
-                                      10), // Add a border radius
+                                  borderRadius: BorderRadius.circular(10), // Add a border radius
                                 ),
                               )
                             ],
@@ -132,8 +128,7 @@ class UnauthSignupPage extends StatelessWidget {
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 25.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 25.0),
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       foregroundColor: Colors.white,
@@ -142,39 +137,34 @@ class UnauthSignupPage extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
-                                    onPressed: () {
+                                    onPressed: () async {
                                       // userController.login("Alan Roza");
-                                      
-                                      final Future<String?> response = signupController.onSignup(formKey);
 
-                                      response.then(
-                                        (value) {
-                                          // TODO: validation, use after finished
-                                          // if (value != null &&
-                                          //     value.isNotEmpty) {
-                                          //   ScaffoldMessenger.of(context)
-                                          //       .showSnackBar(
-                                          //     SnackBar(
-                                          //       content: Text(value),
-                                          //     ),
-                                          //   );
-                                          // } else {
-                                          if (value!.isNotEmpty) {
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              const SnackBar(
-                                                content: Text('Cadastrado realizado com sucesso!'),
-                                              ),
-                                            );
-                                            // context.goNamed('FirstAccess'); // TODO - Add conditional
-                                            context.goNamed('MainHome');
-                                          }
-                                          // }
-                                        },
-                                      );
+                                      final response = await signupController.onSignup(formKey);
+
+                                      if (response != null && response.isNotEmpty) {
+                                        if (response.startsWith('Exception')) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              backgroundColor: Colors.red,
+                                              content: Text(response.replaceAll(
+                                                  'Exception: ', '')), // Remove 'exception:' from the response
+                                            ),
+                                          );
+                                          return;
+                                        }
+
+                                        context.goNamed('FirstAccess');
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: Colors.green,
+                                            content: Text(response),
+                                          ),
+                                        );
+                                      }
                                     },
                                     child: Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.75,
+                                      width: MediaQuery.of(context).size.width * 0.75,
                                       height: 51,
                                       alignment: Alignment.center,
                                       child: const Text(
@@ -187,14 +177,12 @@ class UnauthSignupPage extends StatelessWidget {
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 5.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 5.0),
                                   child: RichText(
                                     text: TextSpan(
                                       children: [
                                         const TextSpan(
-                                          text:
-                                              "Cadastrando-se com o TCC, você aceita os ",
+                                          text: "Cadastrando-se com o TCC, você aceita os ",
                                           style: TextStyle(color: Colors.black54),
                                         ),
                                         TextSpan(
@@ -222,8 +210,7 @@ class UnauthSignupPage extends StatelessWidget {
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 15.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 15.0),
                                   child: RichText(
                                     text: TextSpan(
                                       children: [

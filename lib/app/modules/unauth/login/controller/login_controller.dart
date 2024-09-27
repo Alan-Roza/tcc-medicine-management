@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/login/repository/AuthRepository.dart';
@@ -31,19 +32,28 @@ abstract class _LoginController with Store {
   void setPassword(String value) => password = value;
 
   @action
-  Future<String?> onSubmitLogin(GlobalKey<FormState> formKey) async {
+  Future<dynamic> onSubmitLogin(GlobalKey<FormState> formKey) async {
+    // Verifica se o formulário é válido
     if (!formKey.currentState!.validate()) {
       return null;
     }
 
     try {
-      await _authRepository.login(email, password);
+      // Faz a chamada para o login usando o repositório
+      final loginResponse = await _authRepository.login(email, password);
+
+      print('-------------------->');
+      print(loginResponse);
+
+      // Atualiza propriedades observáveis com os dados do perfil do usuário, se necessário
+      // Exemplo:
+      // userProfile = loginResponse.userProfile;
+
+      // Retorna uma mensagem de sucesso
       return 'Login efetuado com sucesso';
-      // Update your observable properties with the user profile data
     } catch (e) {
-      // Handle error
+      return e.toString();
     }
-    return null;
   }
 
   @computed

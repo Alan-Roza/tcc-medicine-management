@@ -151,35 +151,31 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 25.0),
                                   child: ElevatedButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       userController.login("Alan Roza");
-                                      
-                                      final Future<String?> response = loginController.onSubmitLogin(_formKey);
 
-                                      response.then(
-                                        (value) {
-                                          // TODO: validation, use after finished
-                                          // if (value != null &&
-                                          //     value.isNotEmpty) {
-                                          //   ScaffoldMessenger.of(context)
-                                          //       .showSnackBar(
-                                          //     SnackBar(
-                                          //       content: Text(value),
-                                          //     ),
-                                          //   );
-                                          // } else {
-                                          if (value!.isNotEmpty) {
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              const SnackBar(
-                                                content: Text('Login realizado com sucesso!'),
-                                              ),
-                                            );
-                                            // context.goNamed('FirstAccess'); // TODO - Add conditional
-                                            context.goNamed('MainHome');
-                                          }
-                                          // }
-                                        },
-                                      );
+                                      final response = await loginController.onSubmitLogin(_formKey);
+
+                                      if (response != null && response.isNotEmpty) {
+                                        if (response.startsWith('Exception')) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              backgroundColor: Colors.red,
+                                              content: Text(response.replaceAll('Exception: ', '')), // Remove 'exception:' from the response
+                                            ),
+                                          );
+                                          return;
+                                        }
+
+
+                                        context.goNamed('MainHome');
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: Colors.green,
+                                            content: Text(response),
+                                          ),
+                                        );
+                                      }
                                     },
                                     child: Container(
                                       width: MediaQuery.of(context).size.width * 0.75,
