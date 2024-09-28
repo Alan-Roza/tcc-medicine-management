@@ -167,8 +167,8 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                           return;
                                         }
 
-                                        context.goNamed('FirstAccess');
-                                        // context.goNamed('MainHome'); // TODO: use it after be done all implementations
+                                        // context.goNamed('FirstAccess');
+                                        context.goNamed('MainHome'); // TODO: use it after be done all implementations
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
                                             backgroundColor: Colors.green,

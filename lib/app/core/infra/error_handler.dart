@@ -1,3 +1,32 @@
+
+import 'package:dio/dio.dart';
+
+Future<String> handleError(dynamic error) async {
+  String errorMessage = 'Oops... Tente novamente mais tarde';
+
+  if (error is DioException) {
+    final responseData = error.response?.data;
+
+    if (responseData != null) {
+      if (responseData is List && responseData.isNotEmpty && responseData[0] is Map<String, dynamic>) {
+        errorMessage = responseData[0]['message'] ?? errorMessage;
+      } else if (responseData is Map<String, dynamic>) {
+        errorMessage = responseData['message'] ?? errorMessage;
+      }
+    } else {
+      errorMessage = error.message ?? errorMessage;
+    }
+  } else {
+    errorMessage = "Erro inesperado: ${error.toString()}";
+  }
+
+  return Future.error(errorMessage);
+}
+
+
+
+
+
 // import 'package:dio/dio.dart';
 // import 'package:tcc_medicine_management/app/core/infra/failure.dart';
 
