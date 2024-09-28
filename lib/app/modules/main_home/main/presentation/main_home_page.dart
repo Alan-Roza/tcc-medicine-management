@@ -248,7 +248,8 @@ class _MainHomePageState extends State<MainHomePage> {
       case 0:
         return FloatingActionButton(
           onPressed: () {
-            treatmentListController.createMedicineCardList();
+            // treatmentListController.createMedicineCardList();
+            medicineStockListController.getListMedicines(null);
             // medicineStockListController.addCard(CardItem(
             //   type: "Comprimido",
             //   name: 'Início',

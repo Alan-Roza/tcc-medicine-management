@@ -7,6 +7,8 @@ class MedicineCard {
   final String expirationDate;
   final double price;
   final String priority;
+  final int medicineId;
+
 
   MedicineCard({
     this.imageUrl,
@@ -16,6 +18,7 @@ class MedicineCard {
     required this.expirationDate,
     required this.price,
     required this.priority,
+    required this.medicineId,
     this.isSelected = false
   });
 }

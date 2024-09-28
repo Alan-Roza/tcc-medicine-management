@@ -25,6 +25,15 @@ mixin _$MedicineViewController on _MedicineViewController, Store {
     });
   }
 
+  late final _$getByIdMedicineAsyncAction =
+      AsyncAction('_MedicineViewController.getByIdMedicine', context: context);
+
+  @override
+  Future<MedicineViewResponseDto> getByIdMedicine(int medicineId) {
+    return _$getByIdMedicineAsyncAction
+        .run(() => super.getByIdMedicine(medicineId));
+  }
+
   late final _$_MedicineViewControllerActionController =
       ActionController(name: '_MedicineViewController', context: context);
 

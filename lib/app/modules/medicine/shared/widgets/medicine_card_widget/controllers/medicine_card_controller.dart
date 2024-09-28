@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/model/medicine_card_model.dart';
 
@@ -16,6 +15,7 @@ abstract class MedicineCardControllerBase with Store {
   late String expirationDate;
   late double price;
   late String priority;
+  late int medicineId;
 
 
    MedicineCardControllerBase(MedicineCard? medicine) {
@@ -29,6 +29,7 @@ abstract class MedicineCardControllerBase with Store {
     expirationDate = medicine.expirationDate;
     price = medicine.price;
     priority = medicine.priority;
+    medicineId = medicine.medicineId;
   }
 
   @action

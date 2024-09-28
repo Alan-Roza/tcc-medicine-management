@@ -1,36 +1,23 @@
 import 'package:mobx/mobx.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/list/model/dto/medicine_list_dto.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/list/model/dto/medicine_list_request.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/list/repository/medicine_list_repository.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/controllers/medicine_card_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/model/medicine_card_model.dart';
+import 'package:tcc_medicine_management/main.dart';
 
 part 'medicine_stock_list_controller.g.dart';
 
 class MedicineStockListController = _MedicineStockListController with _$MedicineStockListController;
 
 abstract class _MedicineStockListController with Store {
+  final MedicineListRepository _medicineListRepository = getIt<MedicineListRepository>();
 
   @observable
   ObservableList<MedicineCardController> medicineCards = ObservableList<MedicineCardController>();
 
   @observable
   bool multiSelectionIsEnabled = false;
-
-  @action
-  void createMedicineCardList() {
-    for (int i = 0; i <= 20; i++) {
-      medicineCards.add(
-        MedicineCardController(
-          MedicineCard(
-            name: 'Medicine $i',
-            type: 'Type $i',
-            quantity: i,
-            expirationDate: '2022-12-31',
-            price: 10.0 * i,
-            priority: 'High',
-          ),
-        ),
-      );
-    }
-  }
 
   @action
   void enableMultiSelection() => multiSelectionIsEnabled = true;
@@ -61,22 +48,36 @@ abstract class _MedicineStockListController with Store {
 
     disableMultiSelection();
   }
+
+  @action
+  Future<void> getListMedicines(MedicineListRequestDto? parameters) async {
+    try {
+      // final UserInfoDto userInfo = UserInfoDto(
+      //   name: name,
+      //   telephone: phone,
+      //   birthdate: birthDate,
+      //   gender: gender.toString().split('.').last,
+      // );
+
+      final MedicineListDto dataResponse = await _medicineListRepository.exec(parameters);
+
+      for (var element in dataResponse.content!) {
+        medicineCards.add(
+          MedicineCardController(
+            MedicineCard(
+              medicineId: element.id!,
+              name: element.name!,
+              type: element.type!,
+              quantity: element.storageQuantity!,
+              expirationDate: element.expirationDate!,
+              price: 0,
+              priority: element.importance!,
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
 }
-
-// class CardItem {
-//   String name;
-//   String type;
-//   int quantity;
-//   String expirationDate;
-//   double price;
-//   String priority;
-
-//   CardItem({
-//     required this.name,
-//     required this.type,
-//     required this.quantity,
-//     required this.expirationDate,
-//     required this.price,
-//     required this.priority,
-//   });
-// }

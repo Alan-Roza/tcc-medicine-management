@@ -21,7 +21,6 @@ import 'package:tcc_medicine_management/app/modules/main_home/profile/health_inf
 import 'package:tcc_medicine_management/app/modules/main_home/profile/health_info/presentation/user_allergy_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/health_info/presentation/user_chronical_disease_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/health_info/presentation/user_health_info_page.dart';
-import 'package:tcc_medicine_management/app/modules/main_home/profile/main/presentation/user_profile_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/patient/presentation/patient_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/user_general_info/presentation/general_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/user_general_info/presentation/user_address_info_page.dart';
@@ -169,7 +168,7 @@ final GoRouter appRouter = GoRouter(
             Map<String, String> params = state.uri.queryParameters;
             bool readOnly = params['readOnly'] == 'true';
 
-            return MedicineStockViewPage(readOnly: readOnly);
+            return MedicineStockViewPage(medicineId: params['medicineId']!, readOnly: readOnly);
           },
         ),
         GoRoute(

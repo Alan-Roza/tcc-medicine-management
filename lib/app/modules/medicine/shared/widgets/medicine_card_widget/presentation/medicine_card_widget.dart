@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
@@ -42,7 +41,7 @@ class MedicineCardWidget extends StatelessWidget {
         return GestureDetector(
           onTap: () => {
             if (medicineStockListController.multiSelectionIsEnabled) {medicineCard.toggleSelection()}
-            else context.goNamed('MedicineStockView', queryParameters: {'readOnly': 'true',}),
+            else context.goNamed('MedicineStockView', queryParameters: {'readOnly': 'true', 'medicineId': medicineCard.medicineId.toString()}),
           },
           onLongPress: () => {
             // if (onLongPress != null)

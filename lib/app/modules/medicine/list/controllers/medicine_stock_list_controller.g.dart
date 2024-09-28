@@ -43,20 +43,18 @@ mixin _$MedicineStockListController on _MedicineStockListController, Store {
     });
   }
 
-  late final _$_MedicineStockListControllerActionController =
-      ActionController(name: '_MedicineStockListController', context: context);
+  late final _$getListMedicinesAsyncAction = AsyncAction(
+      '_MedicineStockListController.getListMedicines',
+      context: context);
 
   @override
-  void createMedicineCardList() {
-    final _$actionInfo =
-        _$_MedicineStockListControllerActionController.startAction(
-            name: '_MedicineStockListController.createMedicineCardList');
-    try {
-      return super.createMedicineCardList();
-    } finally {
-      _$_MedicineStockListControllerActionController.endAction(_$actionInfo);
-    }
+  Future<void> getListMedicines(MedicineListRequestDto? parameters) {
+    return _$getListMedicinesAsyncAction
+        .run(() => super.getListMedicines(parameters));
   }
+
+  late final _$_MedicineStockListControllerActionController =
+      ActionController(name: '_MedicineStockListController', context: context);
 
   @override
   void enableMultiSelection() {
