@@ -10,6 +10,7 @@ class CustomTextFieldWidget extends StatelessWidget {
   final bool? clearable;
   final bool readOnly;
   final bool? enabled;
+  final FormFieldValidator<String>? validator;
 
   const CustomTextFieldWidget({
     super.key,
@@ -22,6 +23,7 @@ class CustomTextFieldWidget extends StatelessWidget {
     this.onTap,
     this.readOnly = false,
     this.enabled = true,
+    this.validator,
   });
 
   @override
@@ -47,6 +49,8 @@ class CustomTextFieldWidget extends StatelessWidget {
               : null,
           labelText: label,
         ),
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: validator,
         controller: textEditingController,
         onChanged: (value) {
           if (onChanged != null) onChanged!(value);

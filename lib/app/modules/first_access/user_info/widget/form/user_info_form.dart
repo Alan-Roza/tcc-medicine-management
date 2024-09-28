@@ -6,24 +6,21 @@ import 'package:tcc_medicine_management/app/shared/widgets/custom_text_field/cus
 
 class UserInfoFormWidget extends StatefulWidget {
   final bool readOnly;
+  final GlobalKey<FormState> formKey;
 
-  const UserInfoFormWidget({super.key, this.readOnly = false});
+  const UserInfoFormWidget({super.key, required this.formKey, this.readOnly = false});
 
   @override
   UserInfoFormWidgetState createState() => UserInfoFormWidgetState();
 }
 
 class UserInfoFormWidgetState extends State<UserInfoFormWidget> with SingleTickerProviderStateMixin {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  GlobalKey<FormState> get formKey => _formKey;
-
   @override
   Widget build(BuildContext context) {
     final UserInfoController userInfoController = Provider.of<UserInfoController>(context);
 
     return Form(
-      key: _formKey,
+      key: widget.formKey,
       child: Column(
         children: [
           Observer(
@@ -31,6 +28,8 @@ class UserInfoFormWidgetState extends State<UserInfoFormWidget> with SingleTicke
               textEditingController: userInfoController.nameController,
               icon: Icons.person_outline,
               label: 'Nome',
+              validator: (_) => userInfoController.nameError,
+              onChanged: userInfoController.setName,
             ),
           ),
           Observer(

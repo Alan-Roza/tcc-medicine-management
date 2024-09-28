@@ -204,7 +204,7 @@ final GoRouter appRouter = GoRouter(
               path: 'general-user-info',
               name: 'GeneralUserInfo',
               builder: (BuildContext context, GoRouterState state) {
-                return const GeneralInfoPage();
+                return GeneralInfoPage();
               },
             ),
             GoRoute(
