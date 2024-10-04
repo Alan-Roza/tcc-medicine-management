@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/controllers/connection_controller.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/list/controllers/connection_controller.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/login/presentation/unauth_login_page.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 
 class ConnectionPage extends StatelessWidget {
@@ -70,7 +72,7 @@ class ConnectionPage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                connectionController.addItem(['Gaveteiro 1', 'Gaveteiro 2', 'Gaveteiro 3']);
+                context.goNamed('ConnectionForm');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
@@ -79,7 +81,6 @@ class ConnectionPage extends StatelessWidget {
               ),
               child: const Text('ADICIONAR MÓDULO'),
             ),
-            const SizedBox(height: 20.0),
           ],
         ),
       ),

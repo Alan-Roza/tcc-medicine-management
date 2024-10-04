@@ -76,7 +76,7 @@ class PatientPage extends StatelessWidget {
                 minimumSize: const Size(double.infinity, 50),
                 textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
               ),
-              child: const Text('ADICIONAR MÓDULO'),
+              child: const Text('ADICIONAR PACIENTE'),
             ),
             const SizedBox(height: 20.0),
           ],

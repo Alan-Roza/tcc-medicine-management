@@ -14,7 +14,8 @@ import 'package:tcc_medicine_management/app/modules/main_home/daily_summary/pres
 import 'package:tcc_medicine_management/app/modules/main_home/main/presentation/main_home_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/configurations/presentation/general_configurations_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/configurations/presentation/user_configurations_page.dart';
-import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/presentation/connection_page.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/form/presentation/connect_page.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/list/presentation/connection_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/faq_help/presentation/faq_help_item_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/faq_help/presentation/faq_help_page.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/health_info/presentation/general_health_info_page.dart';
@@ -184,6 +185,15 @@ final GoRouter appRouter = GoRouter(
           builder: (BuildContext context, GoRouterState state) {
             return ConnectionPage();
           },
+          routes: [
+            GoRoute(
+              path: 'connection-form',
+              name: 'ConnectionForm',
+              builder: (BuildContext context, GoRouterState state) {
+                return ConnectPage();
+              },
+            )
+          ]
         ),
         GoRoute(
           path: 'patients',
