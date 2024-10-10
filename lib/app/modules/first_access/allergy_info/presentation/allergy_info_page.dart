@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/allergy_info/controller/allergy_info_controller.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/allergy_info/widget/form/allergy_info_form.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/health_info/controller/health_info_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 
 class AllergyInfoPage extends StatefulWidget {
@@ -11,9 +14,12 @@ class AllergyInfoPage extends StatefulWidget {
 }
 
 class _AllergyInfoPageState extends State<AllergyInfoPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    final HealthInfoController healthInfoController = Provider.of<HealthInfoController>(context);
+    final AllergyInfoController allergyInfoController = Provider.of<AllergyInfoController>(context);
 
     return Scaffold(
       body: SafeArea(
@@ -56,16 +62,38 @@ class _AllergyInfoPageState extends State<AllergyInfoPage> {
                 ],
               ),
               const SizedBox(height: 30.0),
-              const Expanded(
+              Expanded(
                 flex: 10,
                 child: SingleChildScrollView(
-                  child: AllergyInfoFormWidget(),
+                  child: AllergyInfoFormWidget(formKey: _formKey),
                 ),
               ),
               Expanded(child: Container()),
               ElevatedButton(
-                onPressed: () {
-                  context.goNamed('ConfigurationsInfo');
+                onPressed: () async {
+                  try {
+                    await allergyInfoController.onSubmit();
+
+                    if (healthInfoController.hasChronicDisease) {
+                      context.goNamed('ChronicleDiseaseInfo');
+                    } else {
+                      context.goNamed('ConfigurationsInfo');
+                    }
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.green,
+                        content: Text("Salvo com Sucesso!"),
+                      ),
+                    );
+                  } catch (error) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text(error.toString()),
+                      ),
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -79,7 +107,11 @@ class _AllergyInfoPageState extends State<AllergyInfoPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  context.goNamed('ConfigurationsInfo');
+                  if (healthInfoController.hasChronicDisease) {
+                    context.goNamed('ChronicleDiseaseInfo');
+                  } else {
+                    context.goNamed('ConfigurationsInfo');
+                  }
                 },
                 child: const Text(
                   'Pular Etapa',

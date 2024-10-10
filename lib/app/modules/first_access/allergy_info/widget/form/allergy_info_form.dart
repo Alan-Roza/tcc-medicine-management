@@ -5,8 +5,9 @@ import 'package:tcc_medicine_management/app/modules/first_access/allergy_info/co
 
 class AllergyInfoFormWidget extends StatefulWidget {
   final bool readOnly;
+  final GlobalKey<FormState> formKey;
 
-  const AllergyInfoFormWidget({super.key, this.readOnly = false});
+  const AllergyInfoFormWidget({super.key, required this.formKey, this.readOnly = false});
 
   @override
   AllergyInfoFormWidgetState createState() => AllergyInfoFormWidgetState();

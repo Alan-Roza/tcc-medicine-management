@@ -3,7 +3,8 @@ import 'package:tcc_medicine_management/app/modules/first_access/allergy_info/wi
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 
 class UserAllergyInfoPage extends StatelessWidget {
-  const UserAllergyInfoPage({super.key});
+  UserAllergyInfoPage({super.key});
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class UserAllergyInfoPage extends StatelessWidget {
       body: PaddedScreen(
         child: Column(
           children: [
-            const Expanded(child: AllergyInfoFormWidget()),
+            Expanded(child: AllergyInfoFormWidget(formKey: _formKey,)),
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(

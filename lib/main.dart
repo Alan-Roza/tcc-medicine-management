@@ -11,6 +11,7 @@ import 'package:tcc_medicine_management/app/core/routes/app_routes.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/address_info/controller/address_info_controller.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/administrator_info/controller/administrator_info_controller.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/allergy_info/controller/allergy_info_controller.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/allergy_info/repository/allergy_info_repository.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/chronical_disease_info/controller/chronical_disease_info_controller.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/configurations/controller/configurations_controller.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/health_info/controller/health_info_controller.dart';
@@ -125,4 +126,7 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<HealthInfoRepository>(
       () => HealthInfoRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(DioFactory().getDio())));
+
+  getIt.registerLazySingleton<AllergyInfoRepository>(
+      () => AllergyInfoRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(DioFactory().getDio())));
 }

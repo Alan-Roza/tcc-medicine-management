@@ -243,7 +243,7 @@ final GoRouter appRouter = GoRouter(
               path: 'user-allergy-info-page',
               name: 'UserAllergyInfoPage',
               builder: (BuildContext context, GoRouterState state) {
-                return const UserAllergyInfoPage();
+                return UserAllergyInfoPage();
               },
             ),
             GoRoute(
