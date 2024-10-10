@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/chronical_disease_info/widget/form/chronical_disease_info_form.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/health_info/controller/health_info_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 
 class ChronicalDiseaseInfoPage extends StatefulWidget {
@@ -13,6 +15,8 @@ class ChronicalDiseaseInfoPage extends StatefulWidget {
 class _ChronicalDiseaseInfoPageState extends State<ChronicalDiseaseInfoPage> {
   @override
   Widget build(BuildContext context) {
+    final HealthInfoController healthInfoController = Provider.of<HealthInfoController>(context);
+    
     return Scaffold(
       body: SafeArea(
         child: PaddedScreen(
@@ -23,7 +27,11 @@ class _ChronicalDiseaseInfoPageState extends State<ChronicalDiseaseInfoPage> {
                 children: [
                   GestureDetector(
                       onTap: () {
-                        context.goNamed('HealthAssistance');
+                        if (healthInfoController.hasAllergy) {
+                          context.goNamed('AllergyInfo');
+                        } else {
+                          context.goNamed('HealthInfo');
+                        }
                       },
                       child: const Padding(
                         padding: EdgeInsets.only(bottom: 7.0),

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/health_info/model/dto/health_info_dto.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/health_info/repository/health_info_repository.dart';
+import 'package:tcc_medicine_management/main.dart';
 
 part 'health_info_controller.g.dart';
 
 class HealthInfoController = _HealthInfoController with _$HealthInfoController;
 
 abstract class _HealthInfoController with Store {
+  final HealthInfoRepository _healthInfoRepository = getIt<HealthInfoRepository>();
+
   TextEditingController height = TextEditingController();
   TextEditingController weight = TextEditingController();
 
@@ -50,6 +55,29 @@ abstract class _HealthInfoController with Store {
 
   void setChronicDisease(bool value) {
     hasChronicDisease = value;
+  }
+
+  @action
+  Future<HealthInfoDto> onSubmit(GlobalKey<FormState> formKey) async {
+    try {
+      // TODO: will be implemented at future
+      if (!formKey.currentState!.validate()) {
+        return Future.error('Preencha os campos corretamente!');
+      }
+
+      final HealthInfoDto healthInfo = HealthInfoDto(
+        height: double.parse(height.text),
+        weight: double.parse(weight.text),
+        pregnant: isPregnant,
+        smoking: isSmoker,
+        alcohol: isAlcohol,
+      );
+
+      final HealthInfoDto dataResponse = await _healthInfoRepository.exec(healthInfo);
+      return dataResponse;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
   }
 
   void dispose() {

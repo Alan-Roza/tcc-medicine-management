@@ -1,9 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/shared/widgets/unauth_layout_widget.dart';
 
-class UnauthHomePage extends StatelessWidget {
+class UnauthHomePage extends StatefulWidget {
   const UnauthHomePage({super.key});
+
+  @override
+  State<UnauthHomePage> createState() => _UnauthHomePageState();
+}
+
+class _UnauthHomePageState extends State<UnauthHomePage> {
+  @override
+    void initState() {
+      super.initState();
+      cleanPreferences();
+    }
+
+    Future<void> cleanPreferences() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+    }
 
   @override
   Widget build(BuildContext context) {

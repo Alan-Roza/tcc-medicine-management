@@ -236,7 +236,7 @@ final GoRouter appRouter = GoRouter(
               path: 'general-health-info',
               name: 'GeneralHealthInfo',
               builder: (BuildContext context, GoRouterState state) {
-                return const GeneralHealthInfoPage();
+                return GeneralHealthInfoPage();
               },
             ),
             GoRoute(
