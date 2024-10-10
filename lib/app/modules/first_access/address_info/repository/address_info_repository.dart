@@ -1,30 +1,25 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tcc_medicine_management/app/core/infra/api_service.dart';
 import 'package:tcc_medicine_management/app/core/infra/error_handler.dart';
 import 'package:tcc_medicine_management/app/core/infra/network_info.dart';
-import 'package:tcc_medicine_management/app/modules/first_access/user_info/model/dto/user_info_dto.dart';
-import 'package:tcc_medicine_management/app/modules/first_access/user_info/model/repository/user_info_repository.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/address_info/model/dto/address_info_dto.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/address_info/model/repository/address_info_repository.dart';
 
-class UserInfoRepository implements IUserInfoRepository {
+class AddressInfoRepository implements IAddressInfoRepository {
   final NetworkInfo _networkInfo;
   final ApiService _apiService;
 
-  UserInfoRepository(this._networkInfo, this._apiService);
+  AddressInfoRepository(this._networkInfo, this._apiService);
 
   @override
-  Future<UserInfoDto> exec(UserInfoDto data) async {
+  Future<AddressInfoDto> exec(AddressInfoDto data) async {
     if (await _networkInfo.isConnected) {
       try {
         final response = await _apiService.post(
-          endPoint: "/Patient", 
+          endPoint: "/Patient/Address", 
           data: data.toJson(),
         );
 
-        final dataResponse = UserInfoDto.fromJson(response.data);
-        String? name = dataResponse.name;
-
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('name', name!);
+        final dataResponse = AddressInfoDto.fromJson(response.data);
       
         return dataResponse;
       } 

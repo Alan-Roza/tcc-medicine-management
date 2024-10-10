@@ -152,7 +152,7 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                   padding: const EdgeInsets.symmetric(vertical: 25.0),
                                   child: ElevatedButton(
                                     onPressed: () async {
-                                      userController.login("Alan Roza");
+                                      // userController.login("Alan Roza"); // TODO: Verify
 
                                       final response = await loginController.onSubmitLogin(_formKey);
 
@@ -167,8 +167,8 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                           return;
                                         }
 
-                                        // context.goNamed('FirstAccess');
-                                        context.goNamed('MainHome'); // TODO: use it after be done all implementations
+                                        context.goNamed('FirstAccess');
+                                        // context.goNamed('MainHome'); // TODO: use it after be done all implementations
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
                                             backgroundColor: Colors.green,

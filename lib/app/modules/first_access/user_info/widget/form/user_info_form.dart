@@ -28,7 +28,7 @@ class UserInfoFormWidgetState extends State<UserInfoFormWidget> with SingleTicke
               textEditingController: userInfoController.nameController,
               icon: Icons.person_outline,
               label: 'Nome',
-              validator: (_) => userInfoController.nameError,
+              // validator: (_) => userInfoController.nameError,
               onChanged: userInfoController.setName,
             ),
           ),

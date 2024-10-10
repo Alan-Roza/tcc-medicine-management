@@ -220,7 +220,7 @@ final GoRouter appRouter = GoRouter(
               path: 'user-address-info',
               name: 'UserAddressInfo',
               builder: (BuildContext context, GoRouterState state) {
-                return const UserAddressInfoPage();
+                return UserAddressInfoPage();
               },
             ),
           ],

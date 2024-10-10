@@ -3,11 +3,17 @@ import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:tcc_medicine_management/app/modules/first_access/address_info/model/dto/address_info_dto.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/address_info/repository/address_info_repository.dart';
+import 'package:tcc_medicine_management/main.dart';
+
 part 'address_info_controller.g.dart';
 
 class AddressInfoController = _AddressInfoController with _$AddressInfoController;
 
 abstract class _AddressInfoController with Store {
+  final AddressInfoRepository _addressInfoRepository = getIt<AddressInfoRepository>();
+
   TextEditingController postalCode = TextEditingController();
   TextEditingController street = TextEditingController();
   TextEditingController neighborhood = TextEditingController();
@@ -31,6 +37,29 @@ abstract class _AddressInfoController with Store {
       neighborhood.text = '';
       city.text = '';
       state.text = '';
+    }
+  }
+
+  @action
+  Future<AddressInfoDto> onSubmit(GlobalKey<FormState> formKey) async {
+    try {
+      // TODO: will be implemented at future
+      if (!formKey.currentState!.validate()) {
+        return Future.error('Preencha os campos corretamente!');
+      }
+
+      final AddressInfoDto addressInfo = AddressInfoDto(
+        zipcode: postalCode.text,
+        street: street.text,
+        neighborhood: neighborhood.text,
+        city: city.text,
+        state: state.text,
+      );
+
+      final AddressInfoDto dataResponse = await _addressInfoRepository.exec(addressInfo);
+      return dataResponse;
+    } catch (e) {
+      return Future.error(e.toString());
     }
   }
 

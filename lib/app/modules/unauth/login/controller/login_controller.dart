@@ -39,10 +39,10 @@ abstract class _LoginController with Store {
 
     try {
       // Faz a chamada para o login usando o repositório
-      // // final loginResponse = await _authRepository.login(email, password);
+      final loginResponse = await _authRepository.login(email, password);
 
-      // // print('-------------------->');
-      // // print(loginResponse);
+      print('-------------------->');
+      print(loginResponse);
 
       // Atualiza propriedades observáveis com os dados do perfil do usuário, se necessário
       // Exemplo:

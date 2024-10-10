@@ -3,7 +3,9 @@ import 'package:tcc_medicine_management/app/modules/first_access/address_info/wi
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 
 class UserAddressInfoPage extends StatelessWidget {
-  const UserAddressInfoPage({super.key});
+  UserAddressInfoPage({super.key});
+
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class UserAddressInfoPage extends StatelessWidget {
       body: PaddedScreen(
         child: Column(
           children: [
-            const Expanded(child: AddressInfoFormWidget()),
+            Expanded(child: AddressInfoFormWidget(formKey: formKey)),
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(

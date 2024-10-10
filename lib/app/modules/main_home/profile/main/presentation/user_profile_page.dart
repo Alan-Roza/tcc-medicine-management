@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/main/controllers/user_profile_controller.dart';
 
 class UserProfilePage extends StatelessWidget {
@@ -72,7 +73,11 @@ class UserProfilePage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: ElevatedButton(
-              onPressed: () => context.goNamed('Home'),
+              onPressed: () async {
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  await prefs.remove('token');
+                  context.goNamed('Home');
+                },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red[900],
                 minimumSize: const Size(double.infinity, 40),
@@ -81,7 +86,10 @@ class UserProfilePage extends StatelessWidget {
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.logout_outlined, size: 20.0,),
+                  Icon(
+                    Icons.logout_outlined,
+                    size: 20.0,
+                  ),
                   SizedBox(width: 2.0),
                   Text('SAIR'),
                 ],

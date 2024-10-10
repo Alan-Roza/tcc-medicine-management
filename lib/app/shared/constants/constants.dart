@@ -1,7 +1,8 @@
 class Constants {
   //GET https://newsapi.org/v2/everything?q=bitcoin&api
   //top-headlines?country=us
-  static const String baseUrl = "http://192.168.1.25:7777";
+  static const String baseUrl = "http://192.168.1.53:7777";
+  // static const String baseUrl = "https://851b-2804-1964-254-2f00-e1cd-6ad1-759c-dfd.ngrok-free.app";
   static const String empty = "";
   static const int zero = 0;
   static const String token = "SEND TOKEN HERE";

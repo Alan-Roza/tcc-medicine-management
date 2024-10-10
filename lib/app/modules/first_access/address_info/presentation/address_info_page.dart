@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/address_info/controller/address_info_controller.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/address_info/model/dto/address_info_dto.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/address_info/widget/form/address_info_form.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 
@@ -11,9 +14,12 @@ class AddressInfoPage extends StatefulWidget {
 }
 
 class _AddressInfoPageState extends State<AddressInfoPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    final AddressInfoController addressInfoController = Provider.of<AddressInfoController>(context);
+
     return Scaffold(
       body: SafeArea(
         child: PaddedScreen(
@@ -61,16 +67,33 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.black54, height: 1.4),
               ),
               const SizedBox(height: 10.0),
-              const Expanded(
+              Expanded(
                 flex: 4,
                 child: SingleChildScrollView(
-                  child: AddressInfoFormWidget(),
+                  child: AddressInfoFormWidget(formKey: _formKey),
                 ),
               ),
               Expanded(child: Container()),
               ElevatedButton(
-                onPressed: () {
-                  context.goNamed('HealthAssistance');
+                onPressed: () async {
+                  try {
+                    await addressInfoController.onSubmit(_formKey);
+
+                    context.goNamed('HealthAssistance');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.green,
+                        content: Text("Salvo com Sucesso!"), // Customize with your success message
+                      ),
+                    );
+                  } catch (error) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text(error.toString()),
+                      ),
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,

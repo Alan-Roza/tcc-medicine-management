@@ -73,7 +73,7 @@ abstract class _UserInfoController with Store {
         return Future.error('Preencha os campos corretamente!');
       }
 
-      final String name = nameController.text;
+      final String name = nameController.text ?? '-';
       final String? phone = phoneController.text.isNotEmpty ? phoneController.text : null;
       final String? birthDate = birthDateController.text.isNotEmpty
           ? DateFormat('yyyy-MM-ddTHH:mm:ss.SSSZ').format(DateFormat('dd/MM/yyyy').parse(birthDateController.text))
