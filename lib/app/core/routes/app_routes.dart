@@ -250,7 +250,7 @@ final GoRouter appRouter = GoRouter(
               path: 'user-chronical-disease-info-page',
               name: 'UserChronicalDiseaseInfoPage',
               builder: (BuildContext context, GoRouterState state) {
-                return const UserChronicalDiseaseInfoPage();
+                return UserChronicalDiseaseInfoPage();
               },
             ),
           ],
@@ -282,7 +282,7 @@ final GoRouter appRouter = GoRouter(
               path: 'user-general-configurations',
               name: 'UserGeneralConfigurations',
               builder: (BuildContext context, GoRouterState state) {
-                return const GeneralConfigurationsPage();
+                return GeneralConfigurationsPage();
               },
             )
           ],

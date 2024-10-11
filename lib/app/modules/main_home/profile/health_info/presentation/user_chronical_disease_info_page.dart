@@ -3,8 +3,9 @@ import 'package:tcc_medicine_management/app/modules/first_access/chronical_disea
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 
 class UserChronicalDiseaseInfoPage extends StatelessWidget {
-  const UserChronicalDiseaseInfoPage({super.key});
+  UserChronicalDiseaseInfoPage({super.key});
 
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +18,7 @@ class UserChronicalDiseaseInfoPage extends StatelessWidget {
       body: PaddedScreen(
         child: Column(
           children: [
-            const Expanded(child: ChronicalDiseaseInfoFormWidget()),
+            Expanded(child: ChronicalDiseaseInfoFormWidget(formKey: _formKey)),
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(

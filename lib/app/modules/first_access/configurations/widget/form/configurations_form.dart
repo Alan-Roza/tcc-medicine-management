@@ -5,22 +5,22 @@ import 'package:tcc_medicine_management/app/modules/first_access/configurations/
 
 class ConfigurationsFormWidget extends StatefulWidget {
   final bool readOnly;
+  final GlobalKey<FormState> formKey;
 
-  const ConfigurationsFormWidget({super.key, this.readOnly = false});
+  const ConfigurationsFormWidget({super.key, required this.formKey, this.readOnly = false});
 
   @override
   ConfigurationsFormWidgetState createState() => ConfigurationsFormWidgetState();
 }
 
 class ConfigurationsFormWidgetState extends State<ConfigurationsFormWidget> with SingleTickerProviderStateMixin {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final ConfigurationsController configurationsController = Provider.of<ConfigurationsController>(context);
 
     return Form(
-      key: _formKey,
+      key: widget.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

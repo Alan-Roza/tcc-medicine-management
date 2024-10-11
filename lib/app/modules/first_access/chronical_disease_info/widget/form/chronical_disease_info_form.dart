@@ -5,8 +5,9 @@ import 'package:tcc_medicine_management/app/modules/first_access/chronical_disea
 
 class ChronicalDiseaseInfoFormWidget extends StatefulWidget {
   final bool readOnly;
+  final GlobalKey<FormState> formKey;
 
-  const ChronicalDiseaseInfoFormWidget({super.key, this.readOnly = false});
+  const ChronicalDiseaseInfoFormWidget({super.key, required this.formKey, this.readOnly = false});
 
   @override
   ChronicalDiseaseInfoFormWidgetState createState() => ChronicalDiseaseInfoFormWidgetState();
@@ -14,15 +15,13 @@ class ChronicalDiseaseInfoFormWidget extends StatefulWidget {
 
 class ChronicalDiseaseInfoFormWidgetState extends State<ChronicalDiseaseInfoFormWidget>
     with SingleTickerProviderStateMixin {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     final ChronicalDiseaseInfoController chronicalDiseaseInfoController =
         Provider.of<ChronicalDiseaseInfoController>(context);
 
     return Form(
-      key: _formKey,
+      key: widget.formKey,
       child: Column(
         children: [
           Observer(

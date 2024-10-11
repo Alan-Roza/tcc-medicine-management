@@ -3,7 +3,9 @@ import 'package:tcc_medicine_management/app/modules/first_access/configurations/
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 
 class GeneralConfigurationsPage extends StatelessWidget {
-  const GeneralConfigurationsPage({super.key});
+  GeneralConfigurationsPage({super.key});
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class GeneralConfigurationsPage extends StatelessWidget {
       body: PaddedScreen(
         child: Column(
           children: [
-            const Expanded(child: ConfigurationsFormWidget()),
+            Expanded(child: ConfigurationsFormWidget(formKey: _formKey)),
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
