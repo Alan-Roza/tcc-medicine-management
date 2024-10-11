@@ -246,21 +246,7 @@ class _MainHomePageState extends State<MainHomePage> {
 
     switch (selectedIndex) {
       case 0:
-        return FloatingActionButton(
-          onPressed: () {
-            // treatmentListController.createMedicineCardList();
-            medicineStockListController.getListMedicines(null);
-            // medicineStockListController.addCard(CardItem(
-            //   type: "Comprimido",
-            //   name: 'Início',
-            //   quantity: 1,
-            //   expirationDate: '29/07/2024',
-            //   price: 15.75,
-            //   priority: 'normal',
-            // ));
-          },
-          child: const Icon(Icons.home),
-        );
+        return Container();
       case 1:
         return SpeedDial(
           icon: Icons.more_vert,
@@ -623,16 +609,19 @@ class _MainHomePageState extends State<MainHomePage> {
                       ),
                     );
                   } else {
-                    return ListView.builder(
-                      padding: const EdgeInsets.only(bottom: 50.0),
-                      itemCount: medicineStockListController.medicineCards.length,
-                      itemBuilder: (context, index) {
-                        final item = medicineStockListController.medicineCards[index];
-                        return MedicineCardWidget(
-                          key: Key(item.hashCode.toString()),
-                          medicineCard: item,
-                        );
-                      },
+                    return RefreshIndicator(
+                      onRefresh: () => medicineStockListController.getListMedicines(null),
+                      child: ListView.builder(
+                        padding: const EdgeInsets.only(bottom: 50.0),
+                        itemCount: medicineStockListController.medicineCards.length,
+                        itemBuilder: (context, index) {
+                          final item = medicineStockListController.medicineCards[index];
+                          return MedicineCardWidget(
+                            key: Key(item.hashCode.toString()),
+                            medicineCard: item,
+                          );
+                        },
+                      ),
                     );
                   }
                 },

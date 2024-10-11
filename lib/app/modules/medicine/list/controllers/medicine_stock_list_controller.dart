@@ -61,6 +61,7 @@ abstract class _MedicineStockListController with Store {
 
       final MedicineListDto dataResponse = await _medicineListRepository.exec(parameters);
 
+      medicineCards.clear();
       for (var element in dataResponse.content!) {
         medicineCards.add(
           MedicineCardController(
