@@ -18,8 +18,10 @@ class ApiService {
     return response;
   }
 
-  Future<Response> put({required String endPoint}) async {
-    var response = await _dio.put('${Constants.baseUrl}$endPoint');
+  Future<Response> put(
+      {required String endPoint, dynamic data, dynamic params}) async {
+    var response = await _dio.put('${Constants.baseUrl}$endPoint',
+        data: data, queryParameters: params);
     return response;
   }
 

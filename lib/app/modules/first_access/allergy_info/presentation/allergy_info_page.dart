@@ -75,7 +75,7 @@ class _AllergyInfoPageState extends State<AllergyInfoPage> {
                     await allergyInfoController.onSubmit();
 
                     if (healthInfoController.hasChronicDisease) {
-                      context.goNamed('ChronicleDiseaseInfo');
+                      context.goNamed('ChronicalDiseaseInfo');
                     } else {
                       context.goNamed('ConfigurationsInfo');
                     }
@@ -108,7 +108,7 @@ class _AllergyInfoPageState extends State<AllergyInfoPage> {
               GestureDetector(
                 onTap: () {
                   if (healthInfoController.hasChronicDisease) {
-                    context.goNamed('ChronicleDiseaseInfo');
+                    context.goNamed('ChronicalDiseaseInfo');
                   } else {
                     context.goNamed('ConfigurationsInfo');
                   }

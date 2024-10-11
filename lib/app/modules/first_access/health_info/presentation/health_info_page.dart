@@ -76,7 +76,7 @@ class _HealthInfoPageState extends State<HealthInfoPage> {
                     if (healthInfoController.hasAllergy) {
                       context.goNamed('AllergyInfo');
                     } else if (healthInfoController.hasChronicDisease) {
-                      context.goNamed('ChronicleDiseaseInfo');
+                      context.goNamed('ChronicalDiseaseInfo');
                     } else {
                       context.goNamed('ConfigurationsInfo');
                     }
@@ -111,7 +111,7 @@ class _HealthInfoPageState extends State<HealthInfoPage> {
                   if (healthInfoController.hasAllergy) {
                     context.goNamed('AllergyInfo');
                   } else if (healthInfoController.hasChronicDisease) {
-                    context.goNamed('ChronicleDiseaseInfo');
+                    context.goNamed('ChronicalDiseaseInfo');
                   } else {
                     context.goNamed('ConfigurationsInfo');
                   }

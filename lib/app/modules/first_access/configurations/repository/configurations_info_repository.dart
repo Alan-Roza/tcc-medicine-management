@@ -14,7 +14,7 @@ class ConfigurationsInfoRepository implements IConfigurationsInfoRepository {
   Future<ConfigurationsInfoDto> exec(ConfigurationsInfoDto data) async {
     if (await _networkInfo.isConnected) {
       try {
-        final response = await _apiService.post(
+        final response = await _apiService.put( //TODO: Change to POST when the API is ready
           endPoint: "/User/Preferences", 
           data: data.toJson()
         );

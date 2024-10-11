@@ -32,7 +32,7 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                   GestureDetector(
                       onTap: () {
                         if (healthInfoController.hasChronicDisease) {
-                          context.goNamed('ChronicleDiseaseInfo');
+                          context.goNamed('ChronicalDiseaseInfo');
                         } else if (healthInfoController.hasAllergy) {
                           context.goNamed('AllergyInfo');
                         } else {
