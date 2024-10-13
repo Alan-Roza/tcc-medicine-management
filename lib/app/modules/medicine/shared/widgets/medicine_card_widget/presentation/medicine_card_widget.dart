@@ -6,7 +6,6 @@ import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/me
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/controllers/medicine_card_controller.dart';
 
 class MedicineCardWidget extends StatelessWidget {
-
   @override
   final Key key;
   final MedicineCardController medicineCard;
@@ -25,32 +24,35 @@ class MedicineCardWidget extends StatelessWidget {
 
     return Observer(
       builder: (_) {
-      // leadingIcon = null;
+        // leadingIcon = null;
 
-      // if (store.multiSelectionIsEnabled) {
-      //     if (medicineCard.isSelected) {
-      //       leadingIcon = const Icon(
-      //         Icons.check_circle,
-      //         color: Colors.green,
-      //       );
-      //     } else {
-      //       leadingIcon = const Icon(Icons.check_circle_outline);
-      //     }
-      //   }
+        // if (store.multiSelectionIsEnabled) {
+        //     if (medicineCard.isSelected) {
+        //       leadingIcon = const Icon(
+        //         Icons.check_circle,
+        //         color: Colors.green,
+        //       );
+        //     } else {
+        //       leadingIcon = const Icon(Icons.check_circle_outline);
+        //     }
+        //   }
 
         return GestureDetector(
           onTap: () => {
-            if (medicineStockListController.multiSelectionIsEnabled) {medicineCard.toggleSelection()}
-            else context.goNamed('MedicineStockView', queryParameters: {'readOnly': 'true', 'medicineId': medicineCard.medicineId.toString()}),
+            if (medicineStockListController.multiSelectionIsEnabled)
+              {medicineCard.toggleSelection()}
+            else
+              context.goNamed('MedicineStockView',
+                  queryParameters: {'readOnly': 'true', 'medicineId': medicineCard.medicineId.toString()}),
           },
           onLongPress: () => {
             // if (onLongPress != null)
-              // {
-                medicineStockListController.enableMultiSelection(),
-                medicineCard.addSelection(),
-                print('before'),
-                print(medicineStockListController.multiSelectionIsEnabled),
-              // }
+            // {
+            medicineStockListController.enableMultiSelection(),
+            medicineCard.addSelection(),
+            print('before'),
+            print(medicineStockListController.multiSelectionIsEnabled),
+            // }
           },
           child: Card(
             color: medicineCard.isSelected ? const Color.fromARGB(75, 0, 170, 255) : Colors.white,
@@ -85,8 +87,8 @@ class MedicineCardWidget extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Comprimido",
+                            Text(
+                              medicineCard.type,
                               style: TextStyle(fontWeight: FontWeight.w300),
                             ),
                             Text(
@@ -103,7 +105,7 @@ class MedicineCardWidget extends StatelessWidget {
                                     style: TextStyle(fontWeight: FontWeight.normal),
                                   ),
                                   TextSpan(
-                                    text: "${medicineCard.quantity} unidade",
+                                    text: "${medicineCard.quantity} unidade(s)",
                                   ),
                                   const TextSpan(
                                     text: "\nVencimento: ",
@@ -117,7 +119,7 @@ class MedicineCardWidget extends StatelessWidget {
                                     style: TextStyle(fontWeight: FontWeight.normal),
                                   ),
                                   TextSpan(
-                                    text: "R\$${medicineCard.price.toStringAsFixed(2)}",
+                                    text: "R\$${medicineCard.price}",
                                   ),
                                 ],
                               ),
@@ -157,23 +159,35 @@ class MedicineCardWidget extends StatelessWidget {
 
   Map<String, dynamic> _getPriorityData(String? priority) {
     switch (priority) {
-      case 'high':
+      case 'Nenhuma':
         return {
-          'text': 'Importante',
-          'background': Colors.red[100],
-          'color': Colors.red[800],
+          'text': '',
+          'background': Colors.transparent,
+          'color': Colors.transparent,
         };
-      case 'low':
+      case 'Baixa':
         return {
-          'text': 'Sem Prioridade',
+          'text': 'Comum',
           'background': Colors.green[100],
           'color': Colors.green[800],
         };
-      case 'normal':
+      case 'Média':
         return {
-          'text': 'Normal',
-          'background': Colors.blue[100],
-          'color': Colors.blue[800],
+          'text': 'Moderado',
+          'background': Colors.yellow[100],
+          'color': Colors.yellow[800],
+        };
+      case 'Alta':
+        return {
+          'text': 'Prioritário',
+          'background': Colors.orange[100],
+          'color': Colors.orange[800],
+        };
+      case 'Crítica':
+        return {
+          'text': 'De Risco',
+          'background': Colors.red[100],
+          'color': Colors.red[800],
         };
       default:
         return {

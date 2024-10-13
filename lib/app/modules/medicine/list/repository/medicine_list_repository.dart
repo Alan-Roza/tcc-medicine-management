@@ -32,4 +32,27 @@ class MedicineListRepository implements IMedicineListRepository {
       return Future.error("Verifique o acesso à internet");
     }
   }
+
+  @override
+  Future<bool> delete(int id) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        final response = await _apiService.delete(
+          endPoint: "/Medicine/$id"
+        );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+      } 
+      catch (error) {
+        return handleError(error) as dynamic;
+      }
+    } else {
+      // Throws an exception when there is no internet connection
+      return Future.error("Verifique o acesso à internet");
+    }
+  }
 }

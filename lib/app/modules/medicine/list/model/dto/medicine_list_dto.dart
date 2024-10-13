@@ -138,6 +138,7 @@ class Content {
   String? importance;
   int? storageQuantity;
   int? drawerNumber;
+  double? price;
 
   Content(
       {this.name,
@@ -147,7 +148,8 @@ class Content {
       this.expirationDate,
       this.importance,
       this.storageQuantity,
-      this.drawerNumber});
+      this.drawerNumber,
+      this.price});
 
   Content.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -158,6 +160,7 @@ class Content {
     importance = json['importance'];
     storageQuantity = json['storageQuantity'];
     drawerNumber = json['drawerNumber'];
+    price = json['price'];
   }
 
   Map<String, dynamic> toJson() {
@@ -170,6 +173,7 @@ class Content {
     data['importance'] = importance;
     data['storageQuantity'] = storageQuantity;
     data['drawerNumber'] = drawerNumber;
+    data['price'] = price;
     return data;
   }
 }

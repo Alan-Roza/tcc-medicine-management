@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
-import 'package:tcc_medicine_management/app/shared/widgets/custom_text_field/custom_text_field_widget.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/profile_picture_widget/presentation/profile_picture_widget.dart';
 
 class MedicineStockOptionalFormWidget extends StatefulWidget {
@@ -220,6 +219,24 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
   }
 }
 
+class CustomNumberFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    final String newText = newValue.text;
+
+    // Regex que permite dígitos e até duas casas decimais separadas por vírgula
+    final RegExp regex = RegExp(r'^\d+,\d{0,2}$|^\d*$');
+
+    if (regex.hasMatch(newText)) {
+      // Se o novo valor seguir o regex, ele será aceito
+      return newValue;
+    } else {
+      // Caso contrário, o valor anterior será mantido
+      return oldValue;
+    }
+  }
+}
+
 class CustomTextFieldWidget extends StatelessWidget {
   final TextEditingController textEditingController;
   final IconData icon;
@@ -251,8 +268,7 @@ class CustomTextFieldWidget extends StatelessWidget {
         readOnly: readOnly,
         keyboardType: TextInputType.numberWithOptions(decimal: true),
         inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp(
-              r'^\d+,\d{0,2}$|^\d*$')), // Este formatter permite apenas números e vírgula, limitando a parte decimal a 2 dígitos.
+          CustomNumberFormatter(), // Formata a entrada sem limpar o campo
         ],
       ),
     );

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -7,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/main/controllers/main_home_controller.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/main/presentation/user_profile_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/list/model/dto/medicine_list_request.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/presentation/medicine_card_widget.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/treatment_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_card_widget/presentation/treatment_card_widget.dart';
@@ -22,9 +25,22 @@ class MainHomePage extends StatefulWidget {
 class _MainHomePageState extends State<MainHomePage> {
   final MainHomeController mainHomeController = MainHomeController();
 
+  late MedicineStockListController medicineStockListController;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Access the Provider here
+    medicineStockListController = Provider.of<MedicineStockListController>(context);
+
+    // Run this only once when the widget is first created
+    medicineStockListController.getListMedicines(
+      MedicineListRequestDto(size: 100, search: medicineStockListController.search),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final medicineStockListController = Provider.of<MedicineStockListController>(context);
     final treatmentListController = Provider.of<TreatmentListController>(context);
     final notificationController = Provider.of<NotificationController>(context);
 
@@ -173,17 +189,18 @@ class _MainHomePageState extends State<MainHomePage> {
       },
     ));
 
-    actions.add(Observer(
-      builder: (_) {
-        return treatmentListController.multiSelectionIsEnabled &&
-                treatmentListController.treatmentCards.where((element) => element.isSelected).length == 1
-            ? IconButton(
-                icon: const Icon(Icons.edit),
-                onPressed: () => context.goNamed('TreatmentForm', queryParameters: {'readOnly': 'true'}),
-              )
-            : Container();
-      },
-    ));
+// TODO: maybe will not be used
+    // actions.add(Observer(
+    //   builder: (_) {
+    //     return treatmentListController.multiSelectionIsEnabled &&
+    //             treatmentListController.treatmentCards.where((element) => element.isSelected).length == 1
+    //         ? IconButton(
+    //             icon: const Icon(Icons.edit),
+    //             onPressed: () => context.goNamed('TreatmentForm', queryParameters: {'readOnly': 'true'}),
+    //           )
+    //         : Container();
+    //   },
+    // ));
 
     actions.add(Observer(
       builder: (_) {
@@ -208,23 +225,29 @@ class _MainHomePageState extends State<MainHomePage> {
                 medicineStockListController.medicineCards.where((element) => element.isSelected).isNotEmpty
             ? IconButton(
                 icon: const Icon(Icons.delete),
-                onPressed: medicineStockListController.removeSelectedTasks,
+                onPressed: () async => await medicineStockListController.deleteMedicines(
+                  medicineStockListController.medicineCards
+                      .where((element) => element.isSelected)
+                      .map((card) => int.parse(card.medicineId.toString()))
+                      .toList(),
+                ),
               )
             : Container();
       },
     ));
 
-    actions.add(Observer(
-      builder: (_) {
-        return medicineStockListController.multiSelectionIsEnabled &&
-                medicineStockListController.medicineCards.where((element) => element.isSelected).length == 1
-            ? IconButton(
-                icon: const Icon(Icons.edit),
-                onPressed: () => context.goNamed('MedicineStockForm', queryParameters: {'readOnly': 'true'}),
-              )
-            : Container();
-      },
-    ));
+// TODO: verify i think so that it will not be used
+    // actions.add(Observer(
+    //   builder: (_) {
+    //     return medicineStockListController.multiSelectionIsEnabled &&
+    //             medicineStockListController.medicineCards.where((element) => element.isSelected).length == 1
+    //         ? IconButton(
+    //             icon: const Icon(Icons.edit),
+    //             onPressed: () => context.goNamed('MedicineStockForm', queryParameters: {'readOnly': 'true'}),
+    //           )
+    //         : Container();
+    //   },
+    // ));
 
     actions.add(Observer(
       builder: (_) {
@@ -349,12 +372,13 @@ class _MainHomePageState extends State<MainHomePage> {
                 context.goNamed('MedicineStockForm');
               },
             ),
-            SpeedDialChild(
-              child: const Icon(Icons.edit, color: Colors.white),
-              backgroundColor: const Color(0xFFC99B08),
-              label: 'Editar',
-              onTap: () => medicineStockListController.enableMultiSelection(),
-            ),
+            // TODO: problably will not be used
+            // SpeedDialChild(
+            //   child: const Icon(Icons.edit, color: Colors.white),
+            //   backgroundColor: const Color(0xFFC99B08),
+            //   label: 'Editar',
+            //   onTap: () => medicineStockListController.enableMultiSelection(),
+            // ),
             SpeedDialChild(
               child: const Icon(Icons.delete, color: Colors.white),
               backgroundColor: const Color(0xFFB3261E),
@@ -510,8 +534,6 @@ class _MainHomePageState extends State<MainHomePage> {
   }
 
   Widget _buildMedicinePage(MedicineStockListController medicineStockListController) {
-    medicineStockListController.getListMedicines(null);
-    
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
@@ -524,6 +546,23 @@ class _MainHomePageState extends State<MainHomePage> {
   }
 
   Widget _medicineStockListPage(MedicineStockListController medicineStockListController) {
+    Timer? debounceTimer;
+
+    void onSearchChanged(String value) {
+      // Cancel the previous timer if it's still active
+      if (debounceTimer?.isActive ?? false) debounceTimer!.cancel();
+
+      // Start a new timer
+      debounceTimer = Timer(const Duration(milliseconds: 300), () {
+        // Update the search value in your controller
+        medicineStockListController.search = value;
+
+        // Dispatch the request with the new search value
+        medicineStockListController
+            .getListMedicines(MedicineListRequestDto(size: 100, search: medicineStockListController.search));
+      });
+    }
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -576,6 +615,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   left: 16, // Adjust this value as needed
                   right: 16, // Adjust this value as needed
                   child: TextField(
+                    onChanged: onSearchChanged,
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
@@ -600,7 +640,8 @@ class _MainHomePageState extends State<MainHomePage> {
             ),
             const SizedBox(height: 30.0),
             RefreshIndicator(
-              onRefresh: () => medicineStockListController.getListMedicines(null),
+              onRefresh: () => medicineStockListController
+                  .getListMedicines(MedicineListRequestDto(size: 100, search: medicineStockListController.search)),
               child: SizedBox(
                 height: MediaQuery.of(context).size.height - 250,
                 child: Observer(

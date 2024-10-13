@@ -3,6 +3,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/list/model/dto/medicine_list_request.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_basic_form_widget.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_optional_form_widget.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_review_form_widget.dart';
@@ -36,6 +38,7 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
   @override
   Widget build(BuildContext context) {
     MedicineFormController formController = Provider.of<MedicineFormController>(context);
+    MedicineStockListController medicineListController = Provider.of<MedicineStockListController>(context);
 
     _formWidgets = [
       Expanded(child: MedicineStockBasicFormWidget(readOnly: widget.readOnly ?? false)),
@@ -84,6 +87,8 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
                                     if (stepProgressController.currentStep == _formWidgets.length - 1) {
                                       try {
                                         await formController.saveMedicine(null);
+                                        medicineListController
+                                          .getListMedicines(MedicineListRequestDto(size: 100, search: medicineListController.search));
 
                                         context.pop();
                                         ScaffoldMessenger.of(context).showSnackBar(

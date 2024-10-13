@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/model/medicine_card_model.dart';
 
@@ -13,7 +14,7 @@ abstract class MedicineCardControllerBase with Store {
   late String type;
   late int quantity;
   late String expirationDate;
-  late double price;
+  late String price;
   late String priority;
   late int medicineId;
 
@@ -26,8 +27,8 @@ abstract class MedicineCardControllerBase with Store {
     imageUrl = medicine.imageUrl;
     type = medicine.type;
     quantity = medicine.quantity;
-    expirationDate = medicine.expirationDate;
-    price = medicine.price;
+    expirationDate = DateFormat('dd/MM/yyyy').format(DateTime.parse(medicine.expirationDate));
+    price = medicine.price.toStringAsFixed(2).replaceAll('.', ',');
     priority = medicine.priority;
     medicineId = medicine.medicineId;
   }

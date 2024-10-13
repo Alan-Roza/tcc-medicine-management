@@ -14,6 +14,9 @@ abstract class _MedicineStockListController with Store {
   final MedicineListRepository _medicineListRepository = getIt<MedicineListRepository>();
 
   @observable
+  String search = "";
+
+  @observable
   ObservableList<MedicineCardController> medicineCards = ObservableList<MedicineCardController>();
 
   @observable
@@ -50,6 +53,19 @@ abstract class _MedicineStockListController with Store {
   }
 
   @action
+  Future<void> deleteMedicines(List<int> ids) async {
+    try {
+      for (var id in ids) {
+        await _medicineListRepository.delete(id);
+      }
+      getListMedicines(MedicineListRequestDto(search: search, size: 100));
+      removeSelectedTasks();
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  @action
   Future<void> getListMedicines(MedicineListRequestDto? parameters) async {
     try {
       // final UserInfoDto userInfo = UserInfoDto(
@@ -71,7 +87,7 @@ abstract class _MedicineStockListController with Store {
               type: element.type!,
               quantity: element.storageQuantity!,
               expirationDate: element.expirationDate!,
-              price: 0,
+              price: element.price ?? 0,
               priority: element.importance!,
             ),
           ),
