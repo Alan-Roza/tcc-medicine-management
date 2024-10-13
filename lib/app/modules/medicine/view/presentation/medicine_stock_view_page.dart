@@ -31,11 +31,11 @@ class _MedicineStockViewPageState extends State<MedicineStockViewPage> with Tick
       MedicineViewResponseDto dataResponse = await medicineViewController.getByIdMedicine(int.parse(widget.medicineId));
 
       formController.nameController.text = dataResponse.name!;
-       formController.typeController.text = dataResponse.type!;
+      //  formController.typeController.text = dataResponse.type!;
        formController.quantityController.text = dataResponse.storageQuantity!.toString();
       //  formController.unityController.text = dataResponse.unity!;
       //  formController.qtyByPackageController.text = dataResponse.qtyByPackage!;
-       formController.importanceLevel = dataResponse.importance!;
+      //  formController.importanceLevel = dataResponse.importance!;
       //  formController.valuePaidController.text = dataResponse.price!;
        formController.expirationDateController.text =  dataResponse.expirationDate!;
        formController.drawerNumberController.text =  dataResponse.drawerNumber!.toString();

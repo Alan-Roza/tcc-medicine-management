@@ -109,6 +109,14 @@ mixin _$ChronicalDiseaseInfoController
     });
   }
 
+  late final _$onSubmitAsyncAction =
+      AsyncAction('_ChronicalDiseaseInfoController.onSubmit', context: context);
+
+  @override
+  Future<List<ChronicalDiseaseInfoDto>> onSubmit() {
+    return _$onSubmitAsyncAction.run(() => super.onSubmit());
+  }
+
   late final _$_ChronicalDiseaseInfoControllerActionController =
       ActionController(
           name: '_ChronicalDiseaseInfoController', context: context);

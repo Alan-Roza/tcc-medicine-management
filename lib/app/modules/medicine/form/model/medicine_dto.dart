@@ -1,44 +1,48 @@
 class MedicineDto {
   String? name;
-  int? id;
   String? type;
-  String? unitType;
-  String? expirationDate;
   String? importance;
+  String? hardwareId;
   int? storageQuantity;
+  String? expirationDate;
+  double? price;
   int? drawerNumber;
+  String? unitType;
 
   MedicineDto(
       {this.name,
-      this.id,
       this.type,
-      this.unitType,
-      this.expirationDate,
       this.importance,
+      this.hardwareId,
       this.storageQuantity,
-      this.drawerNumber});
+      this.expirationDate,
+      this.price,
+      this.drawerNumber,
+      this.unitType});
 
   MedicineDto.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    id = json['id'];
     type = json['type'];
-    unitType = json['unitType'];
-    expirationDate = json['expirationDate'];
     importance = json['importance'];
+    hardwareId = json['hardwareId'];
     storageQuantity = json['storageQuantity'];
+    expirationDate = json['expirationDate'];
+    price = json['price'];
     drawerNumber = json['drawerNumber'];
+    unitType = json['unitType'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;
-    data['id'] = id;
     data['type'] = type;
-    data['unitType'] = unitType;
-    data['expirationDate'] = expirationDate;
     data['importance'] = importance;
+    data['hardwareId'] = hardwareId;
     data['storageQuantity'] = storageQuantity;
+    data['expirationDate'] = expirationDate;
+    data['price'] = price;
     data['drawerNumber'] = drawerNumber;
+    data['unitType'] = unitType;
     return data;
   }
 }

@@ -6,7 +6,7 @@ import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/me
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_basic_form_widget.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_optional_form_widget.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_review_form_widget.dart';
-import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
+import 'package:tcc_medicine_management/app/shared/widgets/padded_screen_without_bottom.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/controller/step_progress_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/presentation/step_progress_widget.dart';
 
@@ -38,7 +38,7 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
     MedicineFormController formController = Provider.of<MedicineFormController>(context);
 
     _formWidgets = [
-      MedicineStockBasicFormWidget(readOnly: widget.readOnly ?? false),
+      Expanded(child: MedicineStockBasicFormWidget(readOnly: widget.readOnly ?? false)),
       MedicineStockOptionalFormWidget(readOnly: widget.readOnly ?? false),
       const MedicineStockReviewFormWidget(),
     ];
@@ -61,7 +61,7 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
               ),
             ),
             Expanded(
-              child: PaddedScreen(
+              child: PaddedScreenWithoutBottom(
                 child: LayoutBuilder(builder: (context, constraint) {
                   return SingleChildScrollView(
                     child: ConstrainedBox(
@@ -80,13 +80,29 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     if (stepProgressController.currentStep == _formWidgets.length - 1) {
-                                      formController.saveMedicine().then((saveResponse) {
-                                        context.pop(); // TODO: verify if is the best pratice
-                                      });
-                                      return;
+                                      try {
+                                        await formController.saveMedicine(null);
+
+                                        context.pop();
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            backgroundColor: Colors.green,
+                                            content: Text("Salvo com Sucesso!"), // Customize with your success message
+                                          ),
+                                        );
+                                        return;
+                                      } catch (error) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: Colors.red,
+                                            content: Text(error.toString()),
+                                          ),
+                                        );
+                                      }
                                     }
+
                                     stepProgressController.increaseCurrentStep();
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -115,10 +131,10 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
                                         ),
                                       )
                                     : Container(),
-                                const SizedBox(
-                                  height: 16.0,
-                                ),
                               ],
+                            ),
+                            const SizedBox(
+                              height: 16.0,
                             ),
                           ],
                         ),

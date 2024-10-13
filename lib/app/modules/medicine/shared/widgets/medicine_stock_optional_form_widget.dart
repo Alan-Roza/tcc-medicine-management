@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
@@ -46,12 +47,29 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
             ],
           ),
           Observer(
-            builder: (_) => CustomTextFieldWidget(
-              textEditingController: formController.expirationDateController,
-              icon: Icons.calendar_month_outlined,
-              label: 'Data de Validade',
-              readOnly: widget.readOnly,
-              enabled: !widget.readOnly,
+            builder: (_) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: TextFormField(
+                enabled: !widget.readOnly,
+                readOnly: true, // Makes the field not editable; only selectable
+                controller: formController.expirationDateController,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.calendar_month_rounded),
+                  labelText: 'Data de Validade',
+                ),
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(DateTime.now().year),
+                    lastDate: DateTime(DateTime.now().year + 2),
+                  );
+                  if (pickedDate != null) {
+                    // Update the text field with the selected date
+                    formController.setExpirationDate(pickedDate); // Update your controller/state management solution
+                  }
+                },
+              ),
             ),
           ),
           Observer(
@@ -64,29 +82,39 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
             ),
           ),
           Observer(
-            builder: (_) => DropdownButtonFormField<String>(
+            builder: (_) => DropdownButtonFormField<ImportanceLevel>(
               value: formController.importanceLevel,
-              onChanged: widget.readOnly ? null : (value) {
-                if (value != null) formController.importanceLevel = value;
-              },
+              onChanged: widget.readOnly
+                  ? null
+                  : (value) {
+                      if (value != null) formController.importanceLevel = value;
+                    },
               items: const [
                 DropdownMenuItem(
-                  value: 'high',
-                  child: Text('Importante'),
+                  value: ImportanceLevel.nenhuma,
+                  child: Text('Nenhuma'),
                 ),
                 DropdownMenuItem(
-                  value: 'medium',
-                  child: Text('Normal'),
+                  value: ImportanceLevel.baixa,
+                  child: Text('Baixa'),
                 ),
                 DropdownMenuItem(
-                  value: 'low',
-                  child: Text('Baixo'),
+                  value: ImportanceLevel.media,
+                  child: Text('Média'),
+                ),
+                DropdownMenuItem(
+                  value: ImportanceLevel.alta,
+                  child: Text('Alta'),
+                ),
+                DropdownMenuItem(
+                  value: ImportanceLevel.critica,
+                  child: Text('Crítica'),
                 ),
               ],
               decoration: const InputDecoration(
                 labelText: 'Nível de Importância',
                 border: UnderlineInputBorder(),
-                prefixIcon: Icon(Icons.star_purple500_sharp),
+                prefixIcon: Icon(Icons.warning_amber),
               ),
             ),
           ),
@@ -111,6 +139,15 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
                 ),
               )
             ],
+          ),
+          Observer(
+            builder: (_) => CustomTextFieldWidget(
+              textEditingController: formController.hardwareIdController,
+              icon: Icons.account_box,
+              label: 'Identificação do Gaveteiro',
+              readOnly: widget.readOnly,
+              enabled: !widget.readOnly,
+            ),
           ),
           Observer(
             builder: (_) => CustomTextFieldWidget(
@@ -177,6 +214,45 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
                     ],
                   ),
                 ),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomTextFieldWidget extends StatelessWidget {
+  final TextEditingController textEditingController;
+  final IconData icon;
+  final String label;
+  final bool enabled;
+  final bool readOnly;
+
+  const CustomTextFieldWidget({
+    super.key,
+    required this.textEditingController,
+    required this.icon,
+    required this.label,
+    required this.enabled,
+    required this.readOnly,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextField(
+        controller: textEditingController,
+        decoration: InputDecoration(
+          prefixIcon: Icon(icon),
+          labelText: label,
+          border: UnderlineInputBorder(),
+        ),
+        enabled: enabled,
+        readOnly: readOnly,
+        keyboardType: TextInputType.numberWithOptions(decimal: true),
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp(
+              r'^\d+,\d{0,2}$|^\d*$')), // Este formatter permite apenas números e vírgula, limitando a parte decimal a 2 dígitos.
         ],
       ),
     );

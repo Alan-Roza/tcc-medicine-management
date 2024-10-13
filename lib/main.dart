@@ -24,6 +24,7 @@ import 'package:tcc_medicine_management/app/modules/first_access/user_info/repos
 import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/form/controller/connect_controller.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/faq_help/controllers/faq_help_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/form/repository/medicine_repository.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/repository/medicine_list_repository.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/view/controllers/medicine_view_controller.dart';
@@ -137,4 +138,7 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<ConfigurationsInfoRepository>(() =>
       ConfigurationsInfoRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(DioFactory().getDio())));
+
+      getIt.registerLazySingleton<MedicineRepository>(() =>
+      MedicineRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(DioFactory().getDio())));
 }

@@ -510,11 +510,13 @@ class _MainHomePageState extends State<MainHomePage> {
   }
 
   Widget _buildMedicinePage(MedicineStockListController medicineStockListController) {
+    medicineStockListController.getListMedicines(null);
+    
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
         child: Expanded(
-          flex: 3,
+          flex: 1,
           child: _medicineStockListPage(medicineStockListController),
         ),
       ),
@@ -597,21 +599,21 @@ class _MainHomePageState extends State<MainHomePage> {
               ],
             ),
             const SizedBox(height: 30.0),
-            SizedBox(
-              height: MediaQuery.of(context).size.height - 250,
-              child: Observer(
-                builder: (_) {
-                  if (medicineStockListController.medicineCards.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        'Nenhum dado encontrado',
-                        style: TextStyle(fontSize: 18, color: Colors.grey),
-                      ),
-                    );
-                  } else {
-                    return RefreshIndicator(
-                      onRefresh: () => medicineStockListController.getListMedicines(null),
-                      child: ListView.builder(
+            RefreshIndicator(
+              onRefresh: () => medicineStockListController.getListMedicines(null),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height - 250,
+                child: Observer(
+                  builder: (_) {
+                    if (medicineStockListController.medicineCards.isEmpty) {
+                      return const Center(
+                        child: Text(
+                          'Nenhum dado encontrado',
+                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                        ),
+                      );
+                    } else {
+                      return ListView.builder(
                         padding: const EdgeInsets.only(bottom: 50.0),
                         itemCount: medicineStockListController.medicineCards.length,
                         itemBuilder: (context, index) {
@@ -621,10 +623,10 @@ class _MainHomePageState extends State<MainHomePage> {
                             medicineCard: item,
                           );
                         },
-                      ),
-                    );
-                  }
-                },
+                      );
+                    }
+                  },
+                ),
               ),
             ),
           ],

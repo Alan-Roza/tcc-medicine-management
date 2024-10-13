@@ -17,6 +17,14 @@ mixin _$AddressInfoController on _AddressInfoController, Store {
     return _$getAddressInfoAsyncAction.run(() => super.getAddressInfo(cep));
   }
 
+  late final _$onSubmitAsyncAction =
+      AsyncAction('_AddressInfoController.onSubmit', context: context);
+
+  @override
+  Future<AddressInfoDto> onSubmit(GlobalKey<FormState> formKey) {
+    return _$onSubmitAsyncAction.run(() => super.onSubmit(formKey));
+  }
+
   @override
   String toString() {
     return '''

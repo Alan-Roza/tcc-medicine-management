@@ -89,6 +89,14 @@ mixin _$HealthInfoController on _HealthInfoController, Store {
     });
   }
 
+  late final _$onSubmitAsyncAction =
+      AsyncAction('_HealthInfoController.onSubmit', context: context);
+
+  @override
+  Future<HealthInfoDto> onSubmit(GlobalKey<FormState> formKey) {
+    return _$onSubmitAsyncAction.run(() => super.onSubmit(formKey));
+  }
+
   @override
   String toString() {
     return '''

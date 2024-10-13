@@ -89,6 +89,14 @@ mixin _$ConfigurationsController on _ConfigurationsController, Store {
     });
   }
 
+  late final _$onSubmitAsyncAction =
+      AsyncAction('_ConfigurationsController.onSubmit', context: context);
+
+  @override
+  Future<ConfigurationsInfoDto> onSubmit() {
+    return _$onSubmitAsyncAction.run(() => super.onSubmit());
+  }
+
   late final _$_ConfigurationsControllerActionController =
       ActionController(name: '_ConfigurationsController', context: context);
 

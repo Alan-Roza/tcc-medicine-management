@@ -54,12 +54,30 @@ class MedicineStockBasicFormWidgetState extends State<MedicineStockBasicFormWidg
             ),
           ),
           Observer(
-            builder: (_) => CustomTextFieldWidget(
-              textEditingController: formController.typeController,
-              icon: Icons.medical_information_outlined,
-              label: 'Tipo',
-              readOnly: widget.readOnly,
-              enabled: !widget.readOnly,
+            builder: (_) => DropdownButtonFormField<MedicineType>(
+              value: formController.medicineType,
+              onChanged: widget.readOnly ? null : (value) {
+                if (value != null) formController.medicineType = value;
+              },
+              items: const [
+                DropdownMenuItem(
+                  value: MedicineType.comprimido,
+                  child: Text('Comprimido'),
+                ),
+                DropdownMenuItem(
+                  value: MedicineType.capsula,
+                  child: Text('Cápsula'),
+                ),
+                DropdownMenuItem(
+                  value: MedicineType.liquido,
+                  child: Text('Líquido'),
+                ),
+              ],
+              decoration: const InputDecoration(
+                labelText: 'Tipo do Medicamento',
+                border: UnderlineInputBorder(),
+                prefixIcon: Icon(Icons.medical_information_outlined),
+              ),
             ),
           ),
           Observer(
@@ -71,24 +89,15 @@ class MedicineStockBasicFormWidgetState extends State<MedicineStockBasicFormWidg
               enabled: !widget.readOnly,
             ),
           ),
-          Observer(
-            builder: (_) => CustomTextFieldWidget(
-              textEditingController: formController.unityController,
-              icon: Icons.medication_rounded,
-              label: 'Unidade',
-              readOnly: widget.readOnly,
-              enabled: !widget.readOnly,
-            ),
-          ),
-          Observer(
-            builder: (_) => CustomTextFieldWidget(
-              textEditingController: formController.qtyByPackageController,
-              icon: Icons.medical_services_outlined,
-              label: 'Quantidade Por Embalagem',
-              readOnly: widget.readOnly,
-              enabled: !widget.readOnly,
-            ),
-          ),
+          // Observer(
+          //   builder: (_) => CustomTextFieldWidget(
+          //     textEditingController: formController.unityController,
+          //     icon: Icons.medication_rounded,
+          //     label: 'Unidade',
+          //     readOnly: widget.readOnly,
+          //     enabled: !widget.readOnly,
+          //   ),
+          // ),
         ],
       ),
     );

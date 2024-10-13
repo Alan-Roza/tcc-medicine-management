@@ -25,6 +25,14 @@ mixin _$AllergyInfoController on _AllergyInfoController, Store {
     });
   }
 
+  late final _$onSubmitAsyncAction =
+      AsyncAction('_AllergyInfoController.onSubmit', context: context);
+
+  @override
+  Future<List<AllergyInfoDto>> onSubmit() {
+    return _$onSubmitAsyncAction.run(() => super.onSubmit());
+  }
+
   late final _$_AllergyInfoControllerActionController =
       ActionController(name: '_AllergyInfoController', context: context);
 
