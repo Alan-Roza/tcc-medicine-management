@@ -17,51 +17,67 @@ mixin _$TreatmentFormController on TreatmentFormControllerBase, Store {
           name: 'TreatmentFormControllerBase.endlessTreatment'))
       .value;
 
+  late final _$medicinesAtom =
+      Atom(name: 'TreatmentFormControllerBase.medicines', context: context);
+
+  @override
+  List<Map<String, String>> get medicines {
+    _$medicinesAtom.reportRead();
+    return super.medicines;
+  }
+
+  @override
+  set medicines(List<Map<String, String>> value) {
+    _$medicinesAtom.reportWrite(value, super.medicines, () {
+      super.medicines = value;
+    });
+  }
+
   late final _$importanceLevelAtom = Atom(
       name: 'TreatmentFormControllerBase.importanceLevel', context: context);
 
   @override
-  String get importanceLevel {
+  ImportanceLevel get importanceLevel {
     _$importanceLevelAtom.reportRead();
     return super.importanceLevel;
   }
 
   @override
-  set importanceLevel(String value) {
+  set importanceLevel(ImportanceLevel value) {
     _$importanceLevelAtom.reportWrite(value, super.importanceLevel, () {
       super.importanceLevel = value;
     });
   }
 
-  late final _$frequencyTypeAtom =
-      Atom(name: 'TreatmentFormControllerBase.frequencyType', context: context);
+  late final _$medicineIdAtom =
+      Atom(name: 'TreatmentFormControllerBase.medicineId', context: context);
 
   @override
-  String get frequencyType {
-    _$frequencyTypeAtom.reportRead();
-    return super.frequencyType;
+  int? get medicineId {
+    _$medicineIdAtom.reportRead();
+    return super.medicineId;
   }
 
   @override
-  set frequencyType(String value) {
-    _$frequencyTypeAtom.reportWrite(value, super.frequencyType, () {
-      super.frequencyType = value;
+  set medicineId(int? value) {
+    _$medicineIdAtom.reportWrite(value, super.medicineId, () {
+      super.medicineId = value;
     });
   }
 
-  late final _$frequencyAtom =
-      Atom(name: 'TreatmentFormControllerBase.frequency', context: context);
+  late final _$selectedFrequencyAtom = Atom(
+      name: 'TreatmentFormControllerBase.selectedFrequency', context: context);
 
   @override
-  String? get frequency {
-    _$frequencyAtom.reportRead();
-    return super.frequency;
+  int? get selectedFrequency {
+    _$selectedFrequencyAtom.reportRead();
+    return super.selectedFrequency;
   }
 
   @override
-  set frequency(String? value) {
-    _$frequencyAtom.reportWrite(value, super.frequency, () {
-      super.frequency = value;
+  set selectedFrequency(int? value) {
+    _$selectedFrequencyAtom.reportWrite(value, super.selectedFrequency, () {
+      super.selectedFrequency = value;
     });
   }
 
@@ -101,16 +117,26 @@ mixin _$TreatmentFormController on TreatmentFormControllerBase, Store {
       name: 'TreatmentFormControllerBase.selectedMedicines', context: context);
 
   @override
-  ObservableList<TreatmentMedicine> get selectedMedicines {
+  ObservableList<Medicine> get selectedMedicines {
     _$selectedMedicinesAtom.reportRead();
     return super.selectedMedicines;
   }
 
   @override
-  set selectedMedicines(ObservableList<TreatmentMedicine> value) {
+  set selectedMedicines(ObservableList<Medicine> value) {
     _$selectedMedicinesAtom.reportWrite(value, super.selectedMedicines, () {
       super.selectedMedicines = value;
     });
+  }
+
+  late final _$getMedicineResourceAsyncAction = AsyncAction(
+      'TreatmentFormControllerBase.getMedicineResource',
+      context: context);
+
+  @override
+  Future<List<Map<String, String>>> getMedicineResource() {
+    return _$getMedicineResourceAsyncAction
+        .run(() => super.getMedicineResource());
   }
 
   late final _$saveTreatmentAsyncAction = AsyncAction(
@@ -118,19 +144,19 @@ mixin _$TreatmentFormController on TreatmentFormControllerBase, Store {
       context: context);
 
   @override
-  Future<bool> saveTreatment() {
-    return _$saveTreatmentAsyncAction.run(() => super.saveTreatment());
+  Future<TreatmentMedicineDto> saveTreatment(GlobalKey<FormState>? formKey) {
+    return _$saveTreatmentAsyncAction.run(() => super.saveTreatment(formKey));
   }
 
   late final _$TreatmentFormControllerBaseActionController =
       ActionController(name: 'TreatmentFormControllerBase', context: context);
 
   @override
-  void addTreatmentMedicine(String name) {
+  void addTreatmentMedicine(int medicineId) {
     final _$actionInfo = _$TreatmentFormControllerBaseActionController
         .startAction(name: 'TreatmentFormControllerBase.addTreatmentMedicine');
     try {
-      return super.addTreatmentMedicine(name);
+      return super.addTreatmentMedicine(medicineId);
     } finally {
       _$TreatmentFormControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -154,17 +180,6 @@ mixin _$TreatmentFormController on TreatmentFormControllerBase, Store {
         .startAction(name: 'TreatmentFormControllerBase.convertEndDate');
     try {
       return super.convertEndDate(date);
-    } finally {
-      _$TreatmentFormControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic convertFrequencyTime(TimeOfDay selectedTime) {
-    final _$actionInfo = _$TreatmentFormControllerBaseActionController
-        .startAction(name: 'TreatmentFormControllerBase.convertFrequencyTime');
-    try {
-      return super.convertFrequencyTime(selectedTime);
     } finally {
       _$TreatmentFormControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -206,9 +221,10 @@ mixin _$TreatmentFormController on TreatmentFormControllerBase, Store {
   @override
   String toString() {
     return '''
+medicines: ${medicines},
 importanceLevel: ${importanceLevel},
-frequencyType: ${frequencyType},
-frequency: ${frequency},
+medicineId: ${medicineId},
+selectedFrequency: ${selectedFrequency},
 selectedMedicine: ${selectedMedicine},
 selectedMedicines: ${selectedMedicines},
 endlessTreatment: ${endlessTreatment}

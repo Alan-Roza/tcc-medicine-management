@@ -311,12 +311,13 @@ class _MainHomePageState extends State<MainHomePage> {
                 context.goNamed('TreatmentForm');
               },
             ),
-            SpeedDialChild(
-              child: const Icon(Icons.edit, color: Colors.white),
-              backgroundColor: const Color(0xFFC99B08),
-              label: 'Editar',
-              onTap: () => treatmentListController.enableMultiSelection(),
-            ),
+            // TODO: maybe it wont be used
+            // SpeedDialChild(
+            //   child: const Icon(Icons.edit, color: Colors.white),
+            //   backgroundColor: const Color(0xFFC99B08),
+            //   label: 'Editar',
+            //   onTap: () => treatmentListController.enableMultiSelection(),
+            // ),
             SpeedDialChild(
               child: const Icon(Icons.delete, color: Colors.white),
               backgroundColor: const Color(0xFFB3261E),

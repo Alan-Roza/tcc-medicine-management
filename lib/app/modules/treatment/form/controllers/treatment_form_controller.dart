@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/form/model/medicine_model.dart';
-import 'package:tcc_medicine_management/app/modules/treatment/form/model/medicine_model.dart';
-import 'package:tcc_medicine_management/app/modules/treatment/form/model/treatment_medicine_model.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/form/model/dto/treatment_medicine_dto.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/form/repository/treatment_medicine_repository.dart';
+import 'package:tcc_medicine_management/main.dart';
 
 part 'treatment_form_controller.g.dart';
 
 class TreatmentFormController = TreatmentFormControllerBase with _$TreatmentFormController;
 
 abstract class TreatmentFormControllerBase with Store {
+  final TreatmentMedicineRepository _treatmentMedicineRepository = getIt<TreatmentMedicineRepository>();
+
   @observable
-  String importanceLevel = 'low';
+  List<Map<String, String>> medicines = [];
+
+  @observable
+  ImportanceLevel importanceLevel = ImportanceLevel.media;
   TextEditingController nameController = TextEditingController();
   TextEditingController medicinesController = TextEditingController();
 
   @observable
-  String frequencyType = 'hourly';
-  @observable
-  String? frequency;
-  TextEditingController frequencyDisplayController = TextEditingController();
+  int? medicineId;
   TextEditingController frequencyController = TextEditingController();
+  @observable
+  int? selectedFrequency;
   TextEditingController quantityController = TextEditingController();
   TextEditingController medicineNameController = TextEditingController();
   TextEditingController startDateController = TextEditingController();
@@ -38,33 +43,7 @@ abstract class TreatmentFormControllerBase with Store {
   String? selectedMedicine = '';
 
   @observable
-  ObservableList<TreatmentMedicine> selectedMedicines = ObservableList<TreatmentMedicine>();
-
-  // TODO: use medicines list from server
-  List<Medicine> medicines = [
-    Medicine(
-      name: 'Dipirona',
-      type: 'Comprimido',
-      quantity: 20,
-      expirationDate: '2022-12-31',
-      qtyByPackage: 10,
-      unity: 1,
-      valuePaid: 10.0,
-      importanceLevel: 'low',
-      drawerNumber: 1,
-    ),
-    Medicine(
-      name: 'Paracetamol',
-      type: 'Comprimido',
-      quantity: 20,
-      expirationDate: '2022-12-31',
-      qtyByPackage: 10,
-      unity: 1,
-      valuePaid: 10.0,
-      importanceLevel: 'low',
-      drawerNumber: 1,
-    ),
-  ];
+  ObservableList<Medicine> selectedMedicines = ObservableList<Medicine>();
 
   // @computed
   // bool get isFormValid =>
@@ -99,36 +78,61 @@ abstract class TreatmentFormControllerBase with Store {
   // }
 
   @action
-  Future<bool> saveTreatment() async {
-    final treatment = Treatment(
-      name: nameController.text,
-      importanceLevel: importanceLevel,
-      medicines: [
-        TreatmentMedicine(
-          name: nameController.text,
-          frequency: frequency,
-          quantity: int.parse(quantityController.text),
-          frequencyType: frequencyType,
-          startDate: startDateController.text.isNotEmpty ? DateTime.parse(startDateController.text) : DateTime.now(),
-          endDate: endDateController.text.isNotEmpty ? DateTime.parse(endDateController.text) : null,
-        ),
-      ],
-    );
+  Future<List<Map<String, String>>> getMedicineResource() async {
+    try {
+      final List<Map<String, String>> dataResponse = await _treatmentMedicineRepository.resource();
 
-    print(treatment);
-    return true;
+      medicines = dataResponse;
+
+      return dataResponse;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
   }
 
   @action
-  void addTreatmentMedicine(String name) {
-    final treatmentMedicine = TreatmentMedicine(
-      name: name,
-      startDate: DateTime.now(),
+  Future<TreatmentMedicineDto> saveTreatment(GlobalKey<FormState>? formKey) async {
+    try {
+      // TODO: will be implemented at future
+      // if (!formKey.currentState!.validate()) {
+      //   return Future.error('Preencha os campos corretamente!');
+      // }
+
+      final treatment = Treatment(importance: importanceLevel.displayName, name: nameController.text);
+
+      final medicinesFormatted = selectedMedicines
+          .map((medicine) => Medicine(
+                name: medicine.name,
+                medicineId: medicine.medicineId,
+                dosage: quantityController.text.isNotEmpty ? int.parse(quantityController.text) : null,
+                frequency: frequencyController.text.isNotEmpty ? int.parse(frequencyController.text) : null,
+                treatmentEnd: endDateController.text.isNotEmpty && endlessTreatment == false
+                    ? DateTime.parse(endDateController.text).toIso8601String()
+                    : null,
+                treatmentInit: startDateController.text.isNotEmpty
+                    ? DateTime.parse(startDateController.text).toIso8601String()
+                    : DateTime.now().toIso8601String(),
+              ))
+          .toList();
+
+      final TreatmentMedicineDto treatmentMedicine = TreatmentMedicineDto(treatment: treatment, medicines: medicinesFormatted);
+
+      final TreatmentMedicineDto dataResponse = await _treatmentMedicineRepository.exec(treatmentMedicine);
+      return dataResponse;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  @action
+  void addTreatmentMedicine(int medicineId) {
+    final treatmentMedicine = Medicine(
+      medicineId: medicineId,
+      name: medicines.firstWhere((medicine) => medicine['id'] == medicineId.toString())['name'],
+      treatmentInit: DateTime.now().toString(),
     );
 
     selectedMedicines.add(treatmentMedicine);
-
-    print(treatmentMedicine);
   }
 
   @action
@@ -141,17 +145,6 @@ abstract class TreatmentFormControllerBase with Store {
     endDateController.text = date;
     DateFormat format = DateFormat('dd-MM-yyyy HH:mm');
     endDateDisplayController.text = format.format(DateTime.parse(date));
-  }
-
-  @action
-  convertFrequencyTime(TimeOfDay selectedTime) {
-    final now = DateTime.now();
-    final dateTime = DateTime(now.year, now.month, now.day, selectedTime.hour, selectedTime.minute);
-
-    String formattedTime = DateFormat.Hm().format(dateTime);
-
-    frequencyController.text = dateTime.toString();
-    frequencyDisplayController.text = formattedTime;
   }
 
   @action
@@ -168,14 +161,14 @@ abstract class TreatmentFormControllerBase with Store {
 
   void dispose() {
     nameController.dispose();
-    importanceLevel = 'low';
+    importanceLevel = ImportanceLevel.media;
     medicinesController.dispose();
-    frequency = null;
-    frequencyType = 'hourly';
+    frequencyController.dispose();
     quantityController.dispose();
     medicineNameController.dispose();
     startDateController.dispose();
     endDateController.dispose();
+    selectedFrequency = null;
     startDateDisplayController.dispose();
     endDateDisplayController.dispose();
     selectedMedicines.clear();
@@ -185,10 +178,10 @@ abstract class TreatmentFormControllerBase with Store {
   @action
   void resetForm() {
     nameController.clear();
-    importanceLevel = 'low';
+    importanceLevel = ImportanceLevel.media;
     medicinesController.clear();
-    frequency = null;
-    frequencyType = 'hourly';
+    frequencyController.clear();
+    selectedFrequency = null;
     quantityController.clear();
     medicineNameController.clear();
     startDateController.clear();

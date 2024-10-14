@@ -41,7 +41,7 @@ class TreatmentFormPageState extends State<TreatmentFormPage> with SingleTickerP
     TreatmentFormController formController = Provider.of<TreatmentFormController>(context);
 
     _formWidgets = [
-      TreatmentBasicFormWidget(readOnly: widget.readOnly ?? false),
+      Expanded(child: TreatmentBasicFormWidget(readOnly: widget.readOnly ?? false)),
       TreatmentMedicineFormWidget(readOnly: widget.readOnly ?? false),
       const TreatmentReviewFormWidget(),
     ];
@@ -83,14 +83,32 @@ class TreatmentFormPageState extends State<TreatmentFormPage> with SingleTickerP
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     if (stepProgressController.currentStep == _formWidgets.length - 1) {
-                                      formController.saveTreatment().then((saveResponse) {
-                                        context.pop(); // TODO: verify if is the best pratice
-                                      });
-                                      return;
+                                      try {
+                                        await formController.saveTreatment(null);
+                                        // await medicineListController
+                                        //   .getListMedicines(MedicineListRequestDto(size: 100, search: medicineListController.search));
+
+                                        context.pop();
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            backgroundColor: Colors.green,
+                                            content: Text("Salvo com Sucesso!"), // Customize with your success message
+                                          ),
+                                        );
+                                        return;
+                                      } catch (error) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: Colors.red,
+                                            content: Text(error.toString()),
+                                          ),
+                                        );
+                                      }
                                     }
-                                    if (stepProgressController.currentStep == 0 &&
+                                    
+                                    else if (stepProgressController.currentStep == 0 &&
                                         formController.selectedMedicines.isEmpty) {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
@@ -102,6 +120,7 @@ class TreatmentFormPageState extends State<TreatmentFormPage> with SingleTickerP
                                       );
                                       return;
                                     }
+
                                     stepProgressController.increaseCurrentStep();
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -130,9 +149,6 @@ class TreatmentFormPageState extends State<TreatmentFormPage> with SingleTickerP
                                         ),
                                       )
                                     : Container(),
-                                const SizedBox(
-                                  height: 16.0,
-                                ),
                               ],
                             ),
                           ],

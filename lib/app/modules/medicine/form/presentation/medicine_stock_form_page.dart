@@ -87,7 +87,7 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
                                     if (stepProgressController.currentStep == _formWidgets.length - 1) {
                                       try {
                                         await formController.saveMedicine(null);
-                                        medicineListController
+                                        await medicineListController
                                           .getListMedicines(MedicineListRequestDto(size: 100, search: medicineListController.search));
 
                                         context.pop();

@@ -30,6 +30,7 @@ import 'package:tcc_medicine_management/app/modules/medicine/list/repository/med
 import 'package:tcc_medicine_management/app/modules/medicine/view/controllers/medicine_view_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/view/repository/medicine_view_repository.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/form/controllers/treatment_form_controller.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/form/repository/treatment_medicine_repository.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/treatment_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/login/repository/auth_repository.dart';
 import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
@@ -139,6 +140,9 @@ void setupDependencies() {
   getIt.registerLazySingleton<ConfigurationsInfoRepository>(() =>
       ConfigurationsInfoRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(DioFactory().getDio())));
 
-      getIt.registerLazySingleton<MedicineRepository>(() =>
-      MedicineRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(DioFactory().getDio())));
+  getIt.registerLazySingleton<MedicineRepository>(
+      () => MedicineRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(DioFactory().getDio())));
+
+  getIt.registerLazySingleton<TreatmentMedicineRepository>(() =>
+      TreatmentMedicineRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(DioFactory().getDio())));
 }

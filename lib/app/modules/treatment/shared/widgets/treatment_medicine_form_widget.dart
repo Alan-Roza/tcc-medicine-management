@@ -27,7 +27,7 @@ class TreatmentMedicineFormWidgetState extends State<TreatmentMedicineFormWidget
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        medicine.name.toUpperCase(),
+                        medicine.name!.toUpperCase(),
                         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       Container(
@@ -52,86 +52,30 @@ class TreatmentMedicineFormWidgetState extends State<TreatmentMedicineFormWidget
                         ),
                       ),
                       Observer(
-                        builder: (_) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: DropdownButtonFormField<String>(
-                            value: formController.frequencyType,
-                            onChanged: widget.readOnly ? null : (value) {
-                              if (value != null) formController.frequencyType = value;
-                            },
-                            items: const [
-                              DropdownMenuItem(
-                                value: 'hourly',
-                                child: Text('Determinado Por Tempo'),
-                              ),
-                              DropdownMenuItem(
-                                value: 'times',
-                                child: Text('Vezes ao Dia'),
-                              ),
-                            ],
-                            decoration: const InputDecoration(
-                              labelText: 'Tipo de Frequência',
-                              border: UnderlineInputBorder(),
-                              prefixIcon: Icon(Icons.av_timer),
-                            ),
+                        builder: (_) => DropdownButtonFormField<int>(
+                          value: formController.selectedFrequency,
+                          onChanged: widget.readOnly
+                              ? null
+                              : (value) {
+                                  if (value != null) {
+                                    formController.frequencyController.text = value.toString();
+                                    formController.selectedFrequency = value;
+                                  }
+                                },
+                          items: List.generate(24, (index) {
+                            final hour = index + 1;
+                            return DropdownMenuItem<int>(
+                              value: hour,
+                              child:
+                                  Text('A cada $hour ${hour > 1 ? 'horas' : 'hora'}'), // Pluraliza conforme necessário
+                            );
+                          }),
+                          decoration: const InputDecoration(
+                            labelText: 'Frequência',
+                            border: UnderlineInputBorder(),
+                            prefixIcon: Icon(Icons.timelapse_sharp),
                           ),
                         ),
-                      ),
-                      // Observer(
-                      //   builder: (_) => CustomTextFieldWidget(
-                      //     textEditingController: formController.frequency,
-                      //     icon: Icons.timelapse_sharp,
-                      //     label: 'Frequência',
-                      //     readOnly: widget.readOnly,
-                      //   ),
-                      // ),
-                      Observer(
-                        builder: (_) => formController.frequencyType == 'times'
-                            ? Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                child: DropdownButtonFormField<String>(
-                                  value: formController.frequency,
-                                  onChanged: widget.readOnly ? null : (value) {
-                                    if (value != null) formController.frequency = value;
-                                  },
-                                  items: List<DropdownMenuItem<String>>.generate(
-                                    60,
-                                    (index) => DropdownMenuItem(
-                                      value: (index + 1).toString(),
-                                      child: Text((index + 1).toString()),
-                                    ),
-                                  ),
-                                  decoration: const InputDecoration(
-                                    labelText: 'Frequência (vezes ao dia)',
-                                    border: UnderlineInputBorder(),
-                                    prefixIcon: Icon(Icons.timelapse_sharp),
-                                  ),
-                                ),
-                              )
-                            : CustomTextFieldWidget(
-                                textEditingController: formController.frequencyDisplayController,
-                                icon: Icons.timelapse_sharp,
-                                label: 'Frequência (a cada x tempo)',
-                                readOnly: widget.readOnly,
-                                enabled: !widget.readOnly,
-                                onTap: () {
-                                  showTimePicker(
-                                    context: context,
-                                    initialTime: formController.frequencyController.text.isNotEmpty
-                                        ? TimeOfDay.fromDateTime(
-                                            DateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(
-                                              formController.frequencyController.text,
-                                              true,
-                                            ),
-                                          )
-                                        : TimeOfDay.now(),
-                                  ).then((selectedTime) {
-                                    if (selectedTime != null) {
-                                      formController.convertFrequencyTime(selectedTime);
-                                    }
-                                  });
-                                },
-                              ),
                       ),
                       Observer(
                         builder: (_) => CustomTextFieldWidget(
