@@ -75,7 +75,7 @@ class TreatmentFormPageState extends State<TreatmentFormPage> with SingleTickerP
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _formWidgets[stepProgressController.currentStep],
+                            _formWidgets[stepProgressController.currentStep.clamp(0, _formWidgets.length - 1)],
                             const SizedBox(
                               height: 24.0,
                             ),
@@ -119,9 +119,11 @@ class TreatmentFormPageState extends State<TreatmentFormPage> with SingleTickerP
                                         ),
                                       );
                                       return;
+                                    } else {
+                                    stepProgressController.increaseCurrentStep();
+
                                     }
 
-                                    stepProgressController.increaseCurrentStep();
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.blue,

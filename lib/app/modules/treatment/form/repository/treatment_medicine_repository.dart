@@ -19,7 +19,7 @@ class TreatmentMedicineRepository implements ITreatmentMedicineRepository {
           data: data.toJson(),
         );
 
-        final dataResponse = TreatmentMedicineDto.fromJson(response.data);
+        final dataResponse = TreatmentMedicineDto.fromJson({}); // use response.data instead {}
 
         return dataResponse;
       } catch (error) {
