@@ -16,7 +16,7 @@ class TreatmentListRepository implements ITreatmentListRepository {
     if (await _networkInfo.isConnected) {
       try {
         final response = await _apiService.get(
-          endPoint: "/Medicine/List", 
+          endPoint: "/Treatment/List", 
           params: data?.toJson(),
         );
 
@@ -38,7 +38,7 @@ class TreatmentListRepository implements ITreatmentListRepository {
     if (await _networkInfo.isConnected) {
       try {
         final response = await _apiService.delete(
-          endPoint: "/Medicine/$id"
+          endPoint: "/Treatment/$id"
         );
 
       if (response.statusCode == 200) {

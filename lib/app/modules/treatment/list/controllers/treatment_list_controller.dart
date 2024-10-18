@@ -1,35 +1,26 @@
 import 'package:mobx/mobx.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/list/model/dto/treatment_list_dto.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/list/model/dto/treatment_list_request.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/list/repository/treatment_list_repository.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_card_widget/controllers/treatment_card_controller.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_card_widget/model/treatment_card_model.dart';
+import 'package:tcc_medicine_management/main.dart';
 
 part 'treatment_list_controller.g.dart';
 
 class TreatmentListController = _TreatmentListController with _$TreatmentListController;
 
 abstract class _TreatmentListController with Store {
+  final TreatmentListRepository _treatmentListRepository = getIt<TreatmentListRepository>();
+
+@observable
+  String search = "";
 
   @observable
   ObservableList<TreatmentCardController> treatmentCards = ObservableList<TreatmentCardController>();
 
   @observable
   bool multiSelectionIsEnabled = false;
-
-  @action
-  void createMedicineCardList() {
-    for (int i = 0; i <= 20; i++) {
-      treatmentCards.add(
-        TreatmentCardController(
-          TreatmentCard(
-            name: 'Medicine $i',
-            quantity: i,
-            expirationDate: '2022-12-31',
-            patientName: 'Luna Roza',
-            priority: 'high',
-          ),
-        ),
-      );
-    }
-  }
 
   @action
   void enableMultiSelection() => multiSelectionIsEnabled = true;
@@ -59,5 +50,42 @@ abstract class _TreatmentListController with Store {
     treatmentCards.removeWhere((element) => element.isSelected);
 
     disableMultiSelection();
+  }
+
+  @action
+  Future<void> deleteTreatments(List<int> ids) async {
+    try {
+      for (var id in ids) {
+        await _treatmentListRepository.delete(id);
+      }
+      getListTreatments(TreatmentListRequestDto(search: search, size: 100));
+      removeSelectedTasks();
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  @action
+  Future<void> getListTreatments(TreatmentListRequestDto? parameters) async {
+    try {
+      final TreatmentListDto dataResponse = await _treatmentListRepository.exec(parameters);
+
+      treatmentCards.clear();
+      for (var element in dataResponse.content!) {
+        treatmentCards.add(
+          TreatmentCardController(
+            TreatmentCard(
+              name: element.name!,
+              quantity: 0,
+              expirationDate: '',
+              patientName: element.user!,
+              priority: element.importance!,
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      return Future.error(e.toString());
+    }
   }
 }

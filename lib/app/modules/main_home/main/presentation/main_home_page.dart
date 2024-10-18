@@ -12,6 +12,7 @@ import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/me
 import 'package:tcc_medicine_management/app/modules/medicine/list/model/dto/medicine_list_request.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/presentation/medicine_card_widget.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/treatment_list_controller.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/list/model/dto/treatment_list_request.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_card_widget/presentation/treatment_card_widget.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/notification/controller/notification_controller.dart';
 
@@ -183,7 +184,12 @@ class _MainHomePageState extends State<MainHomePage> {
                 treatmentListController.treatmentCards.where((element) => element.isSelected).isNotEmpty
             ? IconButton(
                 icon: const Icon(Icons.delete),
-                onPressed: treatmentListController.removeSelectedTasks,
+                onPressed: () async => await treatmentListController.deleteTreatments(
+                  treatmentListController.treatmentCards
+                      .where((element) => element.isSelected)
+                      .map((card) => int.parse(card.treatmentId.toString()))
+                      .toList(),
+                ),
               )
             : Container();
       },
@@ -426,6 +432,22 @@ class _MainHomePageState extends State<MainHomePage> {
   }
 
   Widget _treatmentListPage(TreatmentListController treatmentListController) {
+    Timer? debounceTimer;
+
+    void onSearchChanged(String value) {
+      // Cancel the previous timer if it's still active
+      if (debounceTimer?.isActive ?? false) debounceTimer!.cancel();
+
+      // Start a new timer
+      debounceTimer = Timer(const Duration(milliseconds: 300), () {
+        // Update the search value in your controller
+        treatmentListController.search = value;
+
+        // Dispatch the request with the new search value
+        treatmentListController
+            .getListTreatments(TreatmentListRequestDto(size: 100, search: treatmentListController.search));
+      });
+    }
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -501,31 +523,35 @@ class _MainHomePageState extends State<MainHomePage> {
               ],
             ),
             const SizedBox(height: 30.0),
-            SizedBox(
-              height: MediaQuery.of(context).size.height - 250,
-              child: Observer(
-                builder: (_) {
-                  if (treatmentListController.treatmentCards.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        'Nenhum dado encontrado',
-                        style: TextStyle(fontSize: 18, color: Colors.grey),
-                      ),
-                    );
-                  } else {
-                    return ListView.builder(
-                      padding: const EdgeInsets.only(bottom: 50.0),
-                      itemCount: treatmentListController.treatmentCards.length,
-                      itemBuilder: (context, index) {
-                        final item = treatmentListController.treatmentCards[index];
-                        return TreatmentCardWidget(
-                          key: Key(item.hashCode.toString()),
-                          treatmentCard: item,
-                        );
-                      },
-                    );
-                  }
-                },
+            RefreshIndicator(
+              onRefresh: () => treatmentListController
+                  .getListTreatments(TreatmentListRequestDto(size: 100, search: treatmentListController.search)),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height - 250,
+                child: Observer(
+                  builder: (_) {
+                    if (treatmentListController.treatmentCards.isEmpty) {
+                      return const Center(
+                        child: Text(
+                          'Nenhum dado encontrado',
+                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                        ),
+                      );
+                    } else {
+                      return ListView.builder(
+                        padding: const EdgeInsets.only(bottom: 50.0),
+                        itemCount: treatmentListController.treatmentCards.length,
+                        itemBuilder: (context, index) {
+                          final item = treatmentListController.treatmentCards[index];
+                          return TreatmentCardWidget(
+                            key: Key(item.hashCode.toString()),
+                            treatmentCard: item,
+                          );
+                        },
+                      );
+                    }
+                  },
+                ),
               ),
             ),
           ],

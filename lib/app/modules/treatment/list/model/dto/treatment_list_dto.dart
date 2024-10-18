@@ -27,9 +27,7 @@ class TreatmentListDto {
   TreatmentListDto.fromJson(Map<String, dynamic> json) {
     totalPages = json['totalPages'];
     totalElements = json['totalElements'];
-    pageable = json['pageable'] != null
-        ? Pageable.fromJson(json['pageable'])
-        : null;
+    pageable = json['pageable'] != null ? Pageable.fromJson(json['pageable']) : null;
     size = json['size'];
     if (json['content'] != null) {
       content = <Content>[];
@@ -76,13 +74,7 @@ class Pageable {
   bool? paged;
   bool? unpaged;
 
-  Pageable(
-      {this.pageNumber,
-      this.pageSize,
-      this.sort,
-      this.offset,
-      this.paged,
-      this.unpaged});
+  Pageable({this.pageNumber, this.pageSize, this.sort, this.offset, this.paged, this.unpaged});
 
   Pageable.fromJson(Map<String, dynamic> json) {
     pageNumber = json['pageNumber'];
@@ -130,13 +122,12 @@ class Sort {
 }
 
 class Content {
-String? name;
+  String? name;
   int? id;
   String? user;
   String? importance;
 
-  Content(
-      {this.name, this.id, this.user, this.importance});
+  Content({this.name, this.id, this.user, this.importance});
 
   Content.fromJson(Map<String, dynamic> json) {
     name = json['name'];
