@@ -1,5 +1,4 @@
 import 'package:mobx/mobx.dart';
-import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/view/model/dto/medicine_view_request_dto.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/view/model/dto/medicine_view_response_dto.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/view/repository/medicine_view_repository.dart';

@@ -101,10 +101,11 @@ class TreatmentCardWidget extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Comprimido",
-                              style: TextStyle(fontWeight: FontWeight.w300),
-                            ),
+                            // TODO: Verify if will use this text
+                            // const Text(
+                            //   "Comprimido",
+                            //   style: TextStyle(fontWeight: FontWeight.w300),
+                            // ),
                             Text(
                               treatmentCard.name,
                               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -172,25 +173,37 @@ class TreatmentCardWidget extends StatelessWidget {
     );
   }
 
-  Map<String, dynamic> _getPriorityData(String? priority) {
+   Map<String, dynamic> _getPriorityData(String? priority) {
     switch (priority) {
-      case 'high':
+      case 'Nenhuma':
         return {
-          'text': 'Importante',
-          'background': Colors.red[100],
-          'color': Colors.red[800],
+          'text': '',
+          'background': Colors.transparent,
+          'color': Colors.transparent,
         };
-      case 'low':
+      case 'Baixa':
         return {
-          'text': 'Sem Prioridade',
+          'text': 'Comum',
           'background': Colors.green[100],
           'color': Colors.green[800],
         };
-      case 'normal':
+      case 'Média':
         return {
-          'text': 'Normal',
-          'background': Colors.blue[100],
-          'color': Colors.blue[800],
+          'text': 'Moderado',
+          'background': Colors.yellow[100],
+          'color': Colors.yellow[800],
+        };
+      case 'Alta':
+        return {
+          'text': 'Prioritário',
+          'background': Colors.orange[100],
+          'color': Colors.orange[800],
+        };
+      case 'Crítica':
+        return {
+          'text': 'De Risco',
+          'background': Colors.red[100],
+          'color': Colors.red[800],
         };
       default:
         return {

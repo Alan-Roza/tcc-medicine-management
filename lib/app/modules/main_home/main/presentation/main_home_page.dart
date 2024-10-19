@@ -27,22 +27,27 @@ class _MainHomePageState extends State<MainHomePage> {
   final MainHomeController mainHomeController = MainHomeController();
 
   late MedicineStockListController medicineStockListController;
+  late TreatmentListController treatmentListController;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Access the Provider here
     medicineStockListController = Provider.of<MedicineStockListController>(context);
+    treatmentListController = Provider.of<TreatmentListController>(context);
 
     // Run this only once when the widget is first created
     medicineStockListController.getListMedicines(
       MedicineListRequestDto(size: 100, search: medicineStockListController.search),
     );
+
+    treatmentListController.getListTreatments(
+      TreatmentListRequestDto(size: 100, search: treatmentListController.search),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final treatmentListController = Provider.of<TreatmentListController>(context);
     final notificationController = Provider.of<NotificationController>(context);
 
     return Observer(
@@ -187,7 +192,7 @@ class _MainHomePageState extends State<MainHomePage> {
                 onPressed: () async => await treatmentListController.deleteTreatments(
                   treatmentListController.treatmentCards
                       .where((element) => element.isSelected)
-                      .map((card) => int.parse(card.treatmentId.toString()))
+                      .map((card) => int.parse(card.id.toString()))
                       .toList(),
                 ),
               )
@@ -500,6 +505,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   left: 16, // Adjust this value as needed
                   right: 16, // Adjust this value as needed
                   child: TextField(
+                    onChanged: onSearchChanged,
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,

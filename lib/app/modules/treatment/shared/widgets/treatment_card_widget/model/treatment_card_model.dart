@@ -5,8 +5,10 @@ class TreatmentCard {
   final String expirationDate;
   final String priority;
   final String patientName;
+  final String id;
 
   TreatmentCard({
+    required this.id,
     required this.name,
     required this.quantity,
     required this.expirationDate,

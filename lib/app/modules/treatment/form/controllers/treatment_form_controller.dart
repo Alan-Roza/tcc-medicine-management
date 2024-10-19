@@ -23,9 +23,9 @@ abstract class TreatmentFormControllerBase with Store {
 
   @observable
   int? medicineId;
-  TextEditingController frequencyController = TextEditingController();
   @observable
   int? selectedFrequency;
+  TextEditingController frequencyController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
   TextEditingController medicineNameController = TextEditingController();
   TextEditingController startDateController = TextEditingController();

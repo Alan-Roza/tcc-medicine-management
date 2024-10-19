@@ -13,6 +13,7 @@ abstract class TreatmentCardControllerBase with Store {
   late String expirationDate;
   late String patientName;
   late String priority;
+  late String id;
 
   TreatmentCardControllerBase(TreatmentCard? treatment) {
     if (treatment == null) return;
@@ -23,6 +24,7 @@ abstract class TreatmentCardControllerBase with Store {
     expirationDate = treatment.expirationDate;
     patientName = treatment.patientName;
     priority = treatment.priority;
+    id = treatment.id;
   }
 
   @action

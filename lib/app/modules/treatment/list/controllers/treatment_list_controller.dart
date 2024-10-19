@@ -75,6 +75,7 @@ abstract class _TreatmentListController with Store {
         treatmentCards.add(
           TreatmentCardController(
             TreatmentCard(
+              id: element.id.toString(),
               name: element.name!,
               quantity: 0,
               expirationDate: '',

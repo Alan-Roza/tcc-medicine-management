@@ -57,6 +57,25 @@ extension ImportanceLevelExtension on ImportanceLevel {
   }
 }
 
+extension StringToImportanceLevelExtension on String {
+  ImportanceLevel get importanceLevel {
+    switch (this) {
+      case 'Nenhuma':
+        return ImportanceLevel.nenhuma;
+      case 'Baixa':
+        return ImportanceLevel.baixa;
+      case 'Média':
+        return ImportanceLevel.media;
+      case 'Alta':
+        return ImportanceLevel.alta;
+      case 'Crítica':
+        return ImportanceLevel.critica;
+      default:
+        throw Exception('Invalid Importance Level');
+    }
+  }
+}
+
 abstract class MedicineFormControllerBase with Store {
   final MedicineRepository _medicineRepository = getIt<MedicineRepository>();
 
