@@ -16,15 +16,20 @@ class TreatmentViewRepository implements ITreatmentViewRepository {
     if (await _networkInfo.isConnected) {
       try {
         final response = await _apiService.get(
-          endPoint: "/Treatment/${data?.treatmentId}", 
+          endPoint: "/Treatment/${data?.treatmentId}",
           params: data?.toJson(),
         );
 
+        // Convert dosage and frequency from double to int in the raw JSON data
+        (response.data['medicines'] as List<dynamic>?)?.forEach((medicine) {
+          medicine['dosage'] = (medicine['dosage'] as double?)?.toInt();
+          medicine['frequency'] = (medicine['frequency'] as double?)?.toInt();
+        });
+
         final dataResponse = TreatmentViewResponseDto.fromJson(response.data);
-      
+
         return dataResponse;
-      } 
-      catch (error) {
+      } catch (error) {
         return handleError(error) as dynamic;
       }
     } else {

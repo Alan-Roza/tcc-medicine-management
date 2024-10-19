@@ -29,6 +29,9 @@ class _TreatmentViewPageState extends State<TreatmentViewPage> with TickerProvid
       final treatmentViewController = Provider.of<TreatmentViewController>(context, listen: false);
       final TreatmentFormController formController = Provider.of<TreatmentFormController>(context, listen: false);
 
+      treatmentViewController.reset();
+      formController.resetForm();
+
       // Assuming getByIdMedicine takes a String argument for the medicine ID
       TreatmentViewResponseDto dataResponse =
           await treatmentViewController.getByTreatmentId(int.parse(widget.treatmentId));
@@ -36,10 +39,11 @@ class _TreatmentViewPageState extends State<TreatmentViewPage> with TickerProvid
       formController.nameController.text = dataResponse.treatment?.name ?? '';
       formController.importanceLevel = (dataResponse.treatment?.importance ?? '').toString().importanceLevel;
 
+      formController.selectedMedicines.clear();
       for (int i = 0; i < (dataResponse.medicines?.length ?? 0); i++) {
         final treatmentMedicine = Medicine(
-          medicineId: int.parse(dataResponse.medicines?[i].medicineId ?? '0'),
-          name: (dataResponse.medicines?[i].medicine ?? '').toString(),
+          medicineId: dataResponse.medicines?[i].medicineId,
+          name: (dataResponse.medicines?[i].medicine ?? 'Desconhecido').toString(),
           dosage: dataResponse.medicines?[i].dosage,
           frequency: dataResponse.medicines?[i].frequency,
           treatmentInit: dataResponse.medicines?[i].treatmentInit,

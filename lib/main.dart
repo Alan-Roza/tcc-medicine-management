@@ -33,6 +33,7 @@ import 'package:tcc_medicine_management/app/modules/treatment/form/controllers/t
 import 'package:tcc_medicine_management/app/modules/treatment/form/repository/treatment_medicine_repository.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/treatment_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/list/repository/treatment_list_repository.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/view/controllers/treatment_view_controller.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/view/repository/treatment_view_repository.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/login/repository/auth_repository.dart';
 import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
@@ -96,6 +97,8 @@ class MyApp extends StatelessWidget {
           Provider<FaqHelpController>(create: (_) => FaqHelpController()),
           Provider<NotificationController>(create: (_) => NotificationController()),
           Provider<ConnectController>(create: (_) => ConnectController()),
+          Provider<TreatmentViewController>(create: (_) => TreatmentViewController()),
+
         ],
         child: MaterialApp.router(
             routerConfig: appRouter,

@@ -54,7 +54,7 @@ class Treatment {
 }
 
 class Medicines {
-  String? medicineId;
+  int? medicineId;
   int? frequency;
   String? treatmentEnd;
   String? treatmentInit;

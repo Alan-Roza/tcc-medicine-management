@@ -81,6 +81,39 @@ mixin _$TreatmentFormController on TreatmentFormControllerBase, Store {
     });
   }
 
+  late final _$selectedMedicinesAtom = Atom(
+      name: 'TreatmentFormControllerBase.selectedMedicines', context: context);
+
+  @override
+  ObservableList<Medicine> get selectedMedicines {
+    _$selectedMedicinesAtom.reportRead();
+    return super.selectedMedicines;
+  }
+
+  @override
+  set selectedMedicines(ObservableList<Medicine> value) {
+    _$selectedMedicinesAtom.reportWrite(value, super.selectedMedicines, () {
+      super.selectedMedicines = value;
+    });
+  }
+
+  late final _$medicineControllersAtom = Atom(
+      name: 'TreatmentFormControllerBase.medicineControllers',
+      context: context);
+
+  @override
+  ObservableList<MedicineControllers> get medicineControllers {
+    _$medicineControllersAtom.reportRead();
+    return super.medicineControllers;
+  }
+
+  @override
+  set medicineControllers(ObservableList<MedicineControllers> value) {
+    _$medicineControllersAtom.reportWrite(value, super.medicineControllers, () {
+      super.medicineControllers = value;
+    });
+  }
+
   late final _$_endlessTreatmentAtom = Atom(
       name: 'TreatmentFormControllerBase._endlessTreatment', context: context);
 
@@ -113,22 +146,6 @@ mixin _$TreatmentFormController on TreatmentFormControllerBase, Store {
     });
   }
 
-  late final _$selectedMedicinesAtom = Atom(
-      name: 'TreatmentFormControllerBase.selectedMedicines', context: context);
-
-  @override
-  ObservableList<Medicine> get selectedMedicines {
-    _$selectedMedicinesAtom.reportRead();
-    return super.selectedMedicines;
-  }
-
-  @override
-  set selectedMedicines(ObservableList<Medicine> value) {
-    _$selectedMedicinesAtom.reportWrite(value, super.selectedMedicines, () {
-      super.selectedMedicines = value;
-    });
-  }
-
   late final _$getMedicineResourceAsyncAction = AsyncAction(
       'TreatmentFormControllerBase.getMedicineResource',
       context: context);
@@ -150,6 +167,28 @@ mixin _$TreatmentFormController on TreatmentFormControllerBase, Store {
 
   late final _$TreatmentFormControllerBaseActionController =
       ActionController(name: 'TreatmentFormControllerBase', context: context);
+
+  @override
+  void addMedicine(Medicine medicine) {
+    final _$actionInfo = _$TreatmentFormControllerBaseActionController
+        .startAction(name: 'TreatmentFormControllerBase.addMedicine');
+    try {
+      return super.addMedicine(medicine);
+    } finally {
+      _$TreatmentFormControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void removeMedicine(Medicine medicine) {
+    final _$actionInfo = _$TreatmentFormControllerBaseActionController
+        .startAction(name: 'TreatmentFormControllerBase.removeMedicine');
+    try {
+      return super.removeMedicine(medicine);
+    } finally {
+      _$TreatmentFormControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void addTreatmentMedicine(int medicineId) {
@@ -225,8 +264,9 @@ medicines: ${medicines},
 importanceLevel: ${importanceLevel},
 medicineId: ${medicineId},
 selectedFrequency: ${selectedFrequency},
-selectedMedicine: ${selectedMedicine},
 selectedMedicines: ${selectedMedicines},
+medicineControllers: ${medicineControllers},
+selectedMedicine: ${selectedMedicine},
 endlessTreatment: ${endlessTreatment}
     ''';
   }

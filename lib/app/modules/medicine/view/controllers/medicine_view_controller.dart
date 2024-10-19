@@ -31,4 +31,9 @@ abstract class _MedicineViewController with Store {
       return Future.error(e.toString());
     }
   }
+
+  @action
+  void reset() {
+    selectedIndex = 0;
+  }
 }

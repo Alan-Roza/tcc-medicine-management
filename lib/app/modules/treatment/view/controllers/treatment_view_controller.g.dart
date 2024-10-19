@@ -50,6 +50,17 @@ mixin _$TreatmentViewController on _TreatmentViewController, Store {
   }
 
   @override
+  void reset() {
+    final _$actionInfo = _$_TreatmentViewControllerActionController.startAction(
+        name: '_TreatmentViewController.reset');
+    try {
+      return super.reset();
+    } finally {
+      _$_TreatmentViewControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 selectedIndex: ${selectedIndex}

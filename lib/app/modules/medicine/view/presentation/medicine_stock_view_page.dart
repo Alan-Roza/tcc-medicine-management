@@ -27,6 +27,9 @@ class _MedicineStockViewPageState extends State<MedicineStockViewPage> with Tick
       final medicineViewController = Provider.of<MedicineViewController>(context, listen: false);
       final MedicineFormController formController = Provider.of<MedicineFormController>(context, listen: false);
 
+      medicineViewController.reset();
+      formController.resetForm();
+
       // Assuming getByIdMedicine takes a String argument for the medicine ID
       MedicineViewResponseDto dataResponse = await medicineViewController.getByIdMedicine(int.parse(widget.medicineId));
 

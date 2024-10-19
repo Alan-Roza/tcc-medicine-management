@@ -34,6 +34,12 @@ abstract class TreatmentFormControllerBase with Store {
   TextEditingController endDateDisplayController = TextEditingController();
 
   @observable
+  ObservableList<Medicine> selectedMedicines = ObservableList<Medicine>();
+
+  @observable
+  ObservableList<MedicineControllers> medicineControllers = ObservableList<MedicineControllers>();
+
+  @observable
   bool _endlessTreatment = false;
 
   @computed
@@ -41,9 +47,6 @@ abstract class TreatmentFormControllerBase with Store {
 
   @observable
   String? selectedMedicine = '';
-
-  @observable
-  ObservableList<Medicine> selectedMedicines = ObservableList<Medicine>();
 
   // @computed
   // bool get isFormValid =>
@@ -115,12 +118,29 @@ abstract class TreatmentFormControllerBase with Store {
               ))
           .toList();
 
-      final TreatmentMedicineDto treatmentMedicine = TreatmentMedicineDto(treatment: treatment, medicines: medicinesFormatted);
+      final TreatmentMedicineDto treatmentMedicine =
+          TreatmentMedicineDto(treatment: treatment, medicines: medicinesFormatted);
 
       final TreatmentMedicineDto dataResponse = await _treatmentMedicineRepository.exec(treatmentMedicine);
       return dataResponse;
     } catch (e) {
       return Future.error(e.toString());
+    }
+  }
+
+  @action
+  void addMedicine(Medicine medicine) {
+    selectedMedicines.add(medicine);
+    medicineControllers.add(MedicineControllers());
+  }
+
+  @action
+  void removeMedicine(Medicine medicine) {
+    int index = selectedMedicines.indexOf(medicine);
+    if (index != -1) {
+      selectedMedicines.removeAt(index);
+      medicineControllers[index].dispose();
+      medicineControllers.removeAt(index);
     }
   }
 
@@ -190,5 +210,25 @@ abstract class TreatmentFormControllerBase with Store {
     startDateDisplayController.clear();
     endDateDisplayController.clear();
     _endlessTreatment = false;
+  }
+}
+
+class MedicineControllers {
+  TextEditingController frequencyController = TextEditingController();
+  TextEditingController quantityController = TextEditingController();
+  TextEditingController medicineNameController = TextEditingController();
+  TextEditingController startDateController = TextEditingController();
+  TextEditingController startDateDisplayController = TextEditingController();
+  TextEditingController endDateController = TextEditingController();
+  TextEditingController endDateDisplayController = TextEditingController();
+
+  void dispose() {
+    frequencyController.dispose();
+    quantityController.dispose();
+    medicineNameController.dispose();
+    startDateController.dispose();
+    startDateDisplayController.dispose();
+    endDateController.dispose();
+    endDateDisplayController.dispose();
   }
 }

@@ -29,6 +29,7 @@ class TreatmentCardWidget extends StatelessWidget {
             else
               context.goNamed('TreatmentView', queryParameters: {
                 'readOnly': 'true',
+                'treatmentId': treatmentCard.id,
               }),
           },
           onLongPress: () => {

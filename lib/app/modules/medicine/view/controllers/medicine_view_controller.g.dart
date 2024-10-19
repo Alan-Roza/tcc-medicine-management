@@ -49,6 +49,17 @@ mixin _$MedicineViewController on _MedicineViewController, Store {
   }
 
   @override
+  void reset() {
+    final _$actionInfo = _$_MedicineViewControllerActionController.startAction(
+        name: '_MedicineViewController.reset');
+    try {
+      return super.reset();
+    } finally {
+      _$_MedicineViewControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 selectedIndex: ${selectedIndex}

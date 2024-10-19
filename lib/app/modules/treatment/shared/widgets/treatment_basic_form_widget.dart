@@ -137,7 +137,7 @@ class TreatmentBasicFormWidgetState extends State<TreatmentBasicFormWidget> with
                 ),
           const SizedBox(height: 16),
           Observer(builder: (_) {
-            return formController.selectedMedicines.isNotEmpty
+            return formController.selectedMedicines.isNotEmpty && !widget.readOnly
                 ? Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
