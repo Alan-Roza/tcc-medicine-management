@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/view/controllers/medicine_view_controller.dart';
@@ -30,18 +31,16 @@ class _MedicineStockViewPageState extends State<MedicineStockViewPage> with Tick
       medicineViewController.reset();
       formController.resetForm();
 
-      // Assuming getByIdMedicine takes a String argument for the medicine ID
       MedicineViewResponseDto dataResponse = await medicineViewController.getByIdMedicine(int.parse(widget.medicineId));
 
-      formController.nameController.text = dataResponse.name!;
-      //  formController.typeController.text = dataResponse.type!;
-       formController.quantityController.text = dataResponse.storageQuantity!.toString();
-      //  formController.unityController.text = dataResponse.unity!;
-      //  formController.qtyByPackageController.text = dataResponse.qtyByPackage!;
-      //  formController.importanceLevel = dataResponse.importance!;
-      //  formController.valuePaidController.text = dataResponse.price!;
-       formController.expirationDateController.text =  dataResponse.expirationDate!;
-       formController.drawerNumberController.text =  dataResponse.drawerNumber!.toString();
+      formController.nameController.text = dataResponse.name ?? 'Desconhecido';
+      formController.medicineType = (dataResponse.type ?? '').toString().medicineType;
+      formController.quantityController.text = dataResponse.storageQuantity.toString();
+      formController.importanceLevel = (dataResponse.importance ?? '').toString().importanceLevel;
+       formController.valuePaidController.text = (dataResponse.price ?? 0).toStringAsFixed(2).replaceAll('.', ',');
+      formController.expirationDateController.text = DateFormat.yMd().add_jm().format(DateTime.parse(dataResponse.expirationDate!));
+      formController.drawerNumberController.text = dataResponse.drawerNumber.toString();
+      formController.hardwareIdController.text = dataResponse.hardwareId.toString();
     });
   }
 
@@ -96,12 +95,14 @@ class _MedicineStockViewPageState extends State<MedicineStockViewPage> with Tick
         builder: (_) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-            child: IndexedStack(
-              index: medicineViewController.selectedIndex,
-              children: [
-                MedicineStockBasicFormWidget(readOnly: widget.readOnly ?? true),
-                MedicineStockOptionalFormWidget(readOnly: widget.readOnly ?? true),
-              ],
+            child: SingleChildScrollView(
+              child: IndexedStack(
+                index: medicineViewController.selectedIndex,
+                children: [
+                  MedicineStockBasicFormWidget(readOnly: widget.readOnly ?? true),
+                  MedicineStockOptionalFormWidget(readOnly: widget.readOnly ?? true),
+                ],
+              ),
             ),
           );
         },

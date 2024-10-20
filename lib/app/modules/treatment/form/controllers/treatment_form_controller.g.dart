@@ -9,14 +9,6 @@ part of 'treatment_form_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$TreatmentFormController on TreatmentFormControllerBase, Store {
-  Computed<bool>? _$endlessTreatmentComputed;
-
-  @override
-  bool get endlessTreatment => (_$endlessTreatmentComputed ??= Computed<bool>(
-          () => super.endlessTreatment,
-          name: 'TreatmentFormControllerBase.endlessTreatment'))
-      .value;
-
   late final _$medicinesAtom =
       Atom(name: 'TreatmentFormControllerBase.medicines', context: context);
 
@@ -65,22 +57,6 @@ mixin _$TreatmentFormController on TreatmentFormControllerBase, Store {
     });
   }
 
-  late final _$selectedFrequencyAtom = Atom(
-      name: 'TreatmentFormControllerBase.selectedFrequency', context: context);
-
-  @override
-  int? get selectedFrequency {
-    _$selectedFrequencyAtom.reportRead();
-    return super.selectedFrequency;
-  }
-
-  @override
-  set selectedFrequency(int? value) {
-    _$selectedFrequencyAtom.reportWrite(value, super.selectedFrequency, () {
-      super.selectedFrequency = value;
-    });
-  }
-
   late final _$selectedMedicinesAtom = Atom(
       name: 'TreatmentFormControllerBase.selectedMedicines', context: context);
 
@@ -97,36 +73,36 @@ mixin _$TreatmentFormController on TreatmentFormControllerBase, Store {
     });
   }
 
-  late final _$medicineControllersAtom = Atom(
-      name: 'TreatmentFormControllerBase.medicineControllers',
+  late final _$selectedFrequenciesAtom = Atom(
+      name: 'TreatmentFormControllerBase.selectedFrequencies',
       context: context);
 
   @override
-  ObservableList<MedicineControllers> get medicineControllers {
-    _$medicineControllersAtom.reportRead();
-    return super.medicineControllers;
+  Map<int, int?> get selectedFrequencies {
+    _$selectedFrequenciesAtom.reportRead();
+    return super.selectedFrequencies;
   }
 
   @override
-  set medicineControllers(ObservableList<MedicineControllers> value) {
-    _$medicineControllersAtom.reportWrite(value, super.medicineControllers, () {
-      super.medicineControllers = value;
+  set selectedFrequencies(Map<int, int?> value) {
+    _$selectedFrequenciesAtom.reportWrite(value, super.selectedFrequencies, () {
+      super.selectedFrequencies = value;
     });
   }
 
-  late final _$_endlessTreatmentAtom = Atom(
-      name: 'TreatmentFormControllerBase._endlessTreatment', context: context);
+  late final _$endlessTreatmentsAtom = Atom(
+      name: 'TreatmentFormControllerBase.endlessTreatments', context: context);
 
   @override
-  bool get _endlessTreatment {
-    _$_endlessTreatmentAtom.reportRead();
-    return super._endlessTreatment;
+  Map<int, bool> get endlessTreatments {
+    _$endlessTreatmentsAtom.reportRead();
+    return super.endlessTreatments;
   }
 
   @override
-  set _endlessTreatment(bool value) {
-    _$_endlessTreatmentAtom.reportWrite(value, super._endlessTreatment, () {
-      super._endlessTreatment = value;
+  set endlessTreatments(Map<int, bool> value) {
+    _$endlessTreatmentsAtom.reportWrite(value, super.endlessTreatments, () {
+      super.endlessTreatments = value;
     });
   }
 
@@ -169,22 +145,22 @@ mixin _$TreatmentFormController on TreatmentFormControllerBase, Store {
       ActionController(name: 'TreatmentFormControllerBase', context: context);
 
   @override
-  void addMedicine(Medicine medicine) {
+  void setSelectedFrequency(int medicineId, int? frequency) {
     final _$actionInfo = _$TreatmentFormControllerBaseActionController
-        .startAction(name: 'TreatmentFormControllerBase.addMedicine');
+        .startAction(name: 'TreatmentFormControllerBase.setSelectedFrequency');
     try {
-      return super.addMedicine(medicine);
+      return super.setSelectedFrequency(medicineId, frequency);
     } finally {
       _$TreatmentFormControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void removeMedicine(Medicine medicine) {
+  void setEndlessTreatment(int medicineId) {
     final _$actionInfo = _$TreatmentFormControllerBaseActionController
-        .startAction(name: 'TreatmentFormControllerBase.removeMedicine');
+        .startAction(name: 'TreatmentFormControllerBase.setEndlessTreatment');
     try {
-      return super.removeMedicine(medicine);
+      return super.setEndlessTreatment(medicineId);
     } finally {
       _$TreatmentFormControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -214,33 +190,22 @@ mixin _$TreatmentFormController on TreatmentFormControllerBase, Store {
   }
 
   @override
-  dynamic convertEndDate(String date) {
+  void convertEndDate(String date, int medicineId) {
     final _$actionInfo = _$TreatmentFormControllerBaseActionController
         .startAction(name: 'TreatmentFormControllerBase.convertEndDate');
     try {
-      return super.convertEndDate(date);
+      return super.convertEndDate(date, medicineId);
     } finally {
       _$TreatmentFormControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  dynamic convertStartDate(String date) {
+  void convertStartDate(String date, int medicineId) {
     final _$actionInfo = _$TreatmentFormControllerBaseActionController
         .startAction(name: 'TreatmentFormControllerBase.convertStartDate');
     try {
-      return super.convertStartDate(date);
-    } finally {
-      _$TreatmentFormControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic setEndlessTreatment() {
-    final _$actionInfo = _$TreatmentFormControllerBaseActionController
-        .startAction(name: 'TreatmentFormControllerBase.setEndlessTreatment');
-    try {
-      return super.setEndlessTreatment();
+      return super.convertStartDate(date, medicineId);
     } finally {
       _$TreatmentFormControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -263,11 +228,10 @@ mixin _$TreatmentFormController on TreatmentFormControllerBase, Store {
 medicines: ${medicines},
 importanceLevel: ${importanceLevel},
 medicineId: ${medicineId},
-selectedFrequency: ${selectedFrequency},
 selectedMedicines: ${selectedMedicines},
-medicineControllers: ${medicineControllers},
-selectedMedicine: ${selectedMedicine},
-endlessTreatment: ${endlessTreatment}
+selectedFrequencies: ${selectedFrequencies},
+endlessTreatments: ${endlessTreatments},
+selectedMedicine: ${selectedMedicine}
     ''';
   }
 }

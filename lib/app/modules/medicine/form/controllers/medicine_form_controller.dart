@@ -37,6 +37,20 @@ extension MedicineTypeExtension on MedicineType {
     }
   }
 }
+extension StringToMedicineTypeExtension on String {
+  MedicineType get medicineType {
+    switch (this) {
+      case 'Comprimido':
+        return MedicineType.comprimido;
+      case 'Cápsula':
+        return MedicineType.capsula;
+      case 'Líquido':
+        return MedicineType.liquido;
+      default:
+        throw Exception('Invalid Medicine Type');
+    }
+  }
+}
 
 extension ImportanceLevelExtension on ImportanceLevel {
   String get displayName {

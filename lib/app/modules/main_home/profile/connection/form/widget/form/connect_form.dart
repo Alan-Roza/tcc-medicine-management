@@ -33,11 +33,6 @@ class ConnectFormWidgetState extends State<ConnectFormWidget> with SingleTickerP
             icon: Icons.lock,
             label: 'Senha',
           ),
-          CustomTextFieldWidget(
-            textEditingController: connectController.unid,
-            icon: Icons.person,
-            label: 'Código do Usuário',
-          ),
         ],
         
       ),

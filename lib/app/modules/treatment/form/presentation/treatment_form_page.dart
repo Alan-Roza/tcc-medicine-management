@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/form/controllers/treatment_form_controller.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_basic_form_widget.dart';
@@ -33,7 +32,7 @@ class TreatmentFormPageState extends State<TreatmentFormPage> with SingleTickerP
     TreatmentFormController formController = Provider.of<TreatmentFormController>(context, listen: false);
     formController.resetForm();
 
-    formController.startDateDisplayController.text = DateFormat('dd-MM-yyyy HH:mm').format(DateTime.now());
+    // formController.startDateDisplayController.text = DateFormat('dd-MM-yyyy HH:mm').format(DateTime.now());
   }
 
   @override

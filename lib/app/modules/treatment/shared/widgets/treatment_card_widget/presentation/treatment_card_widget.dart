@@ -103,10 +103,10 @@ class TreatmentCardWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // TODO: Verify if will use this text
-                            // const Text(
-                            //   "Comprimido",
-                            //   style: TextStyle(fontWeight: FontWeight.w300),
-                            // ),
+                            const Text(
+                              "Tratamento",
+                              style: TextStyle(fontWeight: FontWeight.w300),
+                            ),
                             Text(
                               treatmentCard.name,
                               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

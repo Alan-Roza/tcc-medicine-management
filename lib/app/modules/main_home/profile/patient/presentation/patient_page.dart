@@ -73,7 +73,7 @@ class PatientPage extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
-                minimumSize: const Size(double.infinity, 50),
+                minimumSize: const Size(double.infinity, 40),
                 textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
               ),
               child: const Text('ADICIONAR PACIENTE'),

@@ -97,7 +97,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
-                  minimumSize: const Size(double.infinity, 50),
+                  minimumSize: const Size(double.infinity, 40),
                   textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 child: const Text('Continuar'),

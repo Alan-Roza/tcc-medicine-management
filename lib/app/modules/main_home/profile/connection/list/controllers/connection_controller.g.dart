@@ -25,6 +25,15 @@ mixin _$ConnectionController on _ConnectionController, Store {
     });
   }
 
+  late final _$getListConnectionsAsyncAction =
+      AsyncAction('_ConnectionController.getListConnections', context: context);
+
+  @override
+  Future<void> getListConnections() {
+    return _$getListConnectionsAsyncAction
+        .run(() => super.getListConnections());
+  }
+
   late final _$_ConnectionControllerActionController =
       ActionController(name: '_ConnectionController', context: context);
 

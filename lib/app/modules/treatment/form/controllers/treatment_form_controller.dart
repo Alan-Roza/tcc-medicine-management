@@ -23,30 +23,37 @@ abstract class TreatmentFormControllerBase with Store {
 
   @observable
   int? medicineId;
-  @observable
-  int? selectedFrequency;
-  TextEditingController frequencyController = TextEditingController();
-  TextEditingController quantityController = TextEditingController();
-  TextEditingController medicineNameController = TextEditingController();
-  TextEditingController startDateController = TextEditingController();
-  TextEditingController startDateDisplayController = TextEditingController();
-  TextEditingController endDateController = TextEditingController();
-  TextEditingController endDateDisplayController = TextEditingController();
+  final Map<int, TextEditingController> frequencyControllers = {};
+  final Map<int, TextEditingController> quantityControllers = {};
+  final Map<int, TextEditingController> medicineNameControllers = {};
+  final Map<int, TextEditingController> startDateControllers = {};
+  final Map<int, TextEditingController> startDateDisplayControllers = {};
+  final Map<int, TextEditingController> endDateControllers = {};
+  final Map<int, TextEditingController> endDateDisplayControllers = {};
 
   @observable
   ObservableList<Medicine> selectedMedicines = ObservableList<Medicine>();
 
   @observable
-  ObservableList<MedicineControllers> medicineControllers = ObservableList<MedicineControllers>();
+  Map<int, int?> selectedFrequencies = {};
 
   @observable
-  bool _endlessTreatment = false;
-
-  @computed
-  bool get endlessTreatment => _endlessTreatment;
+  Map<int, bool> endlessTreatments = {};
 
   @observable
   String? selectedMedicine = '';
+
+  void initializeMedicineControllers(List<int> medicineIds) {
+    for (int id in medicineIds) {
+      frequencyControllers[id] = TextEditingController();
+      quantityControllers[id] = TextEditingController();
+      medicineNameControllers[id] = TextEditingController();
+      startDateControllers[id] = TextEditingController();
+      startDateDisplayControllers[id] = TextEditingController();
+      endDateControllers[id] = TextEditingController();
+      endDateDisplayControllers[id] = TextEditingController();
+    }
+  }
 
   // @computed
   // bool get isFormValid =>
@@ -81,6 +88,20 @@ abstract class TreatmentFormControllerBase with Store {
   // }
 
   @action
+  void setSelectedFrequency(int medicineId, int? frequency) {
+    selectedFrequencies[medicineId] = frequency;
+  }
+
+  @action
+  void setEndlessTreatment(int medicineId) {
+    final currentState = endlessTreatments[medicineId] ?? false;
+    endlessTreatments = {
+      ...endlessTreatments,
+      medicineId: !currentState
+    };
+  }
+
+  @action
   Future<List<Map<String, String>>> getMedicineResource() async {
     try {
       final List<Map<String, String>> dataResponse = await _treatmentMedicineRepository.resource();
@@ -107,13 +128,17 @@ abstract class TreatmentFormControllerBase with Store {
           .map((medicine) => Medicine(
                 name: medicine.name,
                 medicineId: medicine.medicineId,
-                dosage: quantityController.text.isNotEmpty ? int.parse(quantityController.text) : null,
-                frequency: frequencyController.text.isNotEmpty ? int.parse(frequencyController.text) : null,
-                treatmentEnd: endDateController.text.isNotEmpty && endlessTreatment == false
-                    ? DateTime.parse(endDateController.text).toIso8601String()
+                dosage: quantityControllers[medicine.medicineId]!.text.isNotEmpty
+                    ? int.parse(quantityControllers[medicine.medicineId]!.text)
                     : null,
-                treatmentInit: startDateController.text.isNotEmpty
-                    ? DateTime.parse(startDateController.text).toIso8601String()
+                frequency: frequencyControllers[medicine.medicineId]!.text.isNotEmpty
+                    ? int.parse(frequencyControllers[medicine.medicineId]!.text)
+                    : null,
+                treatmentEnd: endDateControllers[medicine.medicineId]!.text.isNotEmpty && endlessTreatments[medicine.medicineId]! == false
+                    ? DateTime.parse(endDateControllers[medicine.medicineId]!.text).toIso8601String()
+                    : null,
+                treatmentInit: startDateControllers[medicine.medicineId]!.text.isNotEmpty
+                    ? DateTime.parse(startDateControllers[medicine.medicineId]!.text).toIso8601String()
                     : DateTime.now().toIso8601String(),
               ))
           .toList();
@@ -129,28 +154,14 @@ abstract class TreatmentFormControllerBase with Store {
   }
 
   @action
-  void addMedicine(Medicine medicine) {
-    selectedMedicines.add(medicine);
-    medicineControllers.add(MedicineControllers());
-  }
-
-  @action
-  void removeMedicine(Medicine medicine) {
-    int index = selectedMedicines.indexOf(medicine);
-    if (index != -1) {
-      selectedMedicines.removeAt(index);
-      medicineControllers[index].dispose();
-      medicineControllers.removeAt(index);
-    }
-  }
-
-  @action
   void addTreatmentMedicine(int medicineId) {
     final treatmentMedicine = Medicine(
       medicineId: medicineId,
       name: medicines.firstWhere((medicine) => medicine['id'] == medicineId.toString())['name'],
       treatmentInit: DateTime.now().toString(),
     );
+
+    endlessTreatments[medicineId] = false;
 
     selectedMedicines.add(treatmentMedicine);
   }
@@ -161,38 +172,61 @@ abstract class TreatmentFormControllerBase with Store {
   }
 
   @action
-  convertEndDate(String date) {
-    endDateController.text = date;
+  void convertEndDate(String date, int medicineId) {
+    endDateControllers[medicineId]?.text = date;
     DateFormat format = DateFormat('dd-MM-yyyy HH:mm');
-    endDateDisplayController.text = format.format(DateTime.parse(date));
+    endDateDisplayControllers[medicineId]?.text = format.format(DateTime.parse(date));
   }
 
   @action
-  convertStartDate(String date) {
-    startDateController.text = date;
+  void convertStartDate(String date, int medicineId) {
+    startDateControllers[medicineId]?.text = date;
     DateFormat format = DateFormat('dd-MM-yyyy HH:mm');
-    startDateDisplayController.text = format.format(DateTime.parse(date));
+    startDateDisplayControllers[medicineId]?.text = format.format(DateTime.parse(date));
   }
 
-  @action
-  setEndlessTreatment() {
-    _endlessTreatment = !_endlessTreatment;
-  }
+  // @action
+  // convertEndDate(String date) {
+  //   endDateController.text = date;
+  //   DateFormat format = DateFormat('dd-MM-yyyy HH:mm');
+  //   endDateDisplayController.text = format.format(DateTime.parse(date));
+  // }
+
+  // @action
+  // convertStartDate(String date) {
+  //   startDateController.text = date;
+  //   DateFormat format = DateFormat('dd-MM-yyyy HH:mm');
+  //   startDateDisplayController.text = format.format(DateTime.parse(date));
+  // }
 
   void dispose() {
-    nameController.dispose();
+    nameController.clear();
     importanceLevel = ImportanceLevel.media;
-    medicinesController.dispose();
-    frequencyController.dispose();
-    quantityController.dispose();
-    medicineNameController.dispose();
-    startDateController.dispose();
-    endDateController.dispose();
-    selectedFrequency = null;
-    startDateDisplayController.dispose();
-    endDateDisplayController.dispose();
+    medicinesController.clear();
+    selectedFrequencies.clear();
+    endlessTreatments.clear();
     selectedMedicines.clear();
-    _endlessTreatment = false;
+    for (var controller in frequencyControllers.values) {
+      controller.clear();
+    }
+    for (var controller in quantityControllers.values) {
+      controller.clear();
+    }
+    for (var controller in medicineNameControllers.values) {
+      controller.clear();
+    }
+    for (var controller in startDateControllers.values) {
+      controller.clear();
+    }
+    for (var controller in startDateDisplayControllers.values) {
+      controller.clear();
+    }
+    for (var controller in endDateControllers.values) {
+      controller.clear();
+    }
+    for (var controller in endDateDisplayControllers.values) {
+      controller.clear();
+    }
   }
 
   @action
@@ -200,35 +234,29 @@ abstract class TreatmentFormControllerBase with Store {
     nameController.clear();
     importanceLevel = ImportanceLevel.media;
     medicinesController.clear();
-    frequencyController.clear();
-    selectedFrequency = null;
-    quantityController.clear();
-    medicineNameController.clear();
-    startDateController.clear();
-    endDateController.clear();
+    selectedFrequencies.clear();
+    endlessTreatments.clear();
     selectedMedicines.clear();
-    startDateDisplayController.clear();
-    endDateDisplayController.clear();
-    _endlessTreatment = false;
-  }
-}
-
-class MedicineControllers {
-  TextEditingController frequencyController = TextEditingController();
-  TextEditingController quantityController = TextEditingController();
-  TextEditingController medicineNameController = TextEditingController();
-  TextEditingController startDateController = TextEditingController();
-  TextEditingController startDateDisplayController = TextEditingController();
-  TextEditingController endDateController = TextEditingController();
-  TextEditingController endDateDisplayController = TextEditingController();
-
-  void dispose() {
-    frequencyController.dispose();
-    quantityController.dispose();
-    medicineNameController.dispose();
-    startDateController.dispose();
-    startDateDisplayController.dispose();
-    endDateController.dispose();
-    endDateDisplayController.dispose();
+    for (var controller in frequencyControllers.values) {
+      controller.clear();
+    }
+    for (var controller in quantityControllers.values) {
+      controller.clear();
+    }
+    for (var controller in medicineNameControllers.values) {
+      controller.clear();
+    }
+    for (var controller in startDateControllers.values) {
+      controller.clear();
+    }
+    for (var controller in startDateDisplayControllers.values) {
+      controller.clear();
+    }
+    for (var controller in endDateControllers.values) {
+      controller.clear();
+    }
+    for (var controller in endDateDisplayControllers.values) {
+      controller.clear();
+    }
   }
 }

@@ -9,6 +9,7 @@ import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/tre
 import 'package:tcc_medicine_management/app/modules/treatment/view/controllers/treatment_view_controller.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/view/model/dto/treatment_view_response_dto.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
+import 'dart:math';
 
 class TreatmentViewPage extends StatefulWidget {
   bool? readOnly;
@@ -32,17 +33,20 @@ class _TreatmentViewPageState extends State<TreatmentViewPage> with TickerProvid
       treatmentViewController.reset();
       formController.resetForm();
 
-      // Assuming getByIdMedicine takes a String argument for the medicine ID
       TreatmentViewResponseDto dataResponse =
           await treatmentViewController.getByTreatmentId(int.parse(widget.treatmentId));
 
+// Preenche os valores de nome e nível de importância do tratamento
       formController.nameController.text = dataResponse.treatment?.name ?? '';
       formController.importanceLevel = (dataResponse.treatment?.importance ?? '').toString().importanceLevel;
 
+// Limpa os medicamentos selecionados antes de carregar novos dados
       formController.selectedMedicines.clear();
+
+// Itera sobre a lista de medicamentos na resposta
       for (int i = 0; i < (dataResponse.medicines?.length ?? 0); i++) {
         final treatmentMedicine = Medicine(
-          medicineId: dataResponse.medicines?[i].medicineId,
+          medicineId: dataResponse.medicines?[i].medicineId ?? Random().nextInt(100000),
           name: (dataResponse.medicines?[i].medicine ?? 'Desconhecido').toString(),
           dosage: dataResponse.medicines?[i].dosage,
           frequency: dataResponse.medicines?[i].frequency,
@@ -50,7 +54,47 @@ class _TreatmentViewPageState extends State<TreatmentViewPage> with TickerProvid
           treatmentEnd: dataResponse.medicines?[i].treatmentEnd,
         );
 
+        // Adiciona o medicamento à lista de medicamentos selecionados
         formController.selectedMedicines.add(treatmentMedicine);
+
+        formController.setSelectedFrequency(treatmentMedicine.medicineId!, treatmentMedicine.frequency);
+
+        // Inicializa controladores para os campos associados a esse medicamento
+        formController.frequencyControllers[treatmentMedicine.medicineId!] = TextEditingController(
+          text: treatmentMedicine.frequency?.toString() ?? '',
+        );
+        formController.quantityControllers[treatmentMedicine.medicineId!] = TextEditingController(
+          text: treatmentMedicine.dosage?.toString() ?? '',
+        );
+        formController.medicineNameControllers[treatmentMedicine.medicineId!] = TextEditingController(
+          text: treatmentMedicine.name,
+        );
+        formController.startDateControllers[treatmentMedicine.medicineId!] = TextEditingController(
+          text: treatmentMedicine.treatmentInit ?? '',
+        );
+        formController.endDateControllers[treatmentMedicine.medicineId!] = TextEditingController(
+          text: treatmentMedicine.treatmentEnd ?? '',
+        );
+
+        formController.startDateDisplayControllers[treatmentMedicine.medicineId!] = TextEditingController(
+          text: treatmentMedicine.treatmentInit ?? '',
+        );
+
+        formController.endDateDisplayControllers[treatmentMedicine.medicineId!] = TextEditingController(
+          text: treatmentMedicine.treatmentEnd ?? '',
+        );
+
+        // Formatação para exibição de data
+        if (treatmentMedicine.treatmentInit != null) {
+          formController.convertStartDate(treatmentMedicine.treatmentInit!, treatmentMedicine.medicineId!);
+        }
+        if (treatmentMedicine.treatmentEnd != null) {
+          formController.convertEndDate(treatmentMedicine.treatmentEnd!, treatmentMedicine.medicineId!);
+        }
+
+        // Define o tratamento infinito por medicamento, caso necessário
+        bool isEndless = treatmentMedicine.treatmentEnd == null;
+        formController.endlessTreatments[treatmentMedicine.medicineId!] = isEndless;
       }
     });
   }
@@ -106,12 +150,14 @@ class _TreatmentViewPageState extends State<TreatmentViewPage> with TickerProvid
         builder: (_) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-            child: IndexedStack(
-              index: treatmentViewController.selectedIndex,
-              children: [
-                TreatmentBasicFormWidget(readOnly: widget.readOnly ?? true),
-                TreatmentMedicineFormWidget(readOnly: widget.readOnly ?? true),
-              ],
+            child: SingleChildScrollView(
+              child: IndexedStack(
+                index: treatmentViewController.selectedIndex,
+                children: [
+                  TreatmentBasicFormWidget(readOnly: widget.readOnly ?? true),
+                  TreatmentMedicineFormWidget(readOnly: widget.readOnly ?? true),
+                ],
+              ),
             ),
           );
         },
