@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
@@ -92,6 +94,26 @@ abstract class _UserInfoController with Store {
       // );
 
       final UserInfoDto dataResponse = await _userInfoRepository.exec(userInfo);
+      return dataResponse;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  @action
+  Future<String> uploadPhoto(File profileImage) async {
+    try {
+      final String dataResponse = await _userInfoRepository.uploadPhoto(profileImage);
+      return dataResponse;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  @action
+  Future<String> getProfileImage() async {
+    try {
+      final String dataResponse = await _userInfoRepository.getProfileImage();
       return dataResponse;
     } catch (e) {
       return Future.error(e.toString());

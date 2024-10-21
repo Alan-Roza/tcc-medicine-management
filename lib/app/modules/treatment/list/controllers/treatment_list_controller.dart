@@ -68,17 +68,17 @@ abstract class _TreatmentListController with Store {
   @action
   Future<void> getListTreatments(TreatmentListRequestDto? parameters) async {
     try {
-      final TreatmentListDto dataResponse = await _treatmentListRepository.exec(parameters);
+      final List<TreatmentListDto> dataResponse = await _treatmentListRepository.exec(parameters);
 
       treatmentCards.clear();
-      for (var element in dataResponse.content!) {
+      for (var element in dataResponse) {
         treatmentCards.add(
           TreatmentCardController(
             TreatmentCard(
               id: element.id.toString(),
               name: element.name!,
-              quantity: 0,
-              expirationDate: '',
+              quantity: element.resume?.medicineQuantity ?? 0,
+              expirationDate: element.resume?.lastEndDate ?? "Sem Fim",
               patientName: element.user!,
               priority: element.importance!,
             ),

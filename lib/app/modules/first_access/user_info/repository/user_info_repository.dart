@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tcc_medicine_management/app/core/infra/api_service.dart';
 import 'package:tcc_medicine_management/app/core/infra/error_handler.dart';
@@ -16,7 +19,7 @@ class UserInfoRepository implements IUserInfoRepository {
     if (await _networkInfo.isConnected) {
       try {
         final response = await _apiService.post(
-          endPoint: "/Patient", 
+          endPoint: "/Patient",
           data: data.toJson(),
         );
 
@@ -25,11 +28,52 @@ class UserInfoRepository implements IUserInfoRepository {
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('name', name!);
-      
+
         return dataResponse;
-      } 
-      catch (error) {
-        return handleError(error) as dynamic;
+      } catch (error) {
+        return Future.error(handleError(error));
+      }
+    } else {
+      // Throws an exception when there is no internet connection
+      return Future.error("Verifique o acesso à internet");
+    }
+  }
+
+  @override
+  Future<String> uploadPhoto(File imageFile) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        FormData formData = FormData.fromMap({
+          'file': await MultipartFile.fromFile(imageFile.path,
+              filename: imageFile.path.split('/').last),
+        });
+
+        final response = await _apiService.post(
+          endPoint: "/User/ProfilePicture",
+          data: formData,
+        );
+
+        return response.data['availableOn'];
+      } catch (error) {
+        return Future.error(handleError(error));
+      }
+    } else {
+      // Throws an exception when there is no internet connection
+      return Future.error("Verifique o acesso à internet");
+    }
+  }
+
+  @override
+  Future<String> getProfileImage() async {
+    if (await _networkInfo.isConnected) {
+      try {
+        final response = await _apiService.get(
+          endPoint: "/User/ProfilePicture",
+        );
+
+        return response.data['availableOn'];
+      } catch (error) {
+        return Future.error(handleError(error));
       }
     } else {
       // Throws an exception when there is no internet connection

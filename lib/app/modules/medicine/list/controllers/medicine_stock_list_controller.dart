@@ -75,10 +75,10 @@ abstract class _MedicineStockListController with Store {
       //   gender: gender.toString().split('.').last,
       // );
 
-      final MedicineListDto dataResponse = await _medicineListRepository.exec(parameters);
+      final List<MedicineListDto> dataResponse = await _medicineListRepository.exec(parameters);
 
       medicineCards.clear();
-      for (var element in dataResponse.content!) {
+      for (var element in dataResponse) {
         medicineCards.add(
           MedicineCardController(
             MedicineCard(

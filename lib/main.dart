@@ -44,6 +44,7 @@ import 'package:tcc_medicine_management/app/shared/themes/theme.dart';
 import 'package:tcc_medicine_management/app/shared/themes/util.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/notification/controller/notification_controller.dart';
+import 'package:tcc_medicine_management/app/shared/widgets/profile_picture_widget/controller/profile_picture_controller.dart';
 
 void main() {
   setupDependencies();
@@ -101,6 +102,8 @@ class MyApp extends StatelessWidget {
           Provider<ConnectController>(create: (_) => ConnectController()),
           Provider<TreatmentViewController>(create: (_) => TreatmentViewController()),
           Provider<ConnectionController>(create: (_) => ConnectionController()),
+          Provider<ProfilePictureController>(create: (_) => ProfilePictureController()),
+
         ],
         child: MaterialApp.router(
             routerConfig: appRouter,

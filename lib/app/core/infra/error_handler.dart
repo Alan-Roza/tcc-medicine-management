@@ -1,7 +1,7 @@
 
 import 'package:dio/dio.dart';
 
-Future<String> handleError(dynamic error) async {
+String handleError(dynamic error)  {
   String errorMessage = 'Oops... Tente novamente mais tarde';
 
   if (error is DioException) {
@@ -20,7 +20,7 @@ Future<String> handleError(dynamic error) async {
     errorMessage = "Erro inesperado: ${error.toString()}";
   }
 
-  return Future.error(errorMessage);
+  return errorMessage;
 }
 
 

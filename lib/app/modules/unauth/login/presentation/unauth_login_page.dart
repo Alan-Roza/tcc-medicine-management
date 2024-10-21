@@ -152,27 +152,29 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                   padding: const EdgeInsets.symmetric(vertical: 25.0),
                                   child: ElevatedButton(
                                     onPressed: () async {
-                                      // userController.login("Alan Roza"); // TODO: Verify
+                                      try {
+                                        final response = await loginController.onSubmitLogin(_formKey);
 
-                                      final response = await loginController.onSubmitLogin(_formKey);
-
-                                      if (response != null && response.isNotEmpty) {
-                                        if (response.startsWith('Exception')) {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(
-                                              backgroundColor: Colors.red,
-                                              content: Text(response.replaceAll('Exception: ', '')), // Remove 'exception:' from the response
-                                            ),
-                                          );
-                                          return;
+                                        if (response.userName == null)
+                                          context.goNamed('FirstAccess');
+                                        else {
+                                          userController.login(response.userName ?? 'Desconhecido');
+                                          context.goNamed('MainHome');
                                         }
 
-                                        // context.goNamed('FirstAccess');
-                                        context.goNamed('MainHome'); // TODO: use it after be done all implementations
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            backgroundColor: Colors.green,
+                                            content: Text(
+                                                "Login realizado com Sucesso!"), // Customize with your success message
+                                          ),
+                                        );
+                                        return;
+                                      } catch (error) {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
-                                            backgroundColor: Colors.green,
-                                            content: Text(response),
+                                            backgroundColor: Colors.red,
+                                            content: Text(error.toString()),
                                           ),
                                         );
                                       }

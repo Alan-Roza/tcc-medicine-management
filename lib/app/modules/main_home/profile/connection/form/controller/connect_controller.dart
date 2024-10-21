@@ -23,7 +23,7 @@ abstract class _ConnectController with Store {
       body: {
         'ssid': ssid.text,
         'password': password.text,
-        'unid': token,
+        'unid': 'Bearer $token',
       },
     );
 

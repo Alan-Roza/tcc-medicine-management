@@ -12,20 +12,31 @@ class MedicineListRepository implements IMedicineListRepository {
   MedicineListRepository(this._networkInfo, this._apiService);
 
   @override
-  Future<MedicineListDto> exec(MedicineListRequestDto? data) async {
+  Future<List<MedicineListDto>> exec(MedicineListRequestDto? data) async {
     if (await _networkInfo.isConnected) {
       try {
+        final params = data?.toJson();
+
+        if (params != null && params.containsKey('search')) {
+          final searchValue = params.remove('search');
+          params['Name'] = searchValue;
+        }
+
         final response = await _apiService.get(
           endPoint: "/Medicine/List", 
-          params: data?.toJson(),
+          params: params,
         );
 
-        final dataResponse = MedicineListDto.fromJson(response.data);
+        final List<MedicineListDto> dataResponse = (response.data as List)
+          .map((item) => MedicineListDto.fromJson(item))
+          .toList();
+
+        // final dataResponse = MedicineListDto.fromJson(response.data);
       
         return dataResponse;
       } 
       catch (error) {
-        return handleError(error) as dynamic;
+        return Future.error(handleError(error));
       }
     } else {
       // Throws an exception when there is no internet connection
@@ -48,7 +59,7 @@ class MedicineListRepository implements IMedicineListRepository {
       }
       } 
       catch (error) {
-        return handleError(error) as dynamic;
+        return Future.error(handleError(error));
       }
     } else {
       // Throws an exception when there is no internet connection

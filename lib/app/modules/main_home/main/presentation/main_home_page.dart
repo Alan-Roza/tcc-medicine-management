@@ -439,7 +439,7 @@ class _MainHomePageState extends State<MainHomePage> {
   Widget _treatmentListPage(TreatmentListController treatmentListController) {
     Timer? debounceTimer;
 
-    void onSearchChanged(String value) {
+    void onSearchTreatmentChanged(String value) {
       // Cancel the previous timer if it's still active
       if (debounceTimer?.isActive ?? false) debounceTimer!.cancel();
 
@@ -453,6 +453,7 @@ class _MainHomePageState extends State<MainHomePage> {
             .getListTreatments(TreatmentListRequestDto(size: 100, search: treatmentListController.search));
       });
     }
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -505,7 +506,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   left: 16, // Adjust this value as needed
                   right: 16, // Adjust this value as needed
                   child: TextField(
-                    onChanged: onSearchChanged,
+                    onChanged: onSearchTreatmentChanged,
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
@@ -530,18 +531,26 @@ class _MainHomePageState extends State<MainHomePage> {
             ),
             const SizedBox(height: 30.0),
             RefreshIndicator(
-              onRefresh: () => treatmentListController
+              onRefresh: () async => await treatmentListController
                   .getListTreatments(TreatmentListRequestDto(size: 100, search: treatmentListController.search)),
               child: SizedBox(
                 height: MediaQuery.of(context).size.height - 250,
                 child: Observer(
                   builder: (_) {
                     if (treatmentListController.treatmentCards.isEmpty) {
-                      return const Center(
-                        child: Text(
-                          'Nenhum dado encontrado',
-                          style: TextStyle(fontSize: 18, color: Colors.grey),
-                        ),
+                      return ListView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.only(top: 150.0),
+                            child: Center(
+                              child: Text(
+                                'Nenhum dado encontrado',
+                                style: TextStyle(fontSize: 18, color: Colors.grey),
+                              ),
+                            ),
+                          ),
+                        ],
                       );
                     } else {
                       return ListView.builder(
@@ -680,11 +689,19 @@ class _MainHomePageState extends State<MainHomePage> {
                 child: Observer(
                   builder: (_) {
                     if (medicineStockListController.medicineCards.isEmpty) {
-                      return const Center(
-                        child: Text(
-                          'Nenhum dado encontrado',
-                          style: TextStyle(fontSize: 18, color: Colors.grey),
-                        ),
+                      return ListView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.only(top: 150.0),
+                            child: Center(
+                              child: Text(
+                                'Nenhum dado encontrado',
+                                style: TextStyle(fontSize: 18, color: Colors.grey),
+                              ),
+                            ),
+                          ),
+                        ],
                       );
                     } else {
                       return ListView.builder(

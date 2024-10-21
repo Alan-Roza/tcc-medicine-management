@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/form/controllers/treatment_form_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/custom_text_field/custom_text_field_widget.dart';
@@ -16,20 +15,20 @@ class TreatmentMedicineFormWidget extends StatefulWidget {
 
 class TreatmentMedicineFormWidgetState extends State<TreatmentMedicineFormWidget> with SingleTickerProviderStateMixin {
   @override
-  void initState() {
-    super.initState();
-    final formController = Provider.of<TreatmentFormController>(context, listen: false);
-    formController.initializeMedicineControllers(formController.selectedMedicines
-        .map((medicine) => medicine.medicineId!)
-        .toList()); // Initialize controllers for each medicine
-  }
+  // void initState() {
+  //   super.initState();
+  //   final formController = Provider.of<TreatmentFormController>(context, listen: false);
+  //   formController.initializeMedicineControllers(formController.selectedMedicines
+  //       .map((medicine) => medicine.medicineId!)
+  //       .toList()); // Initialize controllers for each medicine
+  // }
 
-  @override
-  void dispose() {
-    final formController = Provider.of<TreatmentFormController>(context, listen: false);
-    formController.dispose(); // Dispose controllers when no longer needed
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   final formController = Provider.of<TreatmentFormController>(context, listen: false);
+  //   formController.dispose(); // Dispose controllers when no longer needed
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {

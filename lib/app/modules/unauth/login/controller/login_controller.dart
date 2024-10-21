@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/login/model/dto/login_response_dto.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/login/repository/auth_repository.dart';
 import 'package:tcc_medicine_management/main.dart';
 
@@ -34,24 +35,15 @@ abstract class _LoginController with Store {
   Future<dynamic> onSubmitLogin(GlobalKey<FormState> formKey) async {
     // Verifica se o formulário é válido
     if (!formKey.currentState!.validate()) {
-      return null;
+      return Future.error('Por favor, preencha os campos corretamente');
     }
 
     try {
-      // Faz a chamada para o login usando o repositório
       final loginResponse = await _authRepository.login(email, password);
 
-      print('-------------------->');
-      print(loginResponse);
-
-      // Atualiza propriedades observáveis com os dados do perfil do usuário, se necessário
-      // Exemplo:
-      // userProfile = loginResponse.userProfile;
-
-      // Retorna uma mensagem de sucesso
-      return 'Login efetuado com sucesso';
+      return loginResponse;
     } catch (e) {
-      return e.toString();
+      return Future.error(e.toString());
     }
   }
 

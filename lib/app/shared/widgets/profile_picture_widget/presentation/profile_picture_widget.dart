@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/profile_picture_widget/controller/profile_picture_controller.dart';
 
 class ProfilePictureWidget extends StatefulWidget {
@@ -12,11 +13,11 @@ class ProfilePictureWidget extends StatefulWidget {
 }
 
 class _ProfilePictureWidgetState extends State<ProfilePictureWidget> {
-  final ProfilePictureController profilePictureController = ProfilePictureController();
-
   Future<void> _pickImage() async {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
+      final profilePictureController = Provider.of<ProfilePictureController>(context, listen: false);
+
       setState(() {
         profilePictureController.setImage(File(pickedFile.path));
       });
@@ -25,6 +26,8 @@ class _ProfilePictureWidgetState extends State<ProfilePictureWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final ProfilePictureController profilePictureController = Provider.of<ProfilePictureController>(context);
+
     return Observer(
       builder: (_) => Center(
         child: Stack(
@@ -44,7 +47,8 @@ class _ProfilePictureWidgetState extends State<ProfilePictureWidget> {
               child: CircleAvatar(
                 radius: 70,
                 backgroundColor: Colors.grey.shade800,
-                backgroundImage: profilePictureController.image != null ? FileImage(profilePictureController.image!) : null,
+                backgroundImage:
+                    profilePictureController.image != null ? FileImage(profilePictureController.image!) : null,
                 child: profilePictureController.image == null
                     ? const Icon(
                         Icons.camera_alt_outlined,

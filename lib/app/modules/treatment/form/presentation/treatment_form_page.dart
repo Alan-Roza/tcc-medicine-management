@@ -3,6 +3,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/form/controllers/treatment_form_controller.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/treatment_list_controller.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/list/model/dto/treatment_list_request.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_basic_form_widget.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_medicine_form_widget.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_review_form_widget.dart';
@@ -38,6 +40,7 @@ class TreatmentFormPageState extends State<TreatmentFormPage> with SingleTickerP
   @override
   Widget build(BuildContext context) {
     TreatmentFormController formController = Provider.of<TreatmentFormController>(context);
+    TreatmentListController treatmentListController = Provider.of<TreatmentListController>(context);
 
     _formWidgets = [
       Expanded(child: TreatmentBasicFormWidget(readOnly: widget.readOnly ?? false)),
@@ -86,8 +89,8 @@ class TreatmentFormPageState extends State<TreatmentFormPage> with SingleTickerP
                                     if (stepProgressController.currentStep == _formWidgets.length - 1) {
                                       try {
                                         await formController.saveTreatment(null);
-                                        // await medicineListController
-                                        //   .getListMedicines(MedicineListRequestDto(size: 100, search: medicineListController.search));
+                                        await treatmentListController.getListTreatments(
+                                            TreatmentListRequestDto(size: 100, search: treatmentListController.search));
 
                                         context.pop();
                                         ScaffoldMessenger.of(context).showSnackBar(
@@ -105,9 +108,7 @@ class TreatmentFormPageState extends State<TreatmentFormPage> with SingleTickerP
                                           ),
                                         );
                                       }
-                                    }
-                                    
-                                    else if (stepProgressController.currentStep == 0 &&
+                                    } else if (stepProgressController.currentStep == 0 &&
                                         formController.selectedMedicines.isEmpty) {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
@@ -119,10 +120,8 @@ class TreatmentFormPageState extends State<TreatmentFormPage> with SingleTickerP
                                       );
                                       return;
                                     } else {
-                                    stepProgressController.increaseCurrentStep();
-
+                                      stepProgressController.increaseCurrentStep();
                                     }
-
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.blue,

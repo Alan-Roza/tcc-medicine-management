@@ -25,7 +25,7 @@ class MedicineViewRepository implements IMedicineViewRepository {
         return dataResponse;
       } 
       catch (error) {
-        return handleError(error) as dynamic;
+        return Future.error(handleError(error));
       }
     } else {
       // Throws an exception when there is no internet connection

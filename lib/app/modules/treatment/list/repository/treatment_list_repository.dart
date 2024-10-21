@@ -12,20 +12,30 @@ class TreatmentListRepository implements ITreatmentListRepository {
   TreatmentListRepository(this._networkInfo, this._apiService);
 
   @override
-  Future<TreatmentListDto> exec(TreatmentListRequestDto? data) async {
+  Future<List<TreatmentListDto>> exec(TreatmentListRequestDto? data) async {
     if (await _networkInfo.isConnected) {
       try {
+        final params = data?.toJson();
+
+        if (params != null && params.containsKey('search')) {
+          final searchValue = params.remove('search');
+          params['Name'] = searchValue;
+        }
+
         final response = await _apiService.get(
-          endPoint: "/Treatment/List", 
-          params: data?.toJson(),
+          endPoint: "/Treatment/List",
+          params: params,
         );
 
-        final dataResponse = TreatmentListDto.fromJson(response.data);
-      
+        final List<TreatmentListDto> dataResponse = (response.data as List)
+          .map((item) => TreatmentListDto.fromJson(item))
+          .toList();
+
+        // final dataResponse = TreatmentListDto.fromJson(response.data);
+
         return dataResponse;
-      } 
-      catch (error) {
-        return handleError(error) as dynamic;
+      } catch (error) {
+        return Future.error(handleError(error));
       }
     } else {
       // Throws an exception when there is no internet connection
@@ -37,18 +47,15 @@ class TreatmentListRepository implements ITreatmentListRepository {
   Future<bool> delete(int id) async {
     if (await _networkInfo.isConnected) {
       try {
-        final response = await _apiService.delete(
-          endPoint: "/Treatment/$id"
-        );
+        final response = await _apiService.delete(endPoint: "/Treatment/$id");
 
-      if (response.statusCode == 200) {
-        return true;
-      } else {
-        return false;
-      }
-      } 
-      catch (error) {
-        return handleError(error) as dynamic;
+        if (response.statusCode == 200) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch (error) {
+        return Future.error(handleError(error));
       }
     } else {
       // Throws an exception when there is no internet connection

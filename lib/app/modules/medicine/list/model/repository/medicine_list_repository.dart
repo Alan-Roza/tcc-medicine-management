@@ -2,6 +2,6 @@ import 'package:tcc_medicine_management/app/modules/medicine/list/model/dto/medi
 import 'package:tcc_medicine_management/app/modules/medicine/list/model/dto/medicine_list_request.dart';
 
 abstract class IMedicineListRepository {
-  Future<MedicineListDto> exec(MedicineListRequestDto data);
+  Future<List<MedicineListDto>> exec(MedicineListRequestDto data);
   Future<bool> delete(int id);
 }
