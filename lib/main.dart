@@ -8,6 +8,7 @@ import 'package:tcc_medicine_management/app/core/infra/dio_factory.dart';
 import 'package:tcc_medicine_management/app/core/infra/http_client.dart';
 import 'package:tcc_medicine_management/app/core/infra/network_info.dart';
 import 'package:tcc_medicine_management/app/core/routes/app_routes.dart';
+import 'package:tcc_medicine_management/app/core/services/notification_service.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/address_info/controller/address_info_controller.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/administrator_info/controller/administrator_info_controller.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/allergy_info/controller/allergy_info_controller.dart';
@@ -45,8 +46,13 @@ import 'package:tcc_medicine_management/app/shared/themes/util.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/notification/controller/notification_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/profile_picture_widget/controller/profile_picture_controller.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.initialize();
+  tz.initializeTimeZones();
+  
   setupDependencies();
 
   runApp(const MyApp());
@@ -103,13 +109,13 @@ class MyApp extends StatelessWidget {
           Provider<TreatmentViewController>(create: (_) => TreatmentViewController()),
           Provider<ConnectionController>(create: (_) => ConnectionController()),
           Provider<ProfilePictureController>(create: (_) => ProfilePictureController()),
-
         ],
         child: MaterialApp.router(
-            routerConfig: appRouter,
-            // theme: AppTheme.lightTheme
-            // theme: brightness == Brightness.light ? theme.light() : theme.dark() // TODO - Will be used at the future
-            theme: theme.light()),
+          routerConfig: appRouter,
+          // theme: AppTheme.lightTheme
+          // theme: brightness == Brightness.light ? theme.light() : theme.dark() // TODO - Will be used at the future
+          theme: theme.light(),
+        ),
       ),
     );
   }

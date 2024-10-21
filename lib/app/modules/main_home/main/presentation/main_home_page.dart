@@ -6,6 +6,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:tcc_medicine_management/app/core/services/notification_service.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/main/controllers/main_home_controller.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/main/presentation/user_profile_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
@@ -66,6 +67,9 @@ class _MainHomePageState extends State<MainHomePage> {
                       child: const Icon(Icons.notifications_outlined),
                     ),
                     onPressed: () => context.pushNamed('Notification'),
+                    // onPressed: () {
+                    //   // NotificationService.showInstantNotification("Instant Notification", "This shows an instant notification");
+                    // },
                   ),
                 ],
                 // actions: [_buildAppBarActions()],
