@@ -27,12 +27,12 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
   Future<void> _fetchProfileImage() async {
     // TODO: remove comment when server has the image route
-    // UserInfoController userInfoController = Provider.of<UserInfoController>(context, listen: false);
+    UserInfoController userInfoController = Provider.of<UserInfoController>(context, listen: false);
 
-    // profileImagePath = await userInfoController.getProfileImage();
+    profileImagePath = await userInfoController.getProfileImage();
 
-    profileImagePath =
-        '/File/05ef3220-44d9-4783-86fb-b6a28800371d.jpg'; //TODO: remove when server has the image route
+    // profileImagePath =
+    //     '/File/05ef3220-44d9-4783-86fb-b6a28800371d.jpg'; //TODO: remove when server has the image route
   }
 
   Future<String?> _getToken() async {

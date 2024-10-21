@@ -41,7 +41,7 @@ abstract class _AddressInfoController with Store {
   }
 
   @action
-  Future<AddressInfoDto> onSubmit(GlobalKey<FormState> formKey) async {
+  Future<AddressInfoDto> onSubmit(GlobalKey<FormState> formKey, int? userId) async {
     try {
       // TODO: will be implemented at future
       if (!formKey.currentState!.validate()) {
@@ -56,7 +56,17 @@ abstract class _AddressInfoController with Store {
         state: state.text,
       );
 
-      final AddressInfoDto dataResponse = await _addressInfoRepository.exec(addressInfo);
+      final AddressInfoDto dataResponse = await _addressInfoRepository.exec(addressInfo, userId);
+      return dataResponse;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  @action
+  Future<AddressInfoDto> getPatientAddress() async {
+    try {
+      final AddressInfoDto dataResponse = await _addressInfoRepository.getPatientAddress();
       return dataResponse;
     } catch (e) {
       return Future.error(e.toString());
@@ -64,10 +74,10 @@ abstract class _AddressInfoController with Store {
   }
 
   void dispose() {
-    postalCode.dispose();
-    street.dispose();
-    neighborhood.dispose();
-    city.dispose();
-    state.dispose();
+    postalCode.clear();
+    street.clear();
+    neighborhood.clear();
+    city.clear();
+    state.clear();
   }
 }

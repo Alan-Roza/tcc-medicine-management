@@ -9,6 +9,9 @@ abstract class _UserController with Store {
   String name = '';
 
   @observable
+  int? userId;
+
+  @observable
   bool isLoggedIn = false;
 
   @action
@@ -27,5 +30,6 @@ abstract class _UserController with Store {
   void reset() {
     isLoggedIn = false;
     name = '';
+    userId = null;
   }
 }

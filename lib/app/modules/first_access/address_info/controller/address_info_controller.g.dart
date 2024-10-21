@@ -21,8 +21,16 @@ mixin _$AddressInfoController on _AddressInfoController, Store {
       AsyncAction('_AddressInfoController.onSubmit', context: context);
 
   @override
-  Future<AddressInfoDto> onSubmit(GlobalKey<FormState> formKey) {
-    return _$onSubmitAsyncAction.run(() => super.onSubmit(formKey));
+  Future<AddressInfoDto> onSubmit(GlobalKey<FormState> formKey, int? userId) {
+    return _$onSubmitAsyncAction.run(() => super.onSubmit(formKey, userId));
+  }
+
+  late final _$getPatientAddressAsyncAction =
+      AsyncAction('_AddressInfoController.getPatientAddress', context: context);
+
+  @override
+  Future<AddressInfoDto> getPatientAddress() {
+    return _$getPatientAddressAsyncAction.run(() => super.getPatientAddress());
   }
 
   @override

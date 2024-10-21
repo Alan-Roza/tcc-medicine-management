@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/treatment_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_card_widget/controllers/treatment_card_controller.dart';
+import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
 
 class TreatmentCardWidget extends StatelessWidget {
   @override
@@ -18,6 +20,8 @@ class TreatmentCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final treatmentListController = Provider.of<TreatmentListController>(context);
+    final userController = Provider.of<UserController>(context);
+
     Map<String, dynamic> priorityData = _getPriorityData(treatmentCard.priority);
 
     return Observer(
@@ -67,12 +71,16 @@ class TreatmentCardWidget extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            treatmentCard.patientName,
+                            // treatmentCard.patientName, //TODO: when patient name comes from the server, change this
+                            userController.name ??
+                                treatmentCard.patientName.substring(0, treatmentCard.patientName.indexOf('@')),
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
                         ],
                       ),
@@ -102,14 +110,20 @@ class TreatmentCardWidget extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // TODO: Verify if will use this text
+                            // Texto "Tratamento"
                             const Text(
                               "Tratamento",
                               style: TextStyle(fontWeight: FontWeight.w300),
                             ),
+                            // Aplicar elipsis ao tratamento
+                            // Usando um Text normal para elipsis com propriedades de estilo
                             Text(
-                              treatmentCard.name,
+                              treatmentCard.name.length > 15
+                                ? '${treatmentCard.name.substring(0, 15)}...'
+                                : treatmentCard.name,
                               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
                             ),
                             const SizedBox(height: 8),
                             RichText(
@@ -128,7 +142,9 @@ class TreatmentCardWidget extends StatelessWidget {
                                     style: TextStyle(fontWeight: FontWeight.normal),
                                   ),
                                   TextSpan(
-                                    text: treatmentCard.expirationDate,
+                                    text: DateFormat.yMd().format(DateTime.parse(treatmentCard.expirationDate)).length > 13
+                                      ? '${DateFormat.yMd().format(DateTime.parse(treatmentCard.expirationDate)).substring(0, 13)}...' // Truncate and add ellipsis
+                                      : DateFormat.yMd().format(DateTime.parse(treatmentCard.expirationDate)),
                                   ),
                                   // TODO: verify what text put instead of price
                                   // const TextSpan(
@@ -174,7 +190,7 @@ class TreatmentCardWidget extends StatelessWidget {
     );
   }
 
-   Map<String, dynamic> _getPriorityData(String? priority) {
+  Map<String, dynamic> _getPriorityData(String? priority) {
     switch (priority) {
       case 'Nenhuma':
         return {

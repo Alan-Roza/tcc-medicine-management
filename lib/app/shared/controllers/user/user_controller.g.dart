@@ -24,6 +24,22 @@ mixin _$UserController on _UserController, Store {
     });
   }
 
+  late final _$userIdAtom =
+      Atom(name: '_UserController.userId', context: context);
+
+  @override
+  int? get userId {
+    _$userIdAtom.reportRead();
+    return super.userId;
+  }
+
+  @override
+  set userId(int? value) {
+    _$userIdAtom.reportWrite(value, super.userId, () {
+      super.userId = value;
+    });
+  }
+
   late final _$isLoggedInAtom =
       Atom(name: '_UserController.isLoggedIn', context: context);
 
@@ -69,6 +85,7 @@ mixin _$UserController on _UserController, Store {
   String toString() {
     return '''
 name: ${name},
+userId: ${userId},
 isLoggedIn: ${isLoggedIn}
     ''';
   }

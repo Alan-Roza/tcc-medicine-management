@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:tcc_medicine_management/app/core/infra/api_service.dart';
 import 'package:tcc_medicine_management/app/core/infra/error_handler.dart';
 import 'package:tcc_medicine_management/app/core/infra/network_info.dart';
@@ -11,19 +12,46 @@ class AddressInfoRepository implements IAddressInfoRepository {
   AddressInfoRepository(this._networkInfo, this._apiService);
 
   @override
-  Future<AddressInfoDto> exec(AddressInfoDto data) async {
+  Future<AddressInfoDto> exec(AddressInfoDto data, int? id) async {
     if (await _networkInfo.isConnected) {
       try {
-        final response = await _apiService.post(
-          endPoint: "/Patient/Address", 
-          data: data.toJson(),
-        );
+        late Response response;
+
+        if (id != null) {
+          response = await _apiService.put(
+            endPoint: "/Patient/Address",
+            data: data.toJson(),
+          );
+        } else {
+          response = await _apiService.post(
+            endPoint: "/Patient/Address",
+            data: data.toJson(),
+          );
+        }
 
         final dataResponse = AddressInfoDto.fromJson(response.data);
-      
+
         return dataResponse;
-      } 
-      catch (error) {
+      } catch (error) {
+        return Future.error(handleError(error));
+      }
+    } else {
+      // Throws an exception when there is no internet connection
+      return Future.error("Verifique o acesso à internet");
+    }
+  }
+
+  @override
+  Future<AddressInfoDto> getPatientAddress() async {
+    if (await _networkInfo.isConnected) {
+      try {
+        final response = await _apiService.get(
+          endPoint: "/Patient/Address",
+        );
+        final dataResponse = AddressInfoDto.fromJson(response.data);
+
+        return dataResponse;
+      } catch (error) {
         return Future.error(handleError(error));
       }
     } else {

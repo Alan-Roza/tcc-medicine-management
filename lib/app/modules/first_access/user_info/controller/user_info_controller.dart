@@ -68,7 +68,7 @@ abstract class _UserInfoController with Store {
   }
 
   @action
-  Future<UserInfoDto> onSubmit(GlobalKey<FormState> formKey) async {
+  Future<UserInfoDto> onSubmit(GlobalKey<FormState> formKey, int? userId) async {
     try {
       // TODO: will be implemented at future
       if (!formKey.currentState!.validate()) {
@@ -93,7 +93,7 @@ abstract class _UserInfoController with Store {
       //   gender: gender as String?,
       // );
 
-      final UserInfoDto dataResponse = await _userInfoRepository.exec(userInfo);
+      final UserInfoDto dataResponse = await _userInfoRepository.exec(userInfo, userId);
       return dataResponse;
     } catch (e) {
       return Future.error(e.toString());
@@ -120,8 +120,20 @@ abstract class _UserInfoController with Store {
     }
   }
 
+  @action
+  Future<UserInfoDto> getPatient() async {
+    try {
+      final UserInfoDto dataResponse = await _userInfoRepository.getPatient();
+      return dataResponse;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
   void dispose() {
-    nameController.dispose();
-    phoneController.dispose();
+    nameController.clear();
+    phoneController.clear();
+    birthDateController.clear();
+    gender = null;
   }
 }

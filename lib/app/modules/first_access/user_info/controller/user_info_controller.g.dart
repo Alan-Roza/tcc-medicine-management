@@ -37,8 +37,32 @@ mixin _$UserInfoController on _UserInfoController, Store {
       AsyncAction('_UserInfoController.onSubmit', context: context);
 
   @override
-  Future<UserInfoDto> onSubmit(GlobalKey<FormState> formKey) {
-    return _$onSubmitAsyncAction.run(() => super.onSubmit(formKey));
+  Future<UserInfoDto> onSubmit(GlobalKey<FormState> formKey, int? userId) {
+    return _$onSubmitAsyncAction.run(() => super.onSubmit(formKey, userId));
+  }
+
+  late final _$uploadPhotoAsyncAction =
+      AsyncAction('_UserInfoController.uploadPhoto', context: context);
+
+  @override
+  Future<String> uploadPhoto(File profileImage) {
+    return _$uploadPhotoAsyncAction.run(() => super.uploadPhoto(profileImage));
+  }
+
+  late final _$getProfileImageAsyncAction =
+      AsyncAction('_UserInfoController.getProfileImage', context: context);
+
+  @override
+  Future<String> getProfileImage() {
+    return _$getProfileImageAsyncAction.run(() => super.getProfileImage());
+  }
+
+  late final _$getPatientAsyncAction =
+      AsyncAction('_UserInfoController.getPatient', context: context);
+
+  @override
+  Future<UserInfoDto> getPatient() {
+    return _$getPatientAsyncAction.run(() => super.getPatient());
   }
 
   late final _$_UserInfoControllerActionController =

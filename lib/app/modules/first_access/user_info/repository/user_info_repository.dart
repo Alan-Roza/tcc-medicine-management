@@ -15,19 +15,48 @@ class UserInfoRepository implements IUserInfoRepository {
   UserInfoRepository(this._networkInfo, this._apiService);
 
   @override
-  Future<UserInfoDto> exec(UserInfoDto data) async {
+  Future<UserInfoDto> exec(UserInfoDto data, int? id) async {
     if (await _networkInfo.isConnected) {
       try {
-        final response = await _apiService.post(
-          endPoint: "/Patient",
-          data: data.toJson(),
-        );
+        late Response response;
 
+        if (id != null) {
+          response = await _apiService.put(
+            endPoint: "/Patient",
+            data: data.toJson(),
+          );
+        } else {
+          response = await _apiService.post(
+            endPoint: "/Patient",
+            data: data.toJson(),
+          );
+        }
+        
         final dataResponse = UserInfoDto.fromJson(response.data);
         String? name = dataResponse.name;
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('name', name!);
+
+        return dataResponse;
+      } catch (error) {
+        return Future.error(handleError(error));
+      }
+    } else {
+      // Throws an exception when there is no internet connection
+      return Future.error("Verifique o acesso à internet");
+    }
+  }
+
+  @override
+  Future<UserInfoDto> getPatient() async {
+    if (await _networkInfo.isConnected) {
+      try {
+        final response = await _apiService.get(
+          endPoint: "/Patient",
+        );
+
+        final dataResponse = UserInfoDto.fromJson(response.data);
 
         return dataResponse;
       } catch (error) {
@@ -68,10 +97,10 @@ class UserInfoRepository implements IUserInfoRepository {
     if (await _networkInfo.isConnected) {
       try {
         final response = await _apiService.get(
-          endPoint: "/User/ProfilePicture",
+          endPoint: "/User",
         );
 
-        return response.data['availableOn'];
+        return response.data['profilePicture'];
       } catch (error) {
         return Future.error(handleError(error));
       }

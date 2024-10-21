@@ -76,6 +76,7 @@ class _ConnectPageState extends State<ConnectPage> {
                 onPressed: () async {
                   bool isConnected = await connectController.moduleConnect();
                   if (isConnected) {
+                    context.pop();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: const Text('Módulo conectado com sucesso!'),
