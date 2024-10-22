@@ -1,13 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/chronical_disease_info/controller/chronical_disease_info_controller.dart';
+import 'package:tcc_medicine_management/app/modules/first_access/chronical_disease_info/model/dto/chronical_disease_info_dto.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/chronical_disease_info/widget/form/chronical_disease_info_form.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 
-class UserChronicalDiseaseInfoPage extends StatelessWidget {
-  UserChronicalDiseaseInfoPage({super.key});
+class UserChronicalDiseaseInfoPage extends StatefulWidget {
+  const UserChronicalDiseaseInfoPage({super.key});
 
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  @override
+  State<UserChronicalDiseaseInfoPage> createState() => _UserChronicalDiseaseInfoPageState();
+}
+
+class _UserChronicalDiseaseInfoPageState extends State<UserChronicalDiseaseInfoPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  int? userId;
+
+ @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final ChronicalDiseaseInfoController chronicalDiseaseInfoController = Provider.of<ChronicalDiseaseInfoController>(context, listen: false);
+
+      chronicalDiseaseInfoController.dispose();
+
+      List<ChronicalDiseaseInfoDto>? diseasesInfo = await chronicalDiseaseInfoController.getDiseases();
+
+      // chronicalDiseaseInfoController.setDiseases(diseasesInfo);
+
+      if (diseasesInfo.isNotEmpty) userId = 1; // 1 == already registered
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final ChronicalDiseaseInfoController chronicalDiseaseInfoController = Provider.of<ChronicalDiseaseInfoController>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Doenças Crônicas'),
@@ -20,7 +50,26 @@ class UserChronicalDiseaseInfoPage extends StatelessWidget {
           children: [
             Expanded(child: ChronicalDiseaseInfoFormWidget(formKey: _formKey)),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  await chronicalDiseaseInfoController.onSubmit(userId);
+
+                  context.pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      backgroundColor: Colors.green,
+                      content: Text("Salvo com Sucesso!"), // Customize with your success message
+                    ),
+                  );
+                } catch (error) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Colors.red,
+                      content: Text(error.toString()),
+                    ),
+                  );
+                }
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 minimumSize: const Size(double.infinity, 40),

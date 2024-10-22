@@ -37,7 +37,7 @@ class _ConnectionPageState extends State<ConnectionPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'GAVETEIROS VÍNCULADOS',
+              'GAVETEIROS VINCULADOS',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Container(
@@ -57,33 +57,54 @@ class _ConnectionPageState extends State<ConnectionPage> {
               child: RefreshIndicator(
                 onRefresh: () => connectionController.getListConnections(),
                 child: Observer(
-                  builder: (_) => ListView.builder(
-                    itemCount: connectionController.drawerItems.length,
-                    itemBuilder: (context, index) {
-                      final item = connectionController.drawerItems[index];
-                      return Column(
-                        children: [
-                          ListTile(
-                            contentPadding: const EdgeInsets.symmetric(vertical: 0),
-                            minVerticalPadding: 0,
-                            title: Text(item, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, fontFamily: 'Roboto')),
-                            // TODO: Implementar ação de remoção quando existir no servidor
-                            // trailing: IconButton(
-                            //   icon: const Icon(Icons.remove, color: Colors.red),
-                            //   onPressed: () {
-                            //     connectionController.removeItem(item);
-                            //   },
-                            // ),
-                          ),
-                          const Divider(
-                            height: 0,
-                            thickness: 1,
-                            color: Colors.black12,
+                  builder: (_) {
+                    if (connectionController.drawerItems.isEmpty) {
+                      return ListView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.only(top: 150.0),
+                            child: Center(
+                              child: Text(
+                                'Nenhum módulo vinculado',
+                                style: TextStyle(fontSize: 18, color: Colors.grey),
+                              ),
+                            ),
                           ),
                         ],
                       );
-                    },
-                  ),
+                    } else {
+                      return ListView.builder(
+                        itemCount: connectionController.drawerItems.length,
+                        itemBuilder: (context, index) {
+                          final item = connectionController.drawerItems[index];
+                          return Column(
+                            children: [
+                              ListTile(
+                                contentPadding: const EdgeInsets.symmetric(vertical: 0),
+                                minVerticalPadding: 0,
+                                title: Text(item,
+                                    style: const TextStyle(
+                                        fontSize: 18, fontWeight: FontWeight.bold, fontFamily: 'Roboto')),
+                                // TODO: Implementar ação de remoção quando existir no servidor
+                                // trailing: IconButton(
+                                //   icon: const Icon(Icons.remove, color: Colors.red),
+                                //   onPressed: () {
+                                //     connectionController.removeItem(item);
+                                //   },
+                                // ),
+                              ),
+                              const Divider(
+                                height: 0,
+                                thickness: 1,
+                                color: Colors.black12,
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  },
                 ),
               ),
             ),

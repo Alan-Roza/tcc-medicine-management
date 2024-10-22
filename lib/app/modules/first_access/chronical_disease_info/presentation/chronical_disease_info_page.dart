@@ -75,7 +75,7 @@ class _ChronicalDiseaseInfoPageState extends State<ChronicalDiseaseInfoPage> {
               ElevatedButton(
                 onPressed: () async {
                   try {
-                    await chronicalDiseaseInfoController.onSubmit();
+                    await chronicalDiseaseInfoController.onSubmit(null);
 
                     context.goNamed('ConfigurationsInfo');
 

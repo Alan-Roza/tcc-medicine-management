@@ -19,23 +19,20 @@ class HealthInfoRepository implements IHealthInfoRepository {
 
         if (id != null) {
           response = await _apiService.put(
-          endPoint: "/Patient/Detail", 
-          data: data.toJson(),
-        );
+            endPoint: "/Patient/Detail",
+            data: data.toJson(),
+          );
         } else {
           response = await _apiService.post(
-          endPoint: "/Patient/Detail", 
-          data: data.toJson(),
-        );
+            endPoint: "/Patient/Detail",
+            data: data.toJson(),
+          );
         }
 
-        
-
         final dataResponse = HealthInfoDto.fromJson(response.data);
-      
+
         return dataResponse;
-      } 
-      catch (error) {
+      } catch (error) {
         return Future.error(handleError(error));
       }
     } else {
@@ -44,7 +41,7 @@ class HealthInfoRepository implements IHealthInfoRepository {
     }
   }
 
-   @override
+  @override
   Future<HealthInfoDto> getHealth() async {
     if (await _networkInfo.isConnected) {
       try {

@@ -113,8 +113,17 @@ mixin _$ChronicalDiseaseInfoController
       AsyncAction('_ChronicalDiseaseInfoController.onSubmit', context: context);
 
   @override
-  Future<List<ChronicalDiseaseInfoDto>> onSubmit() {
-    return _$onSubmitAsyncAction.run(() => super.onSubmit());
+  Future<List<ChronicalDiseaseInfoDto>> onSubmit(int? id) {
+    return _$onSubmitAsyncAction.run(() => super.onSubmit(id));
+  }
+
+  late final _$getDiseasesAsyncAction = AsyncAction(
+      '_ChronicalDiseaseInfoController.getDiseases',
+      context: context);
+
+  @override
+  Future<List<ChronicalDiseaseInfoDto>> getDiseases() {
+    return _$getDiseasesAsyncAction.run(() => super.getDiseases());
   }
 
   late final _$_ChronicalDiseaseInfoControllerActionController =
@@ -138,6 +147,17 @@ mixin _$ChronicalDiseaseInfoController
         .startAction(name: '_ChronicalDiseaseInfoController.removeDisease');
     try {
       return super.removeDisease(disease);
+    } finally {
+      _$_ChronicalDiseaseInfoControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void dispose() {
+    final _$actionInfo = _$_ChronicalDiseaseInfoControllerActionController
+        .startAction(name: '_ChronicalDiseaseInfoController.dispose');
+    try {
+      return super.dispose();
     } finally {
       _$_ChronicalDiseaseInfoControllerActionController.endAction(_$actionInfo);
     }

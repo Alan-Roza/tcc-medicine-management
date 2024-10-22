@@ -95,9 +95,9 @@ class _ConnectPageState extends State<ConnectPage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   minimumSize: const Size(double.infinity, 40),
-                  textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
                 ),
-                child: const Text('Conectar'),
+                child: const Text('CONECTAR'),
               ),
               const SizedBox(
                 height: 10,

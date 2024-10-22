@@ -63,7 +63,7 @@ abstract class _ChronicalDiseaseInfoController with Store {
   }
 
   @action
-  Future<List<ChronicalDiseaseInfoDto>> onSubmit() async {
+  Future<List<ChronicalDiseaseInfoDto>> onSubmit(int? id) async {
     try {
       // TODO: will be implemented at future
       // if (!formKey.currentState!.validate()) {
@@ -88,11 +88,32 @@ abstract class _ChronicalDiseaseInfoController with Store {
 
       final List<ChronicalDiseaseInfoDto> diseaseInfo = otherDiseases.map((disease) => ChronicalDiseaseInfoDto(disease: disease)).toList();
 
-      final List<ChronicalDiseaseInfoDto> dataResponse = await _chronicalDiseaseInfoRepository.exec(diseaseInfo);
+      final List<ChronicalDiseaseInfoDto> dataResponse = await _chronicalDiseaseInfoRepository.exec(diseaseInfo, id);
 
       return dataResponse;
     } catch (e) {
       return Future.error(e.toString());
     }
+  }
+
+   @action
+  Future<List<ChronicalDiseaseInfoDto>> getDiseases() async {
+    try {
+      final List<ChronicalDiseaseInfoDto> dataResponse = await _chronicalDiseaseInfoRepository.getDiseases();
+      return dataResponse;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  @action
+  void dispose() {
+    diseasesController.clear();
+    otherDiseases.clear();
+    hasHypertension = false;
+    hasDiabetes = false;
+    hasAlzheimer = false;
+    hasParkinsonDisease = false;
+    hasOsteoporosis = false;
   }
 }
