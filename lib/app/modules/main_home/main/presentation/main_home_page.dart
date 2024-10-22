@@ -161,7 +161,7 @@ class _MainHomePageState extends State<MainHomePage> {
                 ),
               )
             : null,
-        body: RefreshIndicator(onRefresh: refreshHomeScreenData, child: _buildBody(mainHomeController.selectedIndex)),
+        body: _buildBody(mainHomeController.selectedIndex),
         bottomNavigationBar: BottomNavigationBar(
           elevation: 0,
           type: BottomNavigationBarType.fixed,
@@ -426,7 +426,10 @@ class _MainHomePageState extends State<MainHomePage> {
 
     switch (index) {
       case 0:
-        return _buildHomePage();
+        return RefreshIndicator(
+          onRefresh: refreshHomeScreenData,
+          child: _buildHomePage(),
+        );
       case 1:
         return _buildTreatmentPage(treatmentListController);
       case 2:

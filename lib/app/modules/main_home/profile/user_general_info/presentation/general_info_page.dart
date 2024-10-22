@@ -6,6 +6,8 @@ import 'package:tcc_medicine_management/app/modules/first_access/user_info/model
 import 'package:tcc_medicine_management/app/modules/first_access/user_info/widget/form/user_info_form.dart';
 import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
+import 'package:tcc_medicine_management/app/shared/widgets/profile_picture_widget/controller/profile_picture_controller.dart';
+import 'package:tcc_medicine_management/app/shared/widgets/profile_picture_widget/presentation/profile_picture_widget.dart';
 
 class GeneralInfoPage extends StatefulWidget {
   const GeneralInfoPage({super.key});
@@ -51,6 +53,8 @@ class _GeneralInfoPageState extends State<GeneralInfoPage> {
   Widget build(BuildContext context) {
     final UserInfoController userInfoController = Provider.of<UserInfoController>(context);
     final UserController userController = Provider.of<UserController>(context);
+    final ProfilePictureController profilePictureController = Provider.of<ProfilePictureController>(context);
+
 
     return Scaffold(
       appBar: AppBar(
@@ -62,11 +66,25 @@ class _GeneralInfoPageState extends State<GeneralInfoPage> {
       body: PaddedScreen(
         child: Column(
           children: [
+            const Row(
+              children: [
+                ProfilePictureWidget(),
+                SizedBox(width: 20),
+                Flexible(
+                  child: Text(
+                    'Envie nova foto de perfil',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 15.0),
             Expanded(child: UserInfoFormWidget(formKey: _formKey)),
             ElevatedButton(
               onPressed: () async {
                 try {
                   final UserInfoDto response = await userInfoController.onSubmit(_formKey, userId);
+                  if (profilePictureController.image != null) await userInfoController.uploadPhoto(profilePictureController.image!);
                   if (response.name != null) userController.login(response.name!);
 
                   context.pop();
