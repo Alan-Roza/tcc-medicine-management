@@ -89,6 +89,7 @@ abstract class _MedicineStockListController with Store {
               expirationDate: element.expirationDate!,
               price: element.price ?? 0,
               priority: element.importance!,
+              imageUrl: element.urlImages?.isNotEmpty == true ? element.urlImages!.last : null,
             ),
           ),
         );

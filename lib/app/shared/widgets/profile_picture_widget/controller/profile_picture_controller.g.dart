@@ -40,6 +40,17 @@ mixin _$ProfilePictureController on _ProfilePictureController, Store {
   }
 
   @override
+  void clear() {
+    final _$actionInfo = _$_ProfilePictureControllerActionController
+        .startAction(name: '_ProfilePictureController.clear');
+    try {
+      return super.clear();
+    } finally {
+      _$_ProfilePictureControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 image: ${image}

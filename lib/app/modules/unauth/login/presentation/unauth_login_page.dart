@@ -154,6 +154,7 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                     onPressed: () async {
                                       try {
                                         final response = await loginController.onSubmitLogin(_formKey);
+                                        userController.token = response.token;
 
                                         if (response.userName == null)
                                           context.goNamed('FirstAccess');

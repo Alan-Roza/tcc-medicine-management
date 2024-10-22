@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_card_widget/controllers/medicine_card_controller.dart';
+import 'package:tcc_medicine_management/app/shared/constants/constants.dart';
+import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
 
 class MedicineCardWidget extends StatelessWidget {
   @override
@@ -20,6 +22,7 @@ class MedicineCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final medicineStockListController = Provider.of<MedicineStockListController>(context);
+    final userController = Provider.of<UserController>(context);
     Map<String, dynamic> priorityData = _getPriorityData(medicineCard.priority);
 
     return Observer(
@@ -71,9 +74,12 @@ class MedicineCardWidget extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         child: medicineCard.imageUrl != null && medicineCard.imageUrl!.isNotEmpty
                             ? Image.network(
-                                medicineCard.imageUrl!,
+                                Constants.baseUrl + medicineCard.imageUrl!,
                                 fit: BoxFit.cover,
                                 width: 55,
+                                headers: {
+                                  'Authorization': 'Bearer ${userController.token}',
+                                },
                               )
                             : Image.asset(
                                 'assets/images/generic_medicine.png',

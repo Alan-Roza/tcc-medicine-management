@@ -3,6 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
+import 'package:tcc_medicine_management/app/shared/constants/constants.dart';
+import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
+import 'package:tcc_medicine_management/app/shared/widgets/profile_picture_widget/controller/profile_picture_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/profile_picture_widget/presentation/profile_picture_widget.dart';
 
 class MedicineStockOptionalFormWidget extends StatefulWidget {
@@ -19,6 +22,8 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
   @override
   Widget build(BuildContext context) {
     final MedicineFormController formController = Provider.of<MedicineFormController>(context);
+    final ProfilePictureController profilePictureController = Provider.of<ProfilePictureController>(context);
+    final UserController userController = Provider.of<UserController>(context);
 
     return Form(
       child: Column(
@@ -180,15 +185,25 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
             ],
           ),
           const SizedBox(height: 20),
-          widget.readOnly == true
+          profilePictureController.image == null && widget.readOnly
               ? Observer(
                   builder: (_) => Row(
                     children: [
-                      Image.asset(
-                        'assets/images/generic_medicine.png',
-                        fit: BoxFit.cover,
-                        width: 80,
-                      ),
+                      if (formController.medicineImageUrl != null && formController.medicineImageUrl!.isNotEmpty)
+                        Image.network(
+                          Constants.baseUrl + formController.medicineImageUrl!,
+                          fit: BoxFit.cover,
+                          width: 80,
+                          headers: {
+                            'Authorization': 'Bearer ${userController.token}',
+                          },
+                        ),
+                      if (formController.medicineImageUrl == null || formController.medicineImageUrl!.isEmpty)
+                        Image.asset(
+                          'assets/images/generic_medicine.png',
+                          fit: BoxFit.cover,
+                          width: 80,
+                        ),
                       const SizedBox(width: 20),
                       const Flexible(
                         child: Text(

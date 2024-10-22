@@ -40,6 +40,22 @@ mixin _$UserController on _UserController, Store {
     });
   }
 
+  late final _$tokenAtom =
+      Atom(name: '_UserController.token', context: context);
+
+  @override
+  String? get token {
+    _$tokenAtom.reportRead();
+    return super.token;
+  }
+
+  @override
+  set token(String? value) {
+    _$tokenAtom.reportWrite(value, super.token, () {
+      super.token = value;
+    });
+  }
+
   late final _$isLoggedInAtom =
       Atom(name: '_UserController.isLoggedIn', context: context);
 
@@ -86,6 +102,7 @@ mixin _$UserController on _UserController, Store {
     return '''
 name: ${name},
 userId: ${userId},
+token: ${token},
 isLoggedIn: ${isLoggedIn}
     ''';
   }

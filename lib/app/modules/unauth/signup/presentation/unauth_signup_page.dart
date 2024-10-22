@@ -2,8 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/shared/widgets/unauth_layout_widget.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/signup/controller/signup_controller.dart';
+import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
 
 class UnauthSignupPage extends StatelessWidget {
   const UnauthSignupPage({super.key});
@@ -12,6 +14,7 @@ class UnauthSignupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final signupController = SignupController();
+    final userController = Provider.of<UserController>(context);
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
@@ -141,6 +144,7 @@ class UnauthSignupPage extends StatelessWidget {
                                       // userController.login("Alan Roza");
 
                                       final response = await signupController.onSignup(formKey);
+                                      userController.token = response.token;
 
                                       if (response != null && response.isNotEmpty) {
                                         if (response.startsWith('Exception')) {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
@@ -92,6 +94,9 @@ extension StringToImportanceLevelExtension on String {
 
 abstract class MedicineFormControllerBase with Store {
   final MedicineRepository _medicineRepository = getIt<MedicineRepository>();
+
+  @observable
+  String? medicineImageUrl;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
@@ -191,6 +196,26 @@ abstract class MedicineFormControllerBase with Store {
     }
   }
 
+  @action
+  Future<String> uploadMedicineImage(File medicineImage, int medicineId) async {
+    try {
+      final String dataResponse = await _medicineRepository.uploadMedicineImage(medicineImage, medicineId);
+      return dataResponse;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  @action
+  Future<String> getMedicineImage(int medicineId) async {
+    try {
+      final String dataResponse = await _medicineRepository.getMedicineImage(medicineId);
+      return dataResponse;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
   void dispose() {
     nameController.dispose();
     medicineType = MedicineType.comprimido;
@@ -202,6 +227,7 @@ abstract class MedicineFormControllerBase with Store {
     importanceLevel = ImportanceLevel.media;
     drawerNumberController.dispose();
     hardwareIdController.dispose();
+    medicineImageUrl = null;
   }
 
   @action
@@ -216,5 +242,6 @@ abstract class MedicineFormControllerBase with Store {
     importanceLevel = ImportanceLevel.media;
     drawerNumberController.clear();
     hardwareIdController.clear();
+    medicineImageUrl = null;
   }
 }

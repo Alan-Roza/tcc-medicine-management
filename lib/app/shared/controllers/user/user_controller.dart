@@ -12,6 +12,9 @@ abstract class _UserController with Store {
   int? userId;
 
   @observable
+  String? token;
+
+  @observable
   bool isLoggedIn = false;
 
   @action

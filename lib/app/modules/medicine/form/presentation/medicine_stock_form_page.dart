@@ -3,12 +3,14 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/form/model/medicine_dto.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/model/dto/medicine_list_request.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_basic_form_widget.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_optional_form_widget.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_review_form_widget.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen_without_bottom.dart';
+import 'package:tcc_medicine_management/app/shared/widgets/profile_picture_widget/controller/profile_picture_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/controller/step_progress_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/step_progress_widget/presentation/step_progress_widget.dart';
 
@@ -32,13 +34,16 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
     super.initState();
 
     MedicineFormController formController = Provider.of<MedicineFormController>(context, listen: false);
+    ProfilePictureController profilePictureController = Provider.of<ProfilePictureController>(context, listen: false);
     formController.resetForm();
+    profilePictureController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     MedicineFormController formController = Provider.of<MedicineFormController>(context);
     MedicineStockListController medicineListController = Provider.of<MedicineStockListController>(context);
+    ProfilePictureController profilePictureController = Provider.of<ProfilePictureController>(context);
 
     _formWidgets = [
       Expanded(child: MedicineStockBasicFormWidget(readOnly: widget.readOnly ?? false)),
@@ -86,7 +91,9 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
                                   onPressed: () async {
                                     if (stepProgressController.currentStep == _formWidgets.length - 1) {
                                       try {
-                                        await formController.saveMedicine(null);
+                                        MedicineDto medicineResponse = await formController.saveMedicine(null);
+                                        if (profilePictureController.image != null && medicineResponse.id != null) await formController.uploadMedicineImage(profilePictureController.image!, medicineResponse.id!);
+
                                         await medicineListController.getListMedicines(
                                             MedicineListRequestDto(size: 100, search: medicineListController.search));
 

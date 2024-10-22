@@ -9,6 +9,22 @@ part of 'medicine_form_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$MedicineFormController on MedicineFormControllerBase, Store {
+  late final _$medicineImageUrlAtom = Atom(
+      name: 'MedicineFormControllerBase.medicineImageUrl', context: context);
+
+  @override
+  String? get medicineImageUrl {
+    _$medicineImageUrlAtom.reportRead();
+    return super.medicineImageUrl;
+  }
+
+  @override
+  set medicineImageUrl(String? value) {
+    _$medicineImageUrlAtom.reportWrite(value, super.medicineImageUrl, () {
+      super.medicineImageUrl = value;
+    });
+  }
+
   late final _$medicineTypeAtom =
       Atom(name: 'MedicineFormControllerBase.medicineType', context: context);
 
@@ -49,6 +65,26 @@ mixin _$MedicineFormController on MedicineFormControllerBase, Store {
     return _$saveMedicineAsyncAction.run(() => super.saveMedicine(formKey));
   }
 
+  late final _$uploadMedicineImageAsyncAction = AsyncAction(
+      'MedicineFormControllerBase.uploadMedicineImage',
+      context: context);
+
+  @override
+  Future<String> uploadMedicineImage(File medicineImage, int medicineId) {
+    return _$uploadMedicineImageAsyncAction
+        .run(() => super.uploadMedicineImage(medicineImage, medicineId));
+  }
+
+  late final _$getMedicineImageAsyncAction = AsyncAction(
+      'MedicineFormControllerBase.getMedicineImage',
+      context: context);
+
+  @override
+  Future<String> getMedicineImage(int medicineId) {
+    return _$getMedicineImageAsyncAction
+        .run(() => super.getMedicineImage(medicineId));
+  }
+
   late final _$MedicineFormControllerBaseActionController =
       ActionController(name: 'MedicineFormControllerBase', context: context);
 
@@ -77,6 +113,7 @@ mixin _$MedicineFormController on MedicineFormControllerBase, Store {
   @override
   String toString() {
     return '''
+medicineImageUrl: ${medicineImageUrl},
 medicineType: ${medicineType},
 importanceLevel: ${importanceLevel}
     ''';

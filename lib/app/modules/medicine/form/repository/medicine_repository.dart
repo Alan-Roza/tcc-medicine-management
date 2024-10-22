@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:tcc_medicine_management/app/core/infra/api_service.dart';
 import 'package:tcc_medicine_management/app/core/infra/error_handler.dart';
 import 'package:tcc_medicine_management/app/core/infra/network_info.dart';
@@ -15,15 +18,67 @@ class MedicineRepository implements IMedicineRepository {
     if (await _networkInfo.isConnected) {
       try {
         final response = await _apiService.post(
-          endPoint: "/Medicine", 
+          endPoint: "/Medicine",
           data: data.toJson(),
         );
 
         final dataResponse = MedicineDto.fromJson(response.data);
-      
+
         return dataResponse;
-      } 
-      catch (error) {
+      } catch (error) {
+        return Future.error(handleError(error));
+      }
+    } else {
+      // Throws an exception when there is no internet connection
+      return Future.error("Verifique o acesso à internet");
+    }
+  }
+
+  @override
+  Future<String> uploadMedicineImage(File imageFile, int medicineId) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        FormData formData = FormData.fromMap({
+          'files': [await MultipartFile.fromFile(imageFile.path, filename: imageFile.path.split('/').last)],
+        });
+
+        final response = await _apiService.post(
+          endPoint: "/Medicine/Image/$medicineId",
+          data: formData,
+        );
+
+        List<String> resultList = [];
+        for (var item in response.data) {
+          String availableOn = item['availableOn'];
+          resultList.add(availableOn);
+        }
+
+        return resultList.last;
+      } catch (error) {
+        return Future.error(handleError(error));
+      }
+    } else {
+      // Throws an exception when there is no internet connection
+      return Future.error("Verifique o acesso à internet");
+    }
+  }
+
+  @override
+  Future<String> getMedicineImage(int medicineId) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        final response = await _apiService.get(
+          endPoint: "/Medicine/Image/$medicineId",
+        );
+
+        List<String> resultList = [];
+        for (var item in response.data) {
+          String availableOn = item['availableOn'];
+          resultList.add(availableOn);
+        }
+
+        return resultList.last;
+      } catch (error) {
         return Future.error(handleError(error));
       }
     } else {

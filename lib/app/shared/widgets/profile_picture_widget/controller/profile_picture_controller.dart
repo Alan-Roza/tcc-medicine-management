@@ -13,4 +13,9 @@ abstract class _ProfilePictureController with Store {
   void setImage(File? newImage) {
     image = newImage;
   }
+
+  @action
+  void clear() {
+    image = null;
+  }
 }

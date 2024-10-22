@@ -8,6 +8,7 @@ import 'package:tcc_medicine_management/app/modules/medicine/view/controllers/me
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_basic_form_widget.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medicine_stock_optional_form_widget.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/view/model/dto/medicine_view_response_dto.dart';
+import 'package:tcc_medicine_management/app/shared/widgets/profile_picture_widget/controller/profile_picture_controller.dart';
 
 class MedicineStockViewPage extends StatefulWidget {
   bool? readOnly;
@@ -27,18 +28,21 @@ class _MedicineStockViewPageState extends State<MedicineStockViewPage> with Tick
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final medicineViewController = Provider.of<MedicineViewController>(context, listen: false);
       final MedicineFormController formController = Provider.of<MedicineFormController>(context, listen: false);
-
+      ProfilePictureController profilePictureController = Provider.of<ProfilePictureController>(context, listen: false);
+      profilePictureController.clear();
       medicineViewController.reset();
       formController.resetForm();
 
       MedicineViewResponseDto dataResponse = await medicineViewController.getByIdMedicine(int.parse(widget.medicineId));
+      formController.medicineImageUrl = await formController.getMedicineImage(int.parse(widget.medicineId));
 
       formController.nameController.text = dataResponse.name ?? 'Desconhecido';
       formController.medicineType = (dataResponse.type ?? '').toString().medicineType;
       formController.quantityController.text = dataResponse.storageQuantity.toString();
       formController.importanceLevel = (dataResponse.importance ?? '').toString().importanceLevel;
-       formController.valuePaidController.text = (dataResponse.price ?? 0).toStringAsFixed(2).replaceAll('.', ',');
-      formController.expirationDateController.text = DateFormat.yMd().add_jm().format(DateTime.parse(dataResponse.expirationDate!));
+      formController.valuePaidController.text = (dataResponse.price ?? 0).toStringAsFixed(2).replaceAll('.', ',');
+      formController.expirationDateController.text =
+          DateFormat.yMd().add_jm().format(DateTime.parse(dataResponse.expirationDate!));
       formController.drawerNumberController.text = dataResponse.drawerNumber.toString();
       formController.hardwareIdController.text = dataResponse.hardwareId.toString();
     });
