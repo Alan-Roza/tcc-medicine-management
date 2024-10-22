@@ -93,8 +93,16 @@ mixin _$HealthInfoController on _HealthInfoController, Store {
       AsyncAction('_HealthInfoController.onSubmit', context: context);
 
   @override
-  Future<HealthInfoDto> onSubmit(GlobalKey<FormState> formKey) {
-    return _$onSubmitAsyncAction.run(() => super.onSubmit(formKey));
+  Future<HealthInfoDto> onSubmit(GlobalKey<FormState> formKey, int? id) {
+    return _$onSubmitAsyncAction.run(() => super.onSubmit(formKey, id));
+  }
+
+  late final _$getHealthAsyncAction =
+      AsyncAction('_HealthInfoController.getHealth', context: context);
+
+  @override
+  Future<HealthInfoDto> getHealth() {
+    return _$getHealthAsyncAction.run(() => super.getHealth());
   }
 
   @override

@@ -102,9 +102,9 @@ class TreatmentCardWidget extends StatelessWidget {
                     //     ),
                     //   ),
                     // ),
-                    const SizedBox(width: 8.0),
+                    const SizedBox(width: 5.0),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
                       child: Expanded(
                         flex: 8,
                         child: Column(

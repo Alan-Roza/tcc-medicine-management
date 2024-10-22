@@ -58,7 +58,7 @@ abstract class _HealthInfoController with Store {
   }
 
   @action
-  Future<HealthInfoDto> onSubmit(GlobalKey<FormState> formKey) async {
+  Future<HealthInfoDto> onSubmit(GlobalKey<FormState> formKey, int? id) async {
     try {
       // TODO: will be implemented at future
       if (!formKey.currentState!.validate()) {
@@ -73,7 +73,17 @@ abstract class _HealthInfoController with Store {
         alcohol: isAlcohol,
       );
 
-      final HealthInfoDto dataResponse = await _healthInfoRepository.exec(healthInfo);
+      final HealthInfoDto dataResponse = await _healthInfoRepository.exec(healthInfo, id);
+      return dataResponse;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  @action
+  Future<HealthInfoDto> getHealth() async {
+    try {
+      final HealthInfoDto dataResponse = await _healthInfoRepository.getHealth();
       return dataResponse;
     } catch (e) {
       return Future.error(e.toString());
@@ -81,7 +91,12 @@ abstract class _HealthInfoController with Store {
   }
 
   void dispose() {
-    height.dispose();
-    weight.dispose();
+    height.clear();
+    weight.clear();
+    isPregnant = false;
+    isSmoker = false;
+    isAlcohol = false;
+    hasAllergy = false;
+    hasChronicDisease = false;
   }
 }

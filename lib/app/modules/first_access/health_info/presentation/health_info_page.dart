@@ -64,14 +64,14 @@ class _HealthInfoPageState extends State<HealthInfoPage> {
               Expanded(
                 flex: 10,
                 child: SingleChildScrollView(
-                  child: HealthInfoFormWidget(formKey: _formKey)
+                  child: HealthInfoFormWidget(formKey: _formKey, isNew: true)
                 ),
               ),
               Expanded(child: Container()),
               ElevatedButton(
                 onPressed: () async {
                   try {
-                    await healthInfoController.onSubmit(_formKey);
+                    await healthInfoController.onSubmit(_formKey, null);
 
                     if (healthInfoController.hasAllergy) {
                       context.goNamed('AllergyInfo');

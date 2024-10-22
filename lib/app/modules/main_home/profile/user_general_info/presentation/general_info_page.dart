@@ -16,7 +16,7 @@ class GeneralInfoPage extends StatefulWidget {
 
 class _GeneralInfoPageState extends State<GeneralInfoPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late int? userId;
+  int? userId;
 
   @override
   void initState() {
