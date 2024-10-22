@@ -8,6 +8,7 @@ import 'package:tcc_medicine_management/app/core/infra/dio_factory.dart';
 import 'package:tcc_medicine_management/app/core/infra/http_client.dart';
 import 'package:tcc_medicine_management/app/core/infra/network_info.dart';
 import 'package:tcc_medicine_management/app/core/routes/app_routes.dart';
+import 'package:tcc_medicine_management/app/core/services/background_service.dart';
 import 'package:tcc_medicine_management/app/core/services/notification_service.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/address_info/controller/address_info_controller.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/administrator_info/controller/administrator_info_controller.dart';
@@ -52,9 +53,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService.initialize();
   tz.initializeTimeZones();
-  
-  setupDependencies();
 
+  setupDependencies();
+  enableBackgroundExecution();
   runApp(const MyApp());
 }
 
