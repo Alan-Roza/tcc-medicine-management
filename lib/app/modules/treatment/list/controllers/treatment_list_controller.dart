@@ -81,6 +81,7 @@ abstract class _TreatmentListController with Store {
               expirationDate: element.resume?.lastEndDate ?? "Sem Fim",
               patientName: element.user!,
               priority: element.importance!,
+              totalPrice: element.resume?.totalPrice ?? 0,
             ),
           ),
         );

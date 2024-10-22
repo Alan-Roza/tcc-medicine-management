@@ -2,16 +2,16 @@ class TreatmentListRequestDto {
   int? userId;
   int? page;
   int? size;
-  List<String>? sort;
+  String? sortBy;
   String? search;
 
-  TreatmentListRequestDto({this.userId, this.page, this.size, this.sort, this.search});
+  TreatmentListRequestDto({this.userId, this.page, this.size, this.sortBy, this.search});
 
   TreatmentListRequestDto.fromJson(Map<String, dynamic> json) {
     userId = json['userId'];
     page = json['page'];
     size = json['size'];
-    sort = json['sort'].cast<String>();
+    sortBy = json['sortBy'].cast<String>();
     search = json['search'];
   }
 
@@ -20,7 +20,7 @@ class TreatmentListRequestDto {
     data['userId'] = userId;
     data['page'] = page;
     data['size'] = size;
-    data['sort'] = sort;
+    data['sortBy'] = sortBy;
     data['search'] = search;
     return data;
   }

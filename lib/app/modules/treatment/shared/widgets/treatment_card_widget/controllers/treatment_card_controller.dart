@@ -14,6 +14,7 @@ abstract class TreatmentCardControllerBase with Store {
   late String patientName;
   late String priority;
   late String id;
+  late double totalPrice;
 
   TreatmentCardControllerBase(TreatmentCard? treatment) {
     if (treatment == null) return;
@@ -25,6 +26,7 @@ abstract class TreatmentCardControllerBase with Store {
     patientName = treatment.patientName;
     priority = treatment.priority;
     id = treatment.id;
+    totalPrice = treatment.totalPrice;
   }
 
   @action

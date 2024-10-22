@@ -5,8 +5,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:tcc_medicine_management/app/core/services/notification_service.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/main/controllers/main_home_controller.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/main/presentation/user_profile_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
@@ -39,11 +39,21 @@ class _MainHomePageState extends State<MainHomePage> {
 
     // Run this only once when the widget is first created
     medicineStockListController.getListMedicines(
-      MedicineListRequestDto(size: 100, search: medicineStockListController.search),
+      MedicineListRequestDto(size: 5, search: medicineStockListController.search, sortBy: 'ExpirationDate'),
     );
 
     treatmentListController.getListTreatments(
-      TreatmentListRequestDto(size: 100, search: treatmentListController.search),
+      TreatmentListRequestDto(size: 5, search: treatmentListController.search, sortBy: 'ExpirationDate'),
+    );
+  }
+
+  Future<void> refreshHomeScreenData() async {
+    medicineStockListController.getListMedicines(
+      MedicineListRequestDto(size: 5, search: medicineStockListController.search, sortBy: 'ExpirationDate'),
+    );
+
+    treatmentListController.getListTreatments(
+      TreatmentListRequestDto(size: 5, search: treatmentListController.search, sortBy: 'ExpirationDate'),
     );
   }
 
@@ -151,7 +161,7 @@ class _MainHomePageState extends State<MainHomePage> {
                 ),
               )
             : null,
-        body: _buildBody(mainHomeController.selectedIndex),
+        body: RefreshIndicator(onRefresh: refreshHomeScreenData, child: _buildBody(mainHomeController.selectedIndex)),
         bottomNavigationBar: BottomNavigationBar(
           elevation: 0,
           type: BottomNavigationBarType.fixed,
@@ -443,6 +453,10 @@ class _MainHomePageState extends State<MainHomePage> {
   Widget _treatmentListPage(TreatmentListController treatmentListController) {
     Timer? debounceTimer;
 
+    treatmentListController.getListTreatments(
+      TreatmentListRequestDto(size: 100, search: treatmentListController.search),
+    );
+
     void onSearchTreatmentChanged(String value) {
       // Cancel the previous timer if it's still active
       if (debounceTimer?.isActive ?? false) debounceTimer!.cancel();
@@ -594,6 +608,10 @@ class _MainHomePageState extends State<MainHomePage> {
   Widget _medicineStockListPage(MedicineStockListController medicineStockListController) {
     Timer? debounceTimer;
 
+    medicineStockListController.getListMedicines(
+      MedicineListRequestDto(size: 100, search: medicineStockListController.search),
+    );
+
     void onSearchChanged(String value) {
       // Cancel the previous timer if it's still active
       if (debounceTimer?.isActive ?? false) debounceTimer!.cancel();
@@ -736,13 +754,14 @@ class _MainHomePageState extends State<MainHomePage> {
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildAlertCard(),
             _buildMenuRow(),
-            _buildSectionHeader('MEDICAMENTOS', 'Mais Usados'),
+            _buildSectionHeader('MEDICAMENTOS', 'Vencimento Próximo'),
             _buildMedicineRow(),
             _buildDrawerUsageWidget(),
-            _buildSectionHeader('TRATAMENTOS', 'Mais Importantes'),
+            _buildSectionHeader('TRATAMENTOS', 'Vencimento Próximo'),
             _buildTreatmentRow(),
             _buildHelpSection(),
             const SizedBox(height: 16.0),
@@ -981,15 +1000,15 @@ class _MainHomePageState extends State<MainHomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _buildViewCard(name: 'GARDENAL', added: '12/04/2023', expires: '12/07/2024'),
-          _buildViewCard(name: 'DIPIRONA', added: '08/02/2023', expires: '12/07/2024'),
-          _buildViewCard(name: 'DISALINA', added: '08/02/2023', expires: '12/07/2024'),
+          for (var medicineCard in medicineStockListController.medicineCards)
+            _buildViewCard(
+                name: medicineCard.name, quantity: medicineCard.quantity, expires: medicineCard.expirationDate),
         ],
       ),
     );
   }
 
-  Widget _buildViewCard({required String name, required String added, required String expires}) {
+  Widget _buildViewTreatmentCard({required String name, required double price, required String expires}) {
     return Card(
       color: Colors.grey.shade900,
       margin: const EdgeInsets.all(8.0),
@@ -1015,10 +1034,65 @@ class _MainHomePageState extends State<MainHomePage> {
             RichText(
                 text: TextSpan(children: [
               const TextSpan(
-                  text: 'Adicionado em: ',
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w200, fontSize: 10)),
+                  text: 'Custo: ', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w200, fontSize: 10)),
               TextSpan(
-                  text: added, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 10)),
+                  text: 'R\$ ${price.toStringAsFixed(2).replaceAll('.', ',')}',
+                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 10)),
+            ])),
+            const SizedBox(
+              height: 2,
+            ),
+            RichText(
+              text: TextSpan(
+                children: [
+                  const TextSpan(
+                      text: 'Vence em: ',
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w200, fontSize: 10)),
+                  TextSpan(
+                      text: DateFormat('dd/MM/yyyy', 'pt_BR').format(DateTime.parse(expires)),
+                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 10)),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildViewCard({required String name, required int quantity, required String expires}) {
+    return Card(
+      color: Colors.grey.shade900,
+      margin: const EdgeInsets.all(8.0),
+      child: Container(
+        width: 150,
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('assets/images/generic_medicine.png'),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(name, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+            const SizedBox(
+              height: 5,
+            ),
+            RichText(
+                text: TextSpan(children: [
+              const TextSpan(
+                  text: 'Estoque: ', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w200, fontSize: 10)),
+              TextSpan(
+                  text: quantity.toString(),
+                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 10)),
+              TextSpan(
+                  text: ' Unidade(s)',
+                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 10)),
             ])),
             const SizedBox(
               height: 2,
@@ -1071,8 +1145,9 @@ class _MainHomePageState extends State<MainHomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _buildViewCard(name: 'SINUSITE', added: '08/02/2023', expires: '12/07/2024'),
-          _buildViewCard(name: 'ALERGIA', added: '08/02/2023', expires: '12/07/2024'),
+          for (var treatmentCard in treatmentListController.treatmentCards)
+            _buildViewTreatmentCard(
+                name: treatmentCard.name, price: treatmentCard.totalPrice, expires: treatmentCard.expirationDate),
         ],
       ),
     );

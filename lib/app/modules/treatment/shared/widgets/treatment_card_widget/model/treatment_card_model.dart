@@ -5,6 +5,7 @@ class TreatmentCard {
   final String expirationDate;
   final String priority;
   final String patientName;
+  final double totalPrice;
   final String id;
 
   TreatmentCard({
@@ -14,6 +15,7 @@ class TreatmentCard {
     required this.expirationDate,
     required this.patientName,
     required this.priority,
+    required this.totalPrice,
     this.isSelected = false
   });
 }
