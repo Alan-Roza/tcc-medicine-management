@@ -56,13 +56,29 @@ abstract class _ConfigurationsController with Store {
 
       final configurationsInfo = ConfigurationsInfoDto(
         enableStatistics: allowDataStorage,
-        notifyWhatsapp: notifyWhatsapp,
-        notifyEmail: notifyEmail,
-        notifyPopup: notifyPopup,
         typography: fontSize,
       );
-
       
+      // 1,popup
+      if (notifyPopup) {
+        await _configurationsInfoRepository.saveChannel(1);
+      } else {
+        await _configurationsInfoRepository.removeChannel(1);
+      }
+
+      // 2,email
+      if (notifyEmail) {
+        await _configurationsInfoRepository.saveChannel(2);
+      } else {
+        await _configurationsInfoRepository.removeChannel(2);
+      }
+
+      // 3,whatsapp
+      if (notifyWhatsapp) {
+        await _configurationsInfoRepository.saveChannel(3);
+      } else {
+        await _configurationsInfoRepository.removeChannel(3);
+      }
 
       final ConfigurationsInfoDto dataResponse = await _configurationsInfoRepository.exec(configurationsInfo);
 

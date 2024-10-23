@@ -83,6 +83,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
                       if (profilePictureController.image != null) await userInfoController.uploadPhoto(profilePictureController.image!);
                       userController.login(response.name ?? 'Desconhecido');
 
+                      profilePictureController.clear();
+
                       context.goNamed('AddressInfo');
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(

@@ -3,8 +3,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/administrator_info/controller/administrator_info_controller.dart';
+import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
-import 'package:tcc_medicine_management/app/shared/widgets/profile_picture_widget/presentation/profile_picture_widget.dart';
 
 class AdministratorInfoPage extends StatefulWidget {
   const AdministratorInfoPage({super.key});
@@ -18,7 +18,8 @@ class _AdministratorInfoPageState extends State<AdministratorInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-  final AdministratorInfoController administratorInfoController = Provider.of<AdministratorInfoController>(context);
+    final AdministratorInfoController administratorInfoController = Provider.of<AdministratorInfoController>(context);
+    final UserController userController = Provider.of<UserController>(context);
 
     return Scaffold(
       body: SafeArea(
@@ -104,37 +105,98 @@ class _AdministratorInfoPageState extends State<AdministratorInfoPage> {
                         administratorInfoController.code,
                         icon: Icons.lock_outline,
                         label: 'Código',
+                        onChanged: (value) async {
+                          if (value.length == 6) {
+                            try {
+                              await administratorInfoController.getAdministratorInfos(value);
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  backgroundColor: Colors.green,
+                                  content: Text("Encontrado com Sucesso!"), // Customize with your success message
+                                ),
+                              );
+                            } catch (error) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.red,
+                                  content: Text("Não foi possível encontrar o responsável!"),
+                                ),
+                              );
+                            }
+                          }
+                        },
                       ),
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 40),
-              Row(
-                children: [
-                  const Flexible(
-                    child: Text(
-                      'Foto de perfil do responsável através do código digitado',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Column(
-                    children: [
-                      const ProfilePictureWidget(),
-                      const SizedBox(height: 5.0),
-                      Text(
-                        administratorInfoController.administratorName,
-                        style: const TextStyle(fontSize: 14),
+              Observer(builder: (_) {
+                return Row(
+                  children: [
+                    const Flexible(
+                      child: Text(
+                        'Foto de perfil do responsável através do código digitado',
+                        style: TextStyle(fontSize: 14),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    const SizedBox(width: 20), 
+                    Column(
+                      children: [
+                        if (administratorInfoController.administratorProfilePicture.text.isNotEmpty &&
+                            administratorInfoController.code.text.length == 6)
+                          CircleAvatar(
+                            radius: 70,
+                            backgroundImage: NetworkImage(
+                              administratorInfoController.administratorProfilePicture.text,
+                              headers: {
+                                'Authorization': 'Bearer ${userController.token}',
+                              },
+                            ),
+                          ),
+                        if (administratorInfoController.administratorProfilePicture.text.isEmpty ||
+                            administratorInfoController.code.text.length != 6)
+                          CircleAvatar(
+                              radius: 70,
+                              backgroundColor: Colors.grey.shade800,
+                              child: const Icon(
+                                Icons.camera_alt_outlined,
+                                size: 55,
+                                color: Colors.white,
+                              )),
+                        const SizedBox(height: 5.0),
+                        if (administratorInfoController.code.text.length == 6)
+                        Text(
+                          administratorInfoController.administratorName.text,
+                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              }),
               Expanded(child: Container()),
               ElevatedButton(
-                onPressed: () {
-                  context.goNamed('MenuAssistance');
+                onPressed: () async {
+                  try {
+                    await administratorInfoController.onSubmit();
+
+                    context.goNamed('MenuAssistance');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.green,
+                        content: Text("Salvo com Sucesso!"), // Customize with your success message
+                      ),
+                    );
+                  } catch (error) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text(error.toString()),
+                      ),
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -196,6 +258,12 @@ class _AdministratorInfoPageState extends State<AdministratorInfoPage> {
         onChanged: (value) {
           if (onChanged != null) onChanged(value);
         },
+        validator: (value) {
+        if (value!.length != 6) {
+          return 'O código deve ter 6 dígitos';
+        }
+        return null;
+      },
       ),
     );
   }
