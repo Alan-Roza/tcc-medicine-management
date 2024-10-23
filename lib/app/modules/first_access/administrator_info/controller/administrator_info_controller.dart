@@ -12,8 +12,13 @@ class AdministratorInfoController = _AdministratorInfoController with _$Administ
 abstract class _AdministratorInfoController with Store {
   final AdministratorInfoRepository _administratorInfoRepository = getIt<AdministratorInfoRepository>();
 
+  @observable
   TextEditingController code = TextEditingController();
+
+  @observable
   TextEditingController administratorName = TextEditingController();
+
+  @observable
   TextEditingController administratorProfilePicture = TextEditingController();
 
   @action

@@ -132,8 +132,8 @@ class _AdministratorInfoPageState extends State<AdministratorInfoPage> {
                 ),
               ),
               const SizedBox(height: 40),
-              Observer(builder: (_) {
-                return Row(
+              Observer(
+                builder: (_) => Row(
                   children: [
                     const Flexible(
                       child: Text(
@@ -141,7 +141,7 @@ class _AdministratorInfoPageState extends State<AdministratorInfoPage> {
                         style: TextStyle(fontSize: 14),
                       ),
                     ),
-                    const SizedBox(width: 20), 
+                    const SizedBox(width: 20),
                     Column(
                       children: [
                         if (administratorInfoController.administratorProfilePicture.text.isNotEmpty &&
@@ -167,15 +167,15 @@ class _AdministratorInfoPageState extends State<AdministratorInfoPage> {
                               )),
                         const SizedBox(height: 5.0),
                         if (administratorInfoController.code.text.length == 6)
-                        Text(
-                          administratorInfoController.administratorName.text,
-                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                        ),
+                          Text(
+                            administratorInfoController.administratorName.text,
+                            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                          ),
                       ],
                     ),
                   ],
-                );
-              }),
+                ),
+              ),
               Expanded(child: Container()),
               ElevatedButton(
                 onPressed: () async {
@@ -238,33 +238,35 @@ class _AdministratorInfoPageState extends State<AdministratorInfoPage> {
     Function? onClear,
     bool? clearable,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextFormField(
-        decoration: InputDecoration(
-          prefixIcon: Icon(icon),
-          suffixIcon: clearable != null && clearable
-              ? IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    if (onClear != null) onClear();
-                    textEditingController?.clear(); // Clear the text field
-                  },
-                )
-              : null,
-          labelText: label,
+    return Observer(builder: (_) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: TextFormField(
+          decoration: InputDecoration(
+            prefixIcon: Icon(icon),
+            suffixIcon: clearable != null && clearable
+                ? IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: () {
+                      if (onClear != null) onClear();
+                      textEditingController?.clear(); // Clear the text field
+                    },
+                  )
+                : null,
+            labelText: label,
+          ),
+          controller: textEditingController,
+          onChanged: (value) {
+            if (onChanged != null) onChanged(value);
+          },
+          validator: (value) {
+            if (value!.length != 6) {
+              return 'O código deve ter 6 dígitos';
+            }
+            return null;
+          },
         ),
-        controller: textEditingController,
-        onChanged: (value) {
-          if (onChanged != null) onChanged(value);
-        },
-        validator: (value) {
-        if (value!.length != 6) {
-          return 'O código deve ter 6 dígitos';
-        }
-        return null;
-      },
-      ),
-    );
+      );
+    });
   }
 }
