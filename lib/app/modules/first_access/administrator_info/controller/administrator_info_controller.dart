@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/administrator_info/model/dto/administrator_info_dto.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/administrator_info/model/dto/administrator_request_info_dto.dart';
@@ -13,13 +12,13 @@ abstract class _AdministratorInfoController with Store {
   final AdministratorInfoRepository _administratorInfoRepository = getIt<AdministratorInfoRepository>();
 
   @observable
-  TextEditingController code = TextEditingController();
+  String code = '';
 
   @observable
-  TextEditingController administratorName = TextEditingController();
+  String administratorName = '';
 
   @observable
-  TextEditingController administratorProfilePicture = TextEditingController();
+  String administratorProfilePicture = '';
 
   @action
   Future<void> onSubmit() async {
@@ -30,7 +29,7 @@ abstract class _AdministratorInfoController with Store {
       // }
 
       final AdministratorRequestDto data = AdministratorRequestDto(
-        otp: code.text,
+        otp: code,
       );
 
       await _administratorInfoRepository.exec(data);
@@ -48,8 +47,8 @@ abstract class _AdministratorInfoController with Store {
 
       final AdministratorInfoResponseDto dataResponse = await _administratorInfoRepository.getAdministratorInfos(data);
 
-      administratorName.text = dataResponse.name ?? '';
-      administratorProfilePicture.text = dataResponse.profilePicture ?? '';
+      administratorName = dataResponse.name ?? '';
+      administratorProfilePicture = dataResponse.profilePicture ?? '';
 
       return dataResponse;
     } catch (e) {
@@ -58,8 +57,8 @@ abstract class _AdministratorInfoController with Store {
   }
 
   void dispose() {
-    code.clear();
-    administratorName.clear();
-    administratorProfilePicture.clear();
+    code = '';
+    administratorName = '';
+    administratorProfilePicture = '';
   }
 }

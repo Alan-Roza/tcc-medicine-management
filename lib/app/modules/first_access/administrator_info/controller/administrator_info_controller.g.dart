@@ -13,13 +13,13 @@ mixin _$AdministratorInfoController on _AdministratorInfoController, Store {
       Atom(name: '_AdministratorInfoController.code', context: context);
 
   @override
-  TextEditingController get code {
+  String get code {
     _$codeAtom.reportRead();
     return super.code;
   }
 
   @override
-  set code(TextEditingController value) {
+  set code(String value) {
     _$codeAtom.reportWrite(value, super.code, () {
       super.code = value;
     });
@@ -29,13 +29,13 @@ mixin _$AdministratorInfoController on _AdministratorInfoController, Store {
       name: '_AdministratorInfoController.administratorName', context: context);
 
   @override
-  TextEditingController get administratorName {
+  String get administratorName {
     _$administratorNameAtom.reportRead();
     return super.administratorName;
   }
 
   @override
-  set administratorName(TextEditingController value) {
+  set administratorName(String value) {
     _$administratorNameAtom.reportWrite(value, super.administratorName, () {
       super.administratorName = value;
     });
@@ -46,13 +46,13 @@ mixin _$AdministratorInfoController on _AdministratorInfoController, Store {
       context: context);
 
   @override
-  TextEditingController get administratorProfilePicture {
+  String get administratorProfilePicture {
     _$administratorProfilePictureAtom.reportRead();
     return super.administratorProfilePicture;
   }
 
   @override
-  set administratorProfilePicture(TextEditingController value) {
+  set administratorProfilePicture(String value) {
     _$administratorProfilePictureAtom
         .reportWrite(value, super.administratorProfilePicture, () {
       super.administratorProfilePicture = value;
