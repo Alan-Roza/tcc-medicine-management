@@ -25,15 +25,47 @@ mixin _$PatientController on _PatientController, Store {
     });
   }
 
+  late final _$codeAtom =
+      Atom(name: '_PatientController.code', context: context);
+
+  @override
+  String get code {
+    _$codeAtom.reportRead();
+    return super.code;
+  }
+
+  @override
+  set code(String value) {
+    _$codeAtom.reportWrite(value, super.code, () {
+      super.code = value;
+    });
+  }
+
+  late final _$getPatientListAsyncAction =
+      AsyncAction('_PatientController.getPatientList', context: context);
+
+  @override
+  Future<PatientListResponseDto> getPatientList() {
+    return _$getPatientListAsyncAction.run(() => super.getPatientList());
+  }
+
+  late final _$generateCodeAsyncAction =
+      AsyncAction('_PatientController.generateCode', context: context);
+
+  @override
+  Future<String> generateCode() {
+    return _$generateCodeAsyncAction.run(() => super.generateCode());
+  }
+
   late final _$_PatientControllerActionController =
       ActionController(name: '_PatientController', context: context);
 
   @override
-  void createPatientCardList() {
+  void clearPatientCards() {
     final _$actionInfo = _$_PatientControllerActionController.startAction(
-        name: '_PatientController.createPatientCardList');
+        name: '_PatientController.clearPatientCards');
     try {
-      return super.createPatientCardList();
+      return super.clearPatientCards();
     } finally {
       _$_PatientControllerActionController.endAction(_$actionInfo);
     }
@@ -42,7 +74,8 @@ mixin _$PatientController on _PatientController, Store {
   @override
   String toString() {
     return '''
-patientCards: ${patientCards}
+patientCards: ${patientCards},
+code: ${code}
     ''';
   }
 }

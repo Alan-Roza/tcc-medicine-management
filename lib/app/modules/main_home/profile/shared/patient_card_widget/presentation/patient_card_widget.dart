@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/shared/patient_card_widget/controllers/patient_card_controller.dart';
+import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
 
 class PatientCardWidget extends StatelessWidget {
   @override
@@ -13,9 +15,25 @@ class PatientCardWidget extends StatelessWidget {
     required this.patientCard,
   }) : super(key: key);
 
+  String formatPhoneNumber(String phoneNumber) {
+    // Remover o código do país (55)
+    String withoutCountryCode = phoneNumber.substring(2);
+
+    // Extrair o DDD (primeiros 2 dígitos após remover o código do país)
+    String ddd = withoutCountryCode.substring(0, 2);
+
+    // Extrair o restante do número
+    String firstPart = withoutCountryCode.substring(2, 7);
+    String secondPart = withoutCountryCode.substring(7);
+
+    // Formatar como (XX) XXXXX-XXXX
+    return '($ddd) $firstPart-$secondPart';
+  }
+
   @override
   Widget build(BuildContext context) {
     // final patientListController = Provider.of<PatientListController>(context);
+    final userController = Provider.of<UserController>(context);
 
     return Observer(
       builder: (_) {
@@ -54,15 +72,33 @@ class PatientCardWidget extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20.0),
-                          child: Image.network(
-                            'https://picsum.photos/3250?image=9',
-                            fit: BoxFit.cover,
-                            height: MediaQuery.of(context).size.height * 0.12,
-                            width: 100,
+                        if (patientCard.imageUrl.isNotEmpty)
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(20.0),
+                            child: Image.network(
+                              patientCard.imageUrl,
+                              headers: {
+                                'Authorization': 'Bearer ${userController.token}',
+                              },
+                              fit: BoxFit.cover,
+                              height: MediaQuery.of(context).size.height * 0.12,
+                              width: 100,
+                            ),
                           ),
-                        ),
+                        if (patientCard.imageUrl.isEmpty)
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(20.0),
+                            child: Container(
+                              width: 100,
+                              height: MediaQuery.of(context).size.height * 0.12,
+                              color: const Color.fromARGB(255, 7, 1, 0),
+                              child: const Icon(
+                                Icons.camera_alt_outlined,
+                                size: 55,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         const SizedBox(
                           height: 12,
                         ),
@@ -75,7 +111,9 @@ class PatientCardWidget extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          DateFormat('dd/MM/yyyy').format(patientCard.lastAccess),
+                          patientCard.lastAccess != null
+                              ? DateFormat('dd/MM/yyyy').format(patientCard.lastAccess!)
+                              : '-',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -109,8 +147,8 @@ class PatientCardWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Comprimido",
+                          Text(
+                            patientCard.login,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                           Text(
@@ -125,18 +163,11 @@ class PatientCardWidget extends StatelessWidget {
                               style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
                               children: [
                                 const TextSpan(
-                                  text: "Contato: ",
+                                  text: "Idade: ",
                                   style: TextStyle(fontWeight: FontWeight.normal),
                                 ),
                                 TextSpan(
-                                  text: patientCard.cellphone,
-                                ),
-                                const TextSpan(
-                                  text: "\nIdade: ",
-                                  style: TextStyle(fontWeight: FontWeight.normal),
-                                ),
-                                TextSpan(
-                                  text: patientCard.age.toString(),
+                                  text: "${patientCard.age} ano(s)",
                                 ),
                                 const TextSpan(
                                   text: "\nGênero: ",
@@ -144,6 +175,13 @@ class PatientCardWidget extends StatelessWidget {
                                 ),
                                 TextSpan(
                                   text: patientCard.gender,
+                                ),
+                                const TextSpan(
+                                  text: "\nContato: ",
+                                  style: TextStyle(fontWeight: FontWeight.normal),
+                                ),
+                                TextSpan(
+                                  text: formatPhoneNumber(patientCard.cellphone),
                                 ),
                               ],
                             ),

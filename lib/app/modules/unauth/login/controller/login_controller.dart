@@ -14,7 +14,7 @@ abstract class _LoginController with Store {
   bool isPasswordVisible = false;
 
   @observable
-  String email = 'alan2@teste.com'; // TODO: dont forget to remove this default value
+  String email = 'alan@teste.com'; // TODO: dont forget to remove this default value
 
   @observable
   String password = 'alan123'; // TODO: dont forget to remove this default value

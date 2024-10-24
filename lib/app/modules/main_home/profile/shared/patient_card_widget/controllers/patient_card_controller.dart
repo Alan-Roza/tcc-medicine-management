@@ -8,16 +8,18 @@ class PatientCardController = PatientCardControllerBase with _$PatientCardContro
 abstract class PatientCardControllerBase with Store {
   @observable
   late bool isSelected;
+  late String login;
   late String name;
   late int age;
   late String cellphone;
   late String gender;
-  late DateTime lastAccess;
-  late String? imageUrl;
+  late DateTime? lastAccess;
+  late String imageUrl;
 
   PatientCardControllerBase(PatientCard? patient) {
     if (patient == null) return;
 
+    login = patient.login;
     name = patient.name;
     age = patient.age;
     cellphone = patient.cellphone;

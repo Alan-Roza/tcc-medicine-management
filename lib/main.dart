@@ -30,6 +30,8 @@ import 'package:tcc_medicine_management/app/modules/main_home/profile/connection
 import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/list/controllers/connection_controller.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/list/repository/connection_list_repository.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/faq_help/controllers/faq_help_controller.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/patient/controllers/patient_controller.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/patient/repository/patient_repository.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/repository/medicine_repository.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
@@ -114,6 +116,7 @@ class MyApp extends StatelessWidget {
           Provider<ConnectionController>(create: (_) => ConnectionController()),
           Provider<ProfilePictureController>(create: (_) => ProfilePictureController()),
           Provider<MainHomeController>(create: (_) => MainHomeController()),
+          Provider<PatientController>(create: (_) => PatientController()),
         ],
         child: MaterialApp.router(
           routerConfig: appRouter,
@@ -181,4 +184,7 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<ResumeRepository>(
       () => ResumeRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(DioFactory().getDio())));
+
+  getIt.registerLazySingleton<PatientRepository>(
+      () => PatientRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(DioFactory().getDio())));
 }
