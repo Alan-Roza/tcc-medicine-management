@@ -40,6 +40,38 @@ mixin _$UserController on _UserController, Store {
     });
   }
 
+  late final _$patientIdAtom =
+      Atom(name: '_UserController.patientId', context: context);
+
+  @override
+  int? get patientId {
+    _$patientIdAtom.reportRead();
+    return super.patientId;
+  }
+
+  @override
+  set patientId(int? value) {
+    _$patientIdAtom.reportWrite(value, super.patientId, () {
+      super.patientId = value;
+    });
+  }
+
+  late final _$userEmailAtom =
+      Atom(name: '_UserController.userEmail', context: context);
+
+  @override
+  String? get userEmail {
+    _$userEmailAtom.reportRead();
+    return super.userEmail;
+  }
+
+  @override
+  set userEmail(String? value) {
+    _$userEmailAtom.reportWrite(value, super.userEmail, () {
+      super.userEmail = value;
+    });
+  }
+
   late final _$tokenAtom =
       Atom(name: '_UserController.token', context: context);
 
@@ -102,6 +134,8 @@ mixin _$UserController on _UserController, Store {
     return '''
 name: ${name},
 userId: ${userId},
+patientId: ${patientId},
+userEmail: ${userEmail},
 token: ${token},
 isLoggedIn: ${isLoggedIn}
     ''';

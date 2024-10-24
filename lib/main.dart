@@ -24,6 +24,8 @@ import 'package:tcc_medicine_management/app/modules/first_access/health_info/rep
 import 'package:tcc_medicine_management/app/modules/first_access/user_info/controller/user_info_controller.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/address_info/repository/address_info_repository.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/user_info/repository/user_info_repository.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/main/controllers/main_home_controller.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/main/repository/resume_repository.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/form/controller/connect_controller.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/list/controllers/connection_controller.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/list/repository/connection_list_repository.dart';
@@ -111,6 +113,7 @@ class MyApp extends StatelessWidget {
           Provider<TreatmentViewController>(create: (_) => TreatmentViewController()),
           Provider<ConnectionController>(create: (_) => ConnectionController()),
           Provider<ProfilePictureController>(create: (_) => ProfilePictureController()),
+          Provider<MainHomeController>(create: (_) => MainHomeController()),
         ],
         child: MaterialApp.router(
           routerConfig: appRouter,
@@ -175,4 +178,7 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<AdministratorInfoRepository>(() =>
       AdministratorInfoRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(DioFactory().getDio())));
+
+  getIt.registerLazySingleton<ResumeRepository>(
+      () => ResumeRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(DioFactory().getDio())));
 }

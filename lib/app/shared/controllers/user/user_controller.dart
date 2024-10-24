@@ -12,6 +12,12 @@ abstract class _UserController with Store {
   int? userId;
 
   @observable
+  int? patientId;
+
+  @observable
+  String? userEmail;
+
+  @observable
   String? token;
 
   @observable
@@ -27,6 +33,10 @@ abstract class _UserController with Store {
   void logout() {
     isLoggedIn = false;
     name = '';
+    userId = null;
+    patientId = null;
+    userEmail = null;
+    token = null;
   }
 
   // Reset the store's observable state
@@ -34,5 +44,8 @@ abstract class _UserController with Store {
     isLoggedIn = false;
     name = '';
     userId = null;
+    patientId = null;
+    userEmail = null;
+    token = null;
   }
 }

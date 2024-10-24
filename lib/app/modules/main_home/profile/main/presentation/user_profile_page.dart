@@ -81,12 +81,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           children: [
                             Text(
                               userController.name,
-                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, height: 1.1),
                             ),
-                            Text(
-                              'Responsável',
-                              style: TextStyle(fontSize: 16, color: Colors.black54, fontWeight: FontWeight.w300),
-                            ),
+                            if (userController.userEmail != null && userController.userEmail!.isNotEmpty)
+                              Text(
+                                userController.userEmail!,
+                                style: TextStyle(fontSize: 14, color: Colors.black54, fontWeight: FontWeight.w300),
+                              ),
                           ],
                         ),
                       ],

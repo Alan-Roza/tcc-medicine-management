@@ -155,14 +155,15 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                       try {
                                         final response = await loginController.onSubmitLogin(_formKey);
                                         userController.token = response.token;
-                                          context.goNamed('AdministratorInfo');
+                                        userController.userEmail = response.userLogin;
 
-                                        // if (response.userName == null)
-                                        //   context.goNamed('FirstAccess');
-                                        // else {
-                                        //   userController.login(response.userName ?? 'Desconhecido');
-                                        //   context.goNamed('MainHome');
-                                        // }
+                                        if (response.userName == null) {
+                                          context.goNamed('FirstAccess');
+                                        }
+                                        else {
+                                          userController.login(response.userName ?? 'Desconhecido');
+                                          context.goNamed('MainHome');
+                                        }
 
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar(

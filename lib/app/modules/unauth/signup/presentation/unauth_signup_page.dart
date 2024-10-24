@@ -141,10 +141,9 @@ class UnauthSignupPage extends StatelessWidget {
                                       ),
                                     ),
                                     onPressed: () async {
-                                      // userController.login("Alan Roza");
-
                                       final response = await signupController.onSignup(formKey);
                                       userController.token = response.token;
+                                      userController.userEmail = response.userLogin;
 
                                       if (response != null && response.isNotEmpty) {
                                         if (response.startsWith('Exception')) {

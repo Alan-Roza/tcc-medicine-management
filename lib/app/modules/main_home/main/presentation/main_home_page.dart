@@ -25,10 +25,9 @@ class MainHomePage extends StatefulWidget {
 }
 
 class _MainHomePageState extends State<MainHomePage> {
-  final MainHomeController mainHomeController = MainHomeController();
-
   late MedicineStockListController medicineStockListController;
   late TreatmentListController treatmentListController;
+  late MainHomeController mainHomeController;
 
   @override
   void didChangeDependencies() {
@@ -36,6 +35,9 @@ class _MainHomePageState extends State<MainHomePage> {
     // Access the Provider here
     medicineStockListController = Provider.of<MedicineStockListController>(context);
     treatmentListController = Provider.of<TreatmentListController>(context);
+    mainHomeController = Provider.of<MainHomeController>(context);
+
+    mainHomeController.getResumePendency();
 
     // Run this only once when the widget is first created
     medicineStockListController.getListMedicines(
@@ -55,6 +57,8 @@ class _MainHomePageState extends State<MainHomePage> {
     treatmentListController.getListTreatments(
       TreatmentListRequestDto(size: 5, search: treatmentListController.search, sortBy: 'ExpirationDate'),
     );
+
+    mainHomeController.getResumePendency();
   }
 
   @override
@@ -759,7 +763,7 @@ class _MainHomePageState extends State<MainHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildAlertCard(),
+            mainHomeController.hasPendency ? _buildAlertCard() : _buildNoPendencyCard(),
             _buildMenuRow(),
             _buildSectionHeader('MEDICAMENTOS', 'Vencimento Próximo'),
             _buildMedicineRow(),
@@ -782,7 +786,7 @@ class _MainHomePageState extends State<MainHomePage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),
-        elevation: 0,
+        elevation: 5,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Row(
@@ -791,7 +795,7 @@ class _MainHomePageState extends State<MainHomePage> {
               SvgPicture.asset(
                 'assets/images/graphic_down.svg',
                 fit: BoxFit.cover,
-                height: 80,
+                height: 90,
               ),
               const SizedBox(width: 12.0),
               Expanded(
@@ -834,7 +838,80 @@ class _MainHomePageState extends State<MainHomePage> {
                         'Houve medicamentos não ingeridos, clique aqui para mais detalhes',
                         style: TextStyle(
                           color: Colors.white,
-                          height: 1.1,
+                          height: 1.2,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNoPendencyCard() {
+    return GestureDetector(
+      onTap: () => context.goNamed('DailySummary'),
+      child: Card(
+        color: const Color(0xFF00A8FF),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        elevation: 5,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              SvgPicture.asset(
+                'assets/images/two_doctors.svg',
+                fit: BoxFit.cover,
+                height: 100,
+              ),
+              Expanded(
+                flex: 5,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 8.0),
+                  child: Column(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Bem-vindo de volta ao SALUS!',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              height: 1.1,
+                            ),
+                          ),
+                          Container(
+                            width: 40,
+                            height: 6,
+                            margin: const EdgeInsets.only(top: 6.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                color: Colors.white, // Set border color
+                                width: 2, // Set border width
+                              ),
+                              borderRadius: BorderRadius.circular(10), // Add a border radius
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      const Text(
+                        'Está tudo certo, tenha um ótimo dia. Clique aqui para mais detalhes',
+                        style: TextStyle(
+                          color: Colors.white,
+                          height: 1.2,
                         ),
                       ),
                     ],
@@ -949,7 +1026,7 @@ class _MainHomePageState extends State<MainHomePage> {
 
   Widget _buildMenuRow() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -963,23 +1040,48 @@ class _MainHomePageState extends State<MainHomePage> {
   }
 
   Widget _buildMenuIcon(IconData icon, String label) {
-    return Column(
-      children: [
-        Card(
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
+  return Column(
+    children: [
+      Container(
+        decoration: BoxDecoration(
           color: Colors.white,
-          child: Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Icon(icon, size: 24),
-          ),
+          borderRadius: BorderRadius.circular(8.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(0, 5), // changes position of shadow
+            ),
+          ],
         ),
-        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-      ],
-    );
-  }
+        padding: const EdgeInsets.all(16.0),
+        child: Icon(icon, size: 24),
+      ),
+      const SizedBox(height: 3.0),
+      Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+    ],
+  );
+}
+
+  // Widget _buildMenuIcon(IconData icon, String label) {
+  //   return Column(
+  //     children: [
+  //       Card(
+  //         elevation: 0,
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(8.0),
+  //         ),
+  //         color: Colors.white,
+  //         child: Container(
+  //           padding: const EdgeInsets.all(16.0),
+  //           child: Icon(icon, size: 24),
+  //         ),
+  //       ),
+  //       Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+  //     ],
+  //   );
+  // }
 
   Widget _buildSectionHeader(String title, String action) {
     return Padding(
