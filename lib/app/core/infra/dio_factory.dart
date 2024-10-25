@@ -34,6 +34,11 @@ class DioFactory {
       onRequest: (options, handler) async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         String? token = prefs.getString('token');
+        String? patientId = prefs.getString('patientId');
+
+        if (patientId != null) {
+          options.queryParameters['userId'] = patientId;
+        }
 
         if (token != null) {
           options.headers['Authorization'] = 'Bearer $token';

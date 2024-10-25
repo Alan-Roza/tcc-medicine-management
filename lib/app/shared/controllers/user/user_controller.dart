@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'user_controller.g.dart';
 
@@ -13,6 +14,9 @@ abstract class _UserController with Store {
 
   @observable
   int? patientId;
+
+  @observable
+  String? patientName;
 
   @observable
   String? userEmail;
@@ -47,5 +51,13 @@ abstract class _UserController with Store {
     patientId = null;
     userEmail = null;
     token = null;
+  }
+
+  @action
+  Future<void> removePatient() async {
+    patientId = null;
+    patientName = null;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('patientId');
   }
 }

@@ -92,7 +92,7 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                       ),
                       Expanded(child: Container()),
                       SizedBox(
-                        height: height / 2.21,
+                        height: height / 2.3,
                         child: SingleChildScrollView(
                           child: Form(
                             key: _formKey,

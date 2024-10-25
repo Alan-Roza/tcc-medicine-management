@@ -3,6 +3,7 @@ import 'package:tcc_medicine_management/app/modules/main_home/profile/patient/mo
 import 'package:tcc_medicine_management/app/modules/main_home/profile/patient/repository/patient_repository.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/shared/patient_card_widget/controllers/patient_card_controller.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/shared/patient_card_widget/model/patient_card_model.dart';
+import 'package:tcc_medicine_management/app/shared/constants/constants.dart';
 import 'package:tcc_medicine_management/main.dart';
 
 part 'patient_controller.g.dart';
@@ -27,14 +28,13 @@ abstract class _PatientController with Store {
         patientCards.add(
           PatientCardController(
             PatientCard(
-              login: "Paciente", //TODO: Remove this after fix
+              id: patient.id!,
               name: patient.name!,
               age: DateTime.now().difference(DateTime.parse(patient.birthdate!)).inDays ~/ 365,
               cellphone: patient.telephone!,
               gender: patient.gender!,
-              lastAccess: patient.lastAccess,
-              imageUrl: '',
-              // imageUrl: Constants.baseUrl + patient.profilePicture ?? '', // TODO: add when server implements
+              lastAccess: patient.lastAccess != null ? DateTime.parse(patient.lastAccess!) : null,
+              imageUrl: patient.profilePicture != null ? Constants.baseUrl + patient.profilePicture! : '',
             ),
           ),
         );

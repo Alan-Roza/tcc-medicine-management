@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tcc_medicine_management/app/core/routes/global_wrapper.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/address_info/presentation/address_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/administrator_info/presentation/administrator_info_page.dart';
 import 'package:tcc_medicine_management/app/modules/first_access/allergy_info/presentation/allergy_info_page.dart';
@@ -147,21 +148,21 @@ final GoRouter appRouter = GoRouter(
       path: '/main-home',
       name: 'MainHome',
       builder: (BuildContext context, GoRouterState state) {
-        return const MainHomePage();
+        return GlobalWrapper(child: const MainHomePage());
       },
       routes: [
         GoRoute(
           path: 'daily_summary',
           name: 'DailySummary',
           builder: (BuildContext context, GoRouterState state) {
-            return DailySummaryPage();
+            return GlobalWrapper(child: DailySummaryPage());
           },
         ),
         GoRoute(
           path: 'medicine-stock-form',
           name: 'MedicineStockForm',
           builder: (BuildContext context, GoRouterState state) {
-            return const MedicineStockFormPage();
+            return GlobalWrapper(child: const MedicineStockFormPage());
           },
         ),
         GoRoute(
@@ -171,14 +172,14 @@ final GoRouter appRouter = GoRouter(
             Map<String, String> params = state.uri.queryParameters;
             bool readOnly = params['readOnly'] == 'true';
 
-            return MedicineStockViewPage(medicineId: params['medicineId']!, readOnly: readOnly);
+            return GlobalWrapper(child: MedicineStockViewPage(medicineId: params['medicineId']!, readOnly: readOnly));
           },
         ),
         GoRoute(
           path: 'treatment-form',
           name: 'TreatmentForm',
           builder: (BuildContext context, GoRouterState state) {
-            return const TreatmentFormPage();
+            return GlobalWrapper(child: const TreatmentFormPage());
           },
         ),
         GoRoute(
@@ -188,60 +189,58 @@ final GoRouter appRouter = GoRouter(
             Map<String, String> params = state.uri.queryParameters;
             bool readOnly = params['readOnly'] == 'true';
 
-            return TreatmentViewPage(treatmentId: params['treatmentId']!, readOnly: readOnly);
+            return GlobalWrapper(child: TreatmentViewPage(treatmentId: params['treatmentId']!, readOnly: readOnly));
           },
         ),
         GoRoute(
-          path: 'connection',
-          name: 'Connection',
-          builder: (BuildContext context, GoRouterState state) {
-            return ConnectionPage();
-          },
-          routes: [
-            GoRoute(
-              path: 'connection-form',
-              name: 'ConnectionForm',
-              builder: (BuildContext context, GoRouterState state) {
-                return ConnectPage();
-              },
-            )
-          ]
-        ),
+            path: 'connection',
+            name: 'Connection',
+            builder: (BuildContext context, GoRouterState state) {
+              return GlobalWrapper(child: ConnectionPage());
+            },
+            routes: [
+              GoRoute(
+                path: 'connection-form',
+                name: 'ConnectionForm',
+                builder: (BuildContext context, GoRouterState state) {
+                  return GlobalWrapper(child: ConnectPage());
+                },
+              )
+            ]),
         GoRoute(
-          path: 'patients',
-          name: 'Patients',
-          builder: (BuildContext context, GoRouterState state) {
-            return PatientPage();
-          },
-          routes: [
-            GoRoute(
-              path: 'patient-generate-code',
-              name: 'PatientGenerateCode',
-              builder: (BuildContext context, GoRouterState state) {
-                return PatientCodePage();
-              },
-            )
-          ]
-        ),
+            path: 'patients',
+            name: 'Patients',
+            builder: (BuildContext context, GoRouterState state) {
+              return GlobalWrapper(child: PatientPage());
+            },
+            routes: [
+              GoRoute(
+                path: 'patient-generate-code',
+                name: 'PatientGenerateCode',
+                builder: (BuildContext context, GoRouterState state) {
+                  return GlobalWrapper(child: PatientCodePage());
+                },
+              )
+            ]),
         GoRoute(
           path: 'user-general-info',
           name: 'UserGeneralInfo',
           builder: (BuildContext context, GoRouterState state) {
-            return const UserGeneralInfoPage();
+            return GlobalWrapper(child: const UserGeneralInfoPage());
           },
           routes: [
             GoRoute(
               path: 'general-user-info',
               name: 'GeneralUserInfo',
               builder: (BuildContext context, GoRouterState state) {
-                return GeneralInfoPage();
+                return GlobalWrapper(child: GeneralInfoPage());
               },
             ),
             GoRoute(
               path: 'user-address-info',
               name: 'UserAddressInfo',
               builder: (BuildContext context, GoRouterState state) {
-                return UserAddressInfoPage();
+                return GlobalWrapper(child: UserAddressInfoPage());
               },
             ),
           ],
@@ -250,28 +249,28 @@ final GoRouter appRouter = GoRouter(
           path: 'user-health-info-page',
           name: 'UserHealthInfoPage',
           builder: (BuildContext context, GoRouterState state) {
-            return const UserHealthInfoPage();
+            return GlobalWrapper(child: const UserHealthInfoPage());
           },
           routes: [
             GoRoute(
               path: 'general-health-info',
               name: 'GeneralHealthInfo',
               builder: (BuildContext context, GoRouterState state) {
-                return GeneralHealthInfoPage();
+                return GlobalWrapper(child: GeneralHealthInfoPage());
               },
             ),
             GoRoute(
               path: 'user-allergy-info-page',
               name: 'UserAllergyInfoPage',
               builder: (BuildContext context, GoRouterState state) {
-                return UserAllergyInfoPage();
+                return GlobalWrapper(child: UserAllergyInfoPage());
               },
             ),
             GoRoute(
               path: 'user-chronical-disease-info-page',
               name: 'UserChronicalDiseaseInfoPage',
               builder: (BuildContext context, GoRouterState state) {
-                return UserChronicalDiseaseInfoPage();
+                return GlobalWrapper(child: UserChronicalDiseaseInfoPage());
               },
             ),
           ],
@@ -280,14 +279,14 @@ final GoRouter appRouter = GoRouter(
           path: 'faq-help',
           name: 'FaqHelp',
           builder: (BuildContext context, GoRouterState state) {
-            return const FaqHelpPage();
+            return GlobalWrapper(child: const FaqHelpPage());
           },
           routes: [
             GoRoute(
               path: 'faq-help-answer',
               name: 'FaqHelpAnswer',
               builder: (BuildContext context, GoRouterState state) {
-                return const FaqHelpItemPage();
+                return GlobalWrapper(child: const FaqHelpItemPage());
               },
             )
           ],
@@ -296,14 +295,14 @@ final GoRouter appRouter = GoRouter(
           path: 'user-configurations',
           name: 'UserConfigurations',
           builder: (BuildContext context, GoRouterState state) {
-            return const UserConfigurationsPage();
+            return GlobalWrapper(child: const UserConfigurationsPage());
           },
           routes: [
             GoRoute(
               path: 'user-general-configurations',
               name: 'UserGeneralConfigurations',
               builder: (BuildContext context, GoRouterState state) {
-                return GeneralConfigurationsPage();
+                return GlobalWrapper(child: GeneralConfigurationsPage());
               },
             )
           ],

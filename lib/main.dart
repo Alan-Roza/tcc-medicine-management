@@ -32,6 +32,7 @@ import 'package:tcc_medicine_management/app/modules/main_home/profile/connection
 import 'package:tcc_medicine_management/app/modules/main_home/profile/faq_help/controllers/faq_help_controller.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/patient/controllers/patient_controller.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/patient/repository/patient_repository.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/shared/patient_card_widget/controllers/patient_card_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/controllers/medicine_form_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/repository/medicine_repository.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
@@ -117,6 +118,7 @@ class MyApp extends StatelessWidget {
           Provider<ProfilePictureController>(create: (_) => ProfilePictureController()),
           Provider<MainHomeController>(create: (_) => MainHomeController()),
           Provider<PatientController>(create: (_) => PatientController()),
+          Provider<PatientCardController>(create: (_) => PatientCardController(null)),
         ],
         child: MaterialApp.router(
           routerConfig: appRouter,

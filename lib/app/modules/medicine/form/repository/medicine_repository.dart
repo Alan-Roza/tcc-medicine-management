@@ -77,7 +77,7 @@ class MedicineRepository implements IMedicineRepository {
           resultList.add(availableOn);
         }
 
-        return resultList.last;
+        return resultList.isNotEmpty ? resultList.last : '';
       } catch (error) {
         return Future.error(handleError(error));
       }

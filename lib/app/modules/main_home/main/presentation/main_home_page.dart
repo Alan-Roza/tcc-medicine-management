@@ -15,6 +15,7 @@ import 'package:tcc_medicine_management/app/modules/medicine/shared/widgets/medi
 import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/treatment_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/list/model/dto/treatment_list_request.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_card_widget/presentation/treatment_card_widget.dart';
+import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/notification/controller/notification_controller.dart';
 
 class MainHomePage extends StatefulWidget {
@@ -28,6 +29,7 @@ class _MainHomePageState extends State<MainHomePage> {
   late MedicineStockListController medicineStockListController;
   late TreatmentListController treatmentListController;
   late MainHomeController mainHomeController;
+  late UserController userController;
 
   @override
   void didChangeDependencies() {
@@ -36,6 +38,7 @@ class _MainHomePageState extends State<MainHomePage> {
     medicineStockListController = Provider.of<MedicineStockListController>(context);
     treatmentListController = Provider.of<TreatmentListController>(context);
     mainHomeController = Provider.of<MainHomeController>(context);
+    userController = Provider.of<UserController>(context);
 
     mainHomeController.getResumePendency();
 
@@ -174,7 +177,7 @@ class _MainHomePageState extends State<MainHomePage> {
           showUnselectedLabels: true,
           currentIndex: mainHomeController.selectedIndex,
           onTap: (index) => mainHomeController.setSelectedIndex(index),
-          items: const [
+          items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Início',
@@ -187,10 +190,12 @@ class _MainHomePageState extends State<MainHomePage> {
               icon: Icon(Icons.health_and_safety_outlined),
               label: 'Medicamentos',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Perfil',
-            ),
+            if (userController.patientId == null) ...{
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Perfil',
+              ),
+            }
           ],
         ),
         floatingActionButton: _buildFloatingActionButton(mainHomeController.selectedIndex),
@@ -1040,29 +1045,29 @@ class _MainHomePageState extends State<MainHomePage> {
   }
 
   Widget _buildMenuIcon(IconData icon, String label) {
-  return Column(
-    children: [
-      Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: Offset(0, 5), // changes position of shadow
-            ),
-          ],
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(0, 5), // changes position of shadow
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.all(16.0),
+          child: Icon(icon, size: 24),
         ),
-        padding: const EdgeInsets.all(16.0),
-        child: Icon(icon, size: 24),
-      ),
-      const SizedBox(height: 3.0),
-      Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-    ],
-  );
-}
+        const SizedBox(height: 3.0),
+        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+      ],
+    );
+  }
 
   // Widget _buildMenuIcon(IconData icon, String label) {
   //   return Column(

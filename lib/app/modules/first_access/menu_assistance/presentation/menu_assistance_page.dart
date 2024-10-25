@@ -22,7 +22,7 @@ class MenuAssistancePage extends StatelessWidget {
             // ),
             TextSpan(
               text:
-                  'Escolha o tipo de usuário ideal para você, existem dois tipos, os pacientes e os responsáveis. Escolha o tipo de usuário ideal para você, existem dois tipos, os pacientes e os responsáveis. Escolha o tipo de usuário ideal para você, existem dois tipos, os pacientes e os responsáveis',
+                  'Bem-vindo ao nosso aplicativo de gestão de medicamentos! A partir do menu inicial, você pode acessar as principais funcionalidades do sistema, facilitando o controle e o acompanhamento de seus medicamentos.',
               style: TextStyle(color: Colors.black54),
             ),
             // TextSpan(
@@ -56,7 +56,7 @@ class MenuAssistancePage extends StatelessWidget {
             // ),
             TextSpan(
               text:
-                  'Escolha o tipo de usuário ideal para você, existem dois tipos, os pacientes e os responsáveis. Escolha o tipo de usuário ideal para você, existem dois tipos, os pacientes e os responsáveis. Escolha o tipo de usuário ideal para você, existem dois tipos, os pacientes e os responsáveis',
+                  'Na seção de Tratamentos, você pode gerenciar de forma prática todos os tratamentos que está realizando. Aqui você encontra informações detalhadas e ferramentas para acompanhar seu progresso.',
               style: TextStyle(color: Colors.black54),
             ),
             // TextSpan(
@@ -90,7 +90,7 @@ class MenuAssistancePage extends StatelessWidget {
             // ),
             TextSpan(
               text:
-                  'Escolha o tipo de usuário ideal para você, existem dois tipos, os pacientes e os responsáveis. Escolha o tipo de usuário ideal para você, existem dois tipos, os pacientes e os responsáveis. Escolha o tipo de usuário ideal para você, existem dois tipos, os pacientes e os responsáveis',
+                  'Na seção de Medicamentos, você pode gerenciar seu estoque pessoal de medicamentos de forma simples e organizada. Isso garante que você tenha controle total sobre a quantidade disponível e evite falta de medicamentos essenciais.',
               style: TextStyle(color: Colors.black54),
             ),
             // TextSpan(
@@ -124,7 +124,7 @@ class MenuAssistancePage extends StatelessWidget {
             // ),
             TextSpan(
               text:
-                  'Escolha o tipo de usuário ideal para você, existem dois tipos, os pacientes e os responsáveis. Escolha o tipo de usuário ideal para você, existem dois tipos, os pacientes e os responsáveis. Escolha o tipo de usuário ideal para você, existem dois tipos, os pacientes e os responsáveis',
+                  'Na seção de Perfil, você pode gerenciar suas informações pessoais e configurar o aplicativo de acordo com suas necessidades e preferências.',
               style: TextStyle(color: Colors.black54),
             ),
             // TextSpan(

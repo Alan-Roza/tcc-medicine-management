@@ -5,7 +5,7 @@ class PatientCard {
   final String gender;
   final int age;
   final String cellphone;
-  final String login;
+  final int id;
 
   PatientCard({
     required this.imageUrl,
@@ -14,7 +14,7 @@ class PatientCard {
     required this.gender,
     required this.age,
     required this.cellphone,
-    required this.login,
+    required this.id,
   });
 }
 
