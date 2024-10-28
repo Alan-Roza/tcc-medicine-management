@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,25 @@ class NotificationService {
     final player = AudioPlayer();
     await player.play(AssetSource('audios/ring_1.mp3'));
     player.setReleaseMode(ReleaseMode.loop);
-    
+
+    // Extract payload from notificationResponse
+    String? payload = notificationResponse.payload;
+
+    // // Parse payload if it's in JSON format
+    // Map<String, dynamic>? notificationData;
+    // if (payload != null) {
+    //   notificationData = jsonDecode(payload);
+    // }
+
+    //    // Access title, body, and other details
+    // String title = notificationData?['title'] ?? 'No Title';
+    // String body = notificationData?['body'] ?? 'No Body';
+    // String treatmentName = notificationData?['treatmentName'] ?? 'No Treatment Name';
+    // String medicationDetails = notificationData?['medicationDetails'] ?? 'No Medication Details';
+
+    print(payload);
+    print('----------------');
+
     if (await Vibration.hasVibrator() ?? false) {
       Vibration.vibrate(pattern: [500, 1000, 500, 2000], repeat: 0); // Vibrate with a pattern
     }
@@ -68,7 +88,7 @@ class NotificationService {
                   flex: 2,
                   child: Container(),
                 ),
-                      
+
                 // TODO: verify if will be used a stream to show the current time
                 // StreamBuilder(
                 //   stream: Stream.periodic(const Duration(seconds: 1)),
@@ -87,7 +107,7 @@ class NotificationService {
                       ElevatedButton(
                         onPressed: () async {
                           await player.stop();
-                          Vibration.cancel(); 
+                          Vibration.cancel();
                           Navigator.of(context).pop();
                         },
                         style: ElevatedButton.styleFrom(
@@ -97,9 +117,9 @@ class NotificationService {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           side: const BorderSide(
-                              color: Color.fromARGB(255, 255, 255, 255),
-                              width: 1,
-                            ),
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            width: 1,
+                          ),
                           // minimumSize: const Size(double.infinity, 40),
                           textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white),
                         ),
@@ -108,7 +128,8 @@ class NotificationService {
                           children: [
                             Icon(Icons.check, color: Colors.white),
                             SizedBox(width: 8.0),
-                            Text('Confirmar', style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white)),
+                            Text('Confirmar',
+                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white)),
                           ],
                         ),
                       ),
@@ -116,7 +137,7 @@ class NotificationService {
                       ElevatedButton(
                         onPressed: () async {
                           await player.stop();
-                          Vibration.cancel(); 
+                          Vibration.cancel();
                           Navigator.of(context).pop();
                         },
                         style: ElevatedButton.styleFrom(
@@ -138,7 +159,8 @@ class NotificationService {
                           children: [
                             // Icon(Icons.close, color: Colors.white),
                             // SizedBox(width: 8.0),
-                            Text('Cancelar', style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white)),
+                            Text('Cancelar',
+                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white)),
                           ],
                         ),
                       ),
@@ -189,7 +211,24 @@ class NotificationService {
         timeoutAfter: 60000, // Set timeout to 1 minute (60,000 milliseconds)
       ),
     );
-    await flutterLocalNotificationsPlugin.show(0, title, body, platformChannelSpecifics);
+
+    Map<String, String> payloadData = {
+      'title': 'Your Notification Title',
+      'body': 'Your Notification Body',
+      'treatmentName': 'Your Treatment Name',
+      'medicationDetails': 'Your Medication Details'
+    };
+
+    // Convert payload to JSON string
+    String payload = jsonEncode(payloadData);
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      body,
+      platformChannelSpecifics,
+      payload: payload,
+    );
   }
 
   static Future<void> scheduleNotification(String title, String body, DateTime scheduledDate) async {
