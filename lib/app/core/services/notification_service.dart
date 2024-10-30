@@ -49,8 +49,8 @@ class NotificationService {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                Color(0xFF00A8FF), // Bottom color
-                Color.fromARGB(255, 60, 187, 255), // Top color
+                Color.fromARGB(255, 0, 107, 160), // Bottom color
+                Color.fromARGB(255, 0, 146, 224), // Top color
               ],
             ),
           ),
@@ -61,22 +61,23 @@ class NotificationService {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Tratamento para Sinusite', // TODO: replace Sinusite with the treatment name
+                  'Tratamento para Enxaqueca', // TODO: replace Sinusite with the treatment name
                   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
-                Expanded(flex: 1, child: Container()),
+                Expanded(flex: 2, child: Container()),
                 const Icon(
                   Icons.notifications_active_outlined,
                   size: 56,
                   color: Colors.white,
                 ),
                 Text(
-                  DateFormat('HH:mm').format(DateTime.now()),
+                  // DateFormat('HH:mm').format(DateTime.now()),
+                  '12:30',
                   style: const TextStyle(fontSize: 56, fontWeight: FontWeight.w200, color: Colors.white),
                 ),
                 const SizedBox(height: 16),
                 const Text(
-                  'Tome 2 comprimidos de Amoxicilina 500mg',
+                  'Tome 1 comprimido de Dipirona',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white, height: 1.15),
                 ),
                 const SizedBox(height: 16),
@@ -85,7 +86,7 @@ class NotificationService {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200, color: Colors.white),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: Container(),
                 ),
 
@@ -213,8 +214,8 @@ class NotificationService {
     );
 
     Map<String, String> payloadData = {
-      'title': 'Your Notification Title',
-      'body': 'Your Notification Body',
+      'title': title,
+      'body': body,
       'treatmentName': 'Your Treatment Name',
       'medicationDetails': 'Your Medication Details'
     };

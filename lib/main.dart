@@ -124,6 +124,7 @@ class MyApp extends StatelessWidget {
           Provider<PatientCardController>(create: (_) => PatientCardController(null)),
         ],
         child: MaterialApp.router(
+          debugShowCheckedModeBanner:false ,
           routerConfig: appRouter,
           // theme: AppTheme.lightTheme
           // theme: brightness == Brightness.light ? theme.light() : theme.dark() // TODO - Will be used at the future

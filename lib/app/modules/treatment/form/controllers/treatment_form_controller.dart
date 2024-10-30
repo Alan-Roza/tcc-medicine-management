@@ -95,10 +95,7 @@ abstract class TreatmentFormControllerBase with Store {
   @action
   void setEndlessTreatment(int medicineId) {
     final currentState = endlessTreatments[medicineId] ?? false;
-    endlessTreatments = {
-      ...endlessTreatments,
-      medicineId: !currentState
-    };
+    endlessTreatments = {...endlessTreatments, medicineId: !currentState};
   }
 
   @action
@@ -134,7 +131,8 @@ abstract class TreatmentFormControllerBase with Store {
                 frequency: frequencyControllers[medicine.medicineId]!.text.isNotEmpty
                     ? int.parse(frequencyControllers[medicine.medicineId]!.text)
                     : null,
-                treatmentEnd: endDateControllers[medicine.medicineId]!.text.isNotEmpty && endlessTreatments[medicine.medicineId]! == false
+                treatmentEnd: endDateControllers[medicine.medicineId]!.text.isNotEmpty &&
+                        endlessTreatments[medicine.medicineId]! == false
                     ? DateTime.parse(endDateControllers[medicine.medicineId]!.text).toIso8601String()
                     : null,
                 treatmentInit: startDateControllers[medicine.medicineId]!.text.isNotEmpty
@@ -161,7 +159,34 @@ abstract class TreatmentFormControllerBase with Store {
       treatmentInit: DateTime.now().toString(),
     );
 
-    endlessTreatments[medicineId] = false;
+    endlessTreatments[treatmentMedicine.medicineId!] = false;
+
+    // Inicializa controladores para os campos associados a esse medicamento
+    frequencyControllers[treatmentMedicine.medicineId!] = TextEditingController(
+      text: '',
+    );
+    quantityControllers[treatmentMedicine.medicineId!] = TextEditingController(
+      text: '',
+    );
+    medicineNameControllers[treatmentMedicine.medicineId!] = TextEditingController(
+      text: treatmentMedicine.name,
+    );
+    startDateControllers[treatmentMedicine.medicineId!] = TextEditingController(
+      text: treatmentMedicine.treatmentInit ?? '',
+    );
+    endDateControllers[treatmentMedicine.medicineId!] = TextEditingController(
+      text: '',
+    );
+
+    startDateDisplayControllers[treatmentMedicine.medicineId!] = TextEditingController(
+      text: treatmentMedicine.treatmentInit ?? '',
+    );
+
+    endDateDisplayControllers[treatmentMedicine.medicineId!] = TextEditingController(
+      text: '',
+    );
+
+    convertStartDate(treatmentMedicine.treatmentInit!, treatmentMedicine.medicineId!);
 
     selectedMedicines.add(treatmentMedicine);
   }

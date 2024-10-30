@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/core/services/notification_service.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/main/controllers/main_home_controller.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/main/presentation/pie_chart.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/main/presentation/user_profile_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/controllers/medicine_stock_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/list/model/dto/medicine_list_request.dart';
@@ -86,7 +87,8 @@ class _MainHomePageState extends State<MainHomePage> {
                     ),
                     // onPressed: () => context.pushNamed('Notification'),
                     onPressed: () {
-                      NotificationService.showInstantNotification("Instant Notification", "This shows an instant notification");
+                      NotificationService.showInstantNotification(
+                          "Tratamento para Enxaqueca 12:30h", "Clique aqui e veja mais detalhes");
                     },
                   ),
                 ],
@@ -773,6 +775,10 @@ class _MainHomePageState extends State<MainHomePage> {
             _buildMenuRow(),
             _buildSectionHeader('MEDICAMENTOS', 'Vencimento Próximo'),
             _buildMedicineRow(),
+            SizedBox(
+              height: 8.0,
+            ),
+            _buildSectionHeader('GAVETEIRO', null),
             _buildDrawerUsageWidget(),
             _buildSectionHeader('TRATAMENTOS', 'Vencimento Próximo'),
             _buildTreatmentRow(),
@@ -1039,7 +1045,8 @@ class _MainHomePageState extends State<MainHomePage> {
           _buildMenuIcon(Icons.health_and_safety_outlined, 'Estoque'),
           _buildMenuIcon(Icons.calendar_month, 'Tratamentos'),
           _buildMenuIcon(Icons.wifi, 'Conexão'),
-          _buildMenuIcon(Icons.language_outlined, 'Estatísticas'),
+          _buildMenuIcon(Icons.people_rounded, 'Pacientes'),
+          // _buildMenuIcon(Icons.language_outlined, 'Estatísticas'),
         ],
       ),
     );
@@ -1089,7 +1096,7 @@ class _MainHomePageState extends State<MainHomePage> {
   //   );
   // }
 
-  Widget _buildSectionHeader(String title, String action) {
+  Widget _buildSectionHeader(String title, String? action) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -1099,24 +1106,39 @@ class _MainHomePageState extends State<MainHomePage> {
             title,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          TextButton(onPressed: () {}, child: Text(action)),
+          if (action != null) TextButton(onPressed: () {}, child: Text(action)),
         ],
       ),
     );
   }
 
   Widget _buildMedicineRow() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          for (var medicineCard in medicineStockListController.medicineCards)
-            _buildViewCard(
-                name: medicineCard.name, quantity: medicineCard.quantity, expires: medicineCard.expirationDate),
-        ],
-      ),
-    );
+    return medicineStockListController.medicineCards.isEmpty
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 30.0),
+                child: Center(
+                  child: Text(
+                    'Nenhum dado encontrado',
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                ),
+              ),
+            ],
+          )
+        : SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                for (var medicineCard in medicineStockListController.medicineCards)
+                  _buildViewCard(
+                      name: medicineCard.name, quantity: medicineCard.quantity, expires: medicineCard.expirationDate),
+              ],
+            ),
+          );
   }
 
   Widget _buildViewTreatmentCard({required String name, required double price, required String expires}) {
@@ -1227,41 +1249,128 @@ class _MainHomePageState extends State<MainHomePage> {
   }
 
   Widget _buildDrawerUsageWidget() {
-    return const Card(
-      child: ListTile(
-        title: Text('Uso do Widget'),
-        subtitle: Column(
-          children: [
-            Text('Gavetas Ocupadas: 54%'),
-            Text('Gavetas Livres: 37%'),
-            Text('Gavetas Ociosas: 8%'),
-          ],
-        ),
-        trailing: SizedBox(
-          width: 50,
-          height: 50,
-          child: CircularProgressIndicator(
-            value: 0.54,
-            backgroundColor: Colors.grey,
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+    return Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      color: Colors.white,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0, top: 12.0),
+                  child: Text(
+                    'Uso do Widget',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const Divider(
+                  height: 4,
+                  color: Color(0xFFF4F5F6),
+                  thickness: 2,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Flexible(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              children: [
+                                const CircleAvatar(
+                                  radius: 3,
+                                  backgroundColor: Color(0xFFA6B054),
+                                ),
+                                const SizedBox(width: 8),
+                                const Text('Gavetas Livres',
+                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
+                                Expanded(child: Container()),
+                                const Text('30%', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                const CircleAvatar(
+                                  radius: 3,
+                                  backgroundColor: Color(0xFFFAB95B),
+                                ),
+                                const SizedBox(width: 8),
+                                const Text('Gavetas Ociosas',
+                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
+                                Expanded(child: Container()),
+                                const Text('60%', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                const CircleAvatar(
+                                  radius: 3,
+                                  backgroundColor: Color(0xFFFF8981),
+                                ),
+                                const SizedBox(width: 8),
+                                const Text('Gavetas Ocupadas',
+                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
+                                Expanded(child: Container()),
+                                const Text('10%', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 70), // Espaço entre o conteúdo e o gráfico
+                      const SizedBox(
+                        width: 50, // Largura fixa para o gráfico
+                        height: 50, // Altura fixa para o gráfico
+                        child: CustomPieChart(),
+                      ),
+                      const SizedBox(width: 16)
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
 
   Widget _buildTreatmentRow() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          for (var treatmentCard in treatmentListController.treatmentCards)
-            _buildViewTreatmentCard(
-                name: treatmentCard.name, price: treatmentCard.totalPrice, expires: treatmentCard.expirationDate),
-        ],
-      ),
-    );
+    return treatmentListController.treatmentCards.isEmpty
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 30.0),
+                child: Center(
+                  child: Text(
+                    'Nenhum dado encontrado',
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                ),
+              ),
+            ],
+          )
+        : SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                for (var treatmentCard in treatmentListController.treatmentCards)
+                  _buildViewTreatmentCard(
+                      name: treatmentCard.name, price: treatmentCard.totalPrice, expires: treatmentCard.expirationDate),
+              ],
+            ),
+          );
   }
 
   Widget _buildHelpSection() {
