@@ -1042,38 +1042,41 @@ class _MainHomePageState extends State<MainHomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildMenuIcon(Icons.health_and_safety_outlined, 'Estoque'),
-          _buildMenuIcon(Icons.calendar_month, 'Tratamentos'),
-          _buildMenuIcon(Icons.wifi, 'Conexão'),
-          _buildMenuIcon(Icons.people_rounded, 'Pacientes'),
+          _buildMenuIcon(Icons.health_and_safety_outlined, 'Estoque', () => mainHomeController.setSelectedIndex(2)),
+          _buildMenuIcon(Icons.calendar_month, 'Tratamentos', () => mainHomeController.setSelectedIndex(1)),
+          _buildMenuIcon(Icons.wifi, 'Conexão', () => context.goNamed('Connection')),
+          _buildMenuIcon(Icons.people_rounded, 'Pacientes', () => context.goNamed('Patients')),
           // _buildMenuIcon(Icons.language_outlined, 'Estatísticas'),
         ],
       ),
     );
   }
 
-  Widget _buildMenuIcon(IconData icon, String label) {
-    return Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
-                spreadRadius: 2,
-                blurRadius: 5,
-                offset: Offset(0, 5), // changes position of shadow
-              ),
-            ],
+  Widget _buildMenuIcon(IconData icon, String label, Function onTap) {
+    return GestureDetector(
+      onTap: () => onTap(),
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: Offset(0, 5), // changes position of shadow
+                ),
+              ],
+            ),
+            padding: const EdgeInsets.all(16.0),
+            child: Icon(icon, size: 24),
           ),
-          padding: const EdgeInsets.all(16.0),
-          child: Icon(icon, size: 24),
-        ),
-        const SizedBox(height: 3.0),
-        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-      ],
+          const SizedBox(height: 3.0),
+          Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+        ],
+      ),
     );
   }
 
