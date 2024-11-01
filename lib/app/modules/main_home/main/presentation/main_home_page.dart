@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tcc_medicine_management/app/core/services/notification_service.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/main/controllers/main_home_controller.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/main/presentation/pie_chart.dart';
@@ -145,27 +146,83 @@ class _MainHomePageState extends State<MainHomePage> {
                     : null,
         drawer: mainHomeController.selectedIndex == 0
             ? Drawer(
-                child: ListView(
+                child: Column(
                   children: [
-                    ListTile(
-                      leading: const Icon(Icons.home),
-                      title: const Text('Início'),
-                      onTap: () {},
+                    Expanded(
+                      child: ListView(
+                        children: [
+                          ListTile(
+                            leading: const Icon(Icons.home),
+                            title: const Text('Início'),
+                            onTap: () => mainHomeController.setSelectedIndex(0),
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.calendar_month),
+                            title: const Text('Tratamentos'),
+                            onTap: () => mainHomeController.setSelectedIndex(1),
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.health_and_safety_outlined),
+                            title: const Text('Medicamentos'),
+                            onTap: () => mainHomeController.setSelectedIndex(2),
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.wifi_rounded),
+                            title: const Text('Conexão'),
+                            onTap: () => context.goNamed('Connection'),
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.notifications_none),
+                            title: const Text('Notificações'),
+                            onTap: () => context.goNamed('Notification'),
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.person),
+                            title: const Text('Perfil'),
+                            onTap: () => mainHomeController.setSelectedIndex(3),
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.security),
+                            title: const Text('Troca de Senha'),
+                            onTap: () {},
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.settings),
+                            title: const Text('Configurações'),
+                            onTap: () => context.goNamed('UserConfigurations'),
+                          ),
+                          
+                        ],
+                      ),
                     ),
-                    ListTile(
-                      leading: const Icon(Icons.calendar_today),
-                      title: const Text('Tratamento'),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.medical_services),
-                      title: const Text('Medicamentos'),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.person),
-                      title: const Text('Perfil'),
-                      onTap: () {},
+                    Align(
+                      alignment: FractionalOffset.bottomCenter,
+                      child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                SharedPreferences prefs = await SharedPreferences.getInstance();
+                                await prefs.remove('token');
+                                context.goNamed('Home');
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red[900],
+                                minimumSize: const Size(double.infinity, 40),
+                                textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+                              ),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.logout_outlined,
+                                    size: 20.0,
+                                  ),
+                                  SizedBox(width: 2.0),
+                                  Text('SAIR'),
+                                ],
+                              ),
+                            ),
+                          ),
                     ),
                   ],
                 ),
