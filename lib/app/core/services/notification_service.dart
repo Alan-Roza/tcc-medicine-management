@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
+import 'package:tcc_medicine_management/app/core/infra/mqtt_client.dart';
 import 'package:tcc_medicine_management/main.dart';
 import 'package:vibration/vibration.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -107,6 +108,9 @@ class NotificationService {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
+                          final MqttService mqttService = getIt<MqttService>();
+
+                          mqttService.publishMessage('1');// TODO: remove mock
                           await player.stop();
                           Vibration.cancel();
                           Navigator.of(context).pop();

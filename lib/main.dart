@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/core/infra/api_service.dart';
 import 'package:tcc_medicine_management/app/core/infra/dio_factory.dart';
 import 'package:tcc_medicine_management/app/core/infra/http_client.dart';
+import 'package:tcc_medicine_management/app/core/infra/mqtt_client.dart';
 import 'package:tcc_medicine_management/app/core/infra/network_info.dart';
 import 'package:tcc_medicine_management/app/core/routes/app_routes.dart';
 import 'package:tcc_medicine_management/app/core/services/background_service.dart';
@@ -58,11 +59,17 @@ import 'package:timezone/data/latest.dart' as tz;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService.initialize();
   tz.initializeTimeZones();
 
   setupDependencies();
+  
+  String userId = '1'; // TODO: replace id to get form the UserController
+  
+  final MqttService mqttService = getIt<MqttService>();
+  mqttService.connect(userId);
   enableBackgroundExecution();
   runApp(const MyApp());
 }
@@ -136,10 +143,13 @@ class MyApp extends StatelessWidget {
 }
 
 final GetIt getIt = GetIt.instance;
+MqttService mqttService = MqttService();
 
 void setupDependencies() {
   // Register Dio instance
   getIt.registerLazySingleton<DioConfig>(() => DioConfig());
+
+  getIt.registerSingleton<MqttService>(mqttService);
 
   // Register AuthRepository with a Dio instance from DioFactory
   getIt.registerLazySingleton<AuthRepository>(
