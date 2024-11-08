@@ -23,6 +23,7 @@ class FaqHelpItemPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
+              onChanged: faqHelpController.onSearch,
               decoration: InputDecoration(
                 fillColor: Colors.white,
                 filled: true,

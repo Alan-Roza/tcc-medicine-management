@@ -76,7 +76,7 @@ class _MedicineStockViewPageState extends State<MedicineStockViewPage> with Tick
         foregroundColor: Colors.white,
         title: const Text('Visualizar Medicamento', style: TextStyle(color: Colors.white)),
         actions: [
-          IconButton(icon: const Badge(child: Icon(Icons.notifications_outlined)), onPressed: () {}),
+          // IconButton(icon: const Badge(child: Icon(Icons.notifications_outlined)), onPressed: () {}),
         ],
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,

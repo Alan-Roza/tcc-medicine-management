@@ -55,8 +55,27 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/notification/controller/notification_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/profile_picture_widget/controller/profile_picture_controller.dart';
 import 'package:timezone/data/latest.dart' as tz;
+import 'package:permission_handler/permission_handler.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+Future<void> requestPermissions() async {
+  // Request notification permission
+  if (await Permission.notification.isDenied) {
+    await Permission.notification.request();
+  }
+
+  if (await Permission.notification.isGranted) {
+    print('notification permission granted');
+  } else {
+    print('notification permission denied');
+  }
+
+  // Request vibration permission
+  // if (await Permission.vibration.isDenied) {
+  //   await Permission.vibration.request();
+  // }
+}
 
 void main() async {
 
@@ -65,11 +84,9 @@ void main() async {
   tz.initializeTimeZones();
 
   setupDependencies();
+
+  await requestPermissions();
   
-  String userId = '1'; // TODO: replace id to get form the UserController
-  
-  final MqttService mqttService = getIt<MqttService>();
-  mqttService.connect(userId);
   enableBackgroundExecution();
   runApp(const MyApp());
 }

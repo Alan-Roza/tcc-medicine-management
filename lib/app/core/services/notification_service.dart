@@ -1,11 +1,11 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:intl/intl.dart';
 import 'package:tcc_medicine_management/app/core/infra/mqtt_client.dart';
+import 'package:tcc_medicine_management/app/core/model/dto/notification_params_dto.dart';
 import 'package:tcc_medicine_management/main.dart';
 import 'package:vibration/vibration.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -15,26 +15,13 @@ class NotificationService {
 
   static Future<void> onDidReceiveNotification(NotificationResponse notificationResponse) async {
     final player = AudioPlayer();
-    await player.play(AssetSource('audios/ring_1.mp3'));
+    await player.play(AssetSource('audios/alarm.wav'));
     player.setReleaseMode(ReleaseMode.loop);
 
-    // Extract payload from notificationResponse
-    String? payload = notificationResponse.payload;
+    String payload = notificationResponse.payload ?? '';
 
-    // // Parse payload if it's in JSON format
-    // Map<String, dynamic>? notificationData;
-    // if (payload != null) {
-    //   notificationData = jsonDecode(payload);
-    // }
-
-    //    // Access title, body, and other details
-    // String title = notificationData?['title'] ?? 'No Title';
-    // String body = notificationData?['body'] ?? 'No Body';
-    // String treatmentName = notificationData?['treatmentName'] ?? 'No Treatment Name';
-    // String medicationDetails = notificationData?['medicationDetails'] ?? 'No Medication Details';
-
-    print(payload);
-    print('----------------');
+    var jsonMessage = jsonDecode(payload);
+    Params params = Params.fromJson(jsonMessage);
 
     if (await Vibration.hasVibrator() ?? false) {
       Vibration.vibrate(pattern: [500, 1000, 500, 2000], repeat: 0); // Vibrate with a pattern
@@ -62,7 +49,7 @@ class NotificationService {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Tratamento para Enxaqueca', // TODO: replace Sinusite with the treatment name
+                  'Tratamento ${params.treatmentName}', // TODO
                   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
                 Expanded(flex: 2, child: Container()),
@@ -73,12 +60,12 @@ class NotificationService {
                 ),
                 Text(
                   // DateFormat('HH:mm').format(DateTime.now()),
-                  '12:30',
+                  params.datetime ?? '-',
                   style: const TextStyle(fontSize: 56, fontWeight: FontWeight.w200, color: Colors.white),
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  'Tome 1 comprimido de Dipirona',
+                Text(
+                  'Tome ${params.quantity.toString().split('.')[0]} ${params.medicineType == 'Comprimido' ? 'Comprimido(s)' : params.medicineType} de ${params.medicineName}',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white, height: 1.15),
                 ),
                 const SizedBox(height: 16),
@@ -110,7 +97,7 @@ class NotificationService {
                         onPressed: () async {
                           final MqttService mqttService = getIt<MqttService>();
 
-                          mqttService.publishMessage('1');// TODO: remove mock
+                          mqttService.publishMessage(hardwareId: params.hardwareId!, medicineId: params.medicineId.toString(), userId: params.userId.toString());// TODO: remove mock
                           await player.stop();
                           Vibration.cancel();
                           Navigator.of(context).pop();
@@ -202,35 +189,35 @@ class NotificationService {
         ?.requestNotificationsPermission();
   }
 
-  static Future<void> showInstantNotification(String title, String body) async {
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+  static Future<void> showInstantNotification(Params params) async {
+    NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: AndroidNotificationDetails(
         'channel_id',
         'channel_name',
+        vibrationPattern: Int64List.fromList([100, 200, 100, 300, 100, 400]),
+        // vibrationPattern: Int64List.fromList([500, 1000, 500, 2000]),
         importance: Importance.max,
         priority: Priority.high,
-        showWhen: false,
         ticker: 'ticker',
-        ongoing: true,
-        autoCancel: false,
-        timeoutAfter: 60000, // Set timeout to 1 minute (60,000 milliseconds)
+        visibility: NotificationVisibility.public,
+        fullScreenIntent: true,
+        audioAttributesUsage: AudioAttributesUsage.notificationRingtone,
+        playSound: true,
+        sound: RawResourceAndroidNotificationSound('ring_alarm'),
+        // showWhen: false,
+        // ongoing: true,
+        // autoCancel: false,
+        // timeoutAfter: 60000, // Set timeout to 1 minute (60,000 milliseconds)
       ),
     );
 
-    Map<String, String> payloadData = {
-      'title': title,
-      'body': body,
-      'treatmentName': 'Your Treatment Name',
-      'medicationDetails': 'Your Medication Details'
-    };
-
     // Convert payload to JSON string
-    String payload = jsonEncode(payloadData);
+    String payload = jsonEncode(params);
 
     await flutterLocalNotificationsPlugin.show(
       0,
-      title,
-      body,
+      "${params.datetime} - Hora de tomar ${params.medicineName}",
+      "Clique aqui e veja mais detalhes",
       platformChannelSpecifics,
       payload: payload,
     );

@@ -72,7 +72,10 @@ abstract class _FaqHelpController with Store {
   }
 
   @action
-  void onSearch(String value) {}
+  void onSearch(String value) {
+    print('teste------------');
+    print(value);
+  }
 
   @action
   void onSelectItem(FaqHelpItem helpItem) {

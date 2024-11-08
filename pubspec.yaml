@@ -59,6 +59,8 @@ dependencies:
   vibration: ^2.0.1
   mqtt_client: ^10.5.1
   fl_chart: ^0.69.0
+  dart_jsonwebtoken: ^2.14.1
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:

@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tcc_medicine_management/app/core/infra/mqtt_client.dart';
 import 'package:tcc_medicine_management/app/core/services/notification_service.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/main/controllers/main_home_controller.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/main/presentation/pie_chart.dart';
@@ -20,6 +21,7 @@ import 'package:tcc_medicine_management/app/modules/treatment/list/model/dto/tre
 import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_card_widget/presentation/treatment_card_widget.dart';
 import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/notification/controller/notification_controller.dart';
+import 'package:tcc_medicine_management/main.dart';
 
 class MainHomePage extends StatefulWidget {
   const MainHomePage({super.key});
@@ -42,6 +44,11 @@ class _MainHomePageState extends State<MainHomePage> {
     treatmentListController = Provider.of<TreatmentListController>(context);
     mainHomeController = Provider.of<MainHomeController>(context);
     userController = Provider.of<UserController>(context);
+
+    final MqttService mqttService = getIt<MqttService>();
+    if (!mqttService.isConnected() && userController.userId != null) {
+      mqttService.connect(userController.userId.toString());
+    }
 
     mainHomeController.getResumePendency();
 
@@ -80,18 +87,18 @@ class _MainHomePageState extends State<MainHomePage> {
                 surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
                 title: const Text('Tela Inicial'),
                 actions: [
-                  IconButton(
-                    icon: Badge.count(
-                      isLabelVisible: notificationController.unreadNotificationCount > 0,
-                      count: notificationController.unreadNotificationCount,
-                      child: const Icon(Icons.notifications_outlined),
-                    ),
-                    // onPressed: () => context.pushNamed('Notification'),
-                    onPressed: () {
-                      NotificationService.showInstantNotification(
-                          "Tratamento para Enxaqueca 12:30h", "Clique aqui e veja mais detalhes");
-                    },
-                  ),
+                  // IconButton(
+                  //   icon: Badge.count(
+                  //     isLabelVisible: notificationController.unreadNotificationCount > 0,
+                  //     count: notificationController.unreadNotificationCount,
+                  //     child: const Icon(Icons.notifications_outlined),
+                  //   ),
+                  //   // onPressed: () => context.pushNamed('Notification'),
+                  //   onPressed: () {
+                  //     NotificationService.showInstantNotification(
+                  //         "Tratamento para Enxaqueca 12:30h", "Clique aqui e veja mais detalhes");
+                  //   },
+                  // ),
                 ],
                 // actions: [_buildAppBarActions()],
               )

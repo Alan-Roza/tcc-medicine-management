@@ -2,17 +2,25 @@ import 'dart:convert';
 
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:tcc_medicine_management/app/core/model/dto/notification_params_dto.dart';
 import 'package:tcc_medicine_management/app/core/services/notification_service.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/view/model/dto/medicine_view_request_dto.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/view/model/dto/medicine_view_response_dto.dart';
+import 'package:tcc_medicine_management/app/modules/medicine/view/repository/medicine_view_repository.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/view/model/dto/treatment_view_request_dto.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/view/model/dto/treatment_view_response_dto.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/view/repository/treatment_view_repository.dart';
 import 'dart:async';
 
 import 'package:tcc_medicine_management/app/shared/constants/constants.dart';
+import 'package:tcc_medicine_management/main.dart';
 
 class MqttService {
   MqttClient? client;
-  // final String broker = Constants.baseUrlMqtt;  // Endereço do broker MQTT, pode ser o Mosquitto ou qualquer outro
-  final String broker = '172.18.0.1'; // Endereço do broker MQTT, pode ser o Mosquitto ou qualquer outro
+  final String broker = Constants.baseUrlMqtt; // Endereço do broker MQTT, pode ser o Mosquitto ou qualquer outro
   final String topicPrefix = '/notification/user/'; // Prefixo do tópico para a notificação
   final int port = 1883; // Porta do broker MQTT (geralmente 1883 para sem TLS ou 8883 para com TLS)
+  Timer? reconnectTimer;
 
   // Método para configurar a conexão
   Future<void> connect(String userId) async {
@@ -32,21 +40,49 @@ class MqttService {
       client?.subscribe(topic, MqttQos.atLeastOnce);
 
       // Configuração de recebimento de mensagens
-      client?.updates?.listen((List<MqttReceivedMessage<MqttMessage>>? event) {
+      client?.updates?.listen((List<MqttReceivedMessage<MqttMessage>>? event) async {
         final MqttPublishMessage message = event![0].payload as MqttPublishMessage;
         final String messageContent = MqttPublishPayload.bytesToStringAsString(message.payload.message);
         print('Mensagem recebida: $messageContent');
 
         // Convertendo a mensagem de volta para o formato JSON
         var jsonMessage = jsonDecode(messageContent);
+        NotificationParamsDto notification = NotificationParamsDto.fromJson(jsonMessage);
 
         // Switch case para processar a ação da mensagem
-        switch (jsonMessage['Action']) {
+        switch (notification.action) {
           case 'RequestConsume':
-            final params = jsonMessage['params'];
+            final params = notification.params;
+            params?.datetime = '${DateTime.now().hour}:${DateTime.now().minute}';
 
-            NotificationService.showInstantNotification(
-                "Tratamento para Enxaqueca 12:30h", "Clique aqui e veja mais detalhes");
+            final MedicineViewRepository medicineViewRepository = getIt<MedicineViewRepository>();
+            // void getByIdMedicine() async {
+              try {
+                final MedicineViewResponseDto dataResponse = await medicineViewRepository.exec(MedicineViewRequestDto(medicineId: params?.medicineId));
+                params?.medicineName = dataResponse.name;
+                params?.medicineType = dataResponse.type;
+              } catch (e) {
+                // return Future.error(e.toString());
+              }
+            // }
+            // getByIdMedicine();
+
+            final TreatmentViewRepository treatmentViewRepository = getIt<TreatmentViewRepository>();
+              try {
+                final TreatmentViewResponseDto dataResponse = await treatmentViewRepository.exec(TreatmentViewRequestDto(treatmentId: params?.treatmentId));
+                params?.treatmentId = dataResponse.treatment!.id;
+                params?.treatmentName = dataResponse.treatment!.name;
+              } catch (e) {
+                // return Future.error(e.toString());
+              }
+
+            if (params != null) {
+              NotificationService.showInstantNotification(params);
+            }
+
+            break;
+          case 'Repeater':
+            NotificationService.flutterLocalNotificationsPlugin.cancelAll();
             break;
           default:
             print('Action não reconhecida');
@@ -61,15 +97,34 @@ class MqttService {
         print('Ação recebida: ${jsonMessage['Action']}');
         print('Parâmetros: ${jsonMessage['params']}');
 
-        // Aqui, você pode adicionar o código para processar a mensagem JSON
+        startReconnectTimer(userId);
       });
+
+      print('Conectado ao broker!');
     } catch (e) {
       print('Erro ao conectar: $e');
-      disconnect();
+
+      startReconnectTimer(userId);
     }
   }
 
-  void publishMessage(String userId) {
+  // Método para verificar se está conectado
+  bool isConnected() {
+    return client?.connectionStatus?.state == MqttConnectionState.connected;
+  }
+
+  // Método para iniciar o timer de reconexão
+  void startReconnectTimer(String userId) {
+    reconnectTimer?.cancel(); // Cancel any existing timer
+    reconnectTimer = Timer.periodic(Duration(seconds: 15), (timer) async {
+      if (!isConnected()) {
+        print('Tentando reconectar...');
+        await connect(userId);
+      }
+    });
+  }
+
+  void publishMessage({required String userId, required String medicineId, required String hardwareId}) {
     if (client == null || client?.connectionStatus?.state != MqttConnectionState.connected) {
       print('Cliente MQTT não está conectado');
       return;
@@ -81,9 +136,9 @@ class MqttService {
     Map<String, dynamic> messageMap = {
       "Action": "ConsumeConfirmation",
       "params": {
-        "HardwareId": "ABC123",
-        "UserId": '1',
-        "MedicineId": '1',
+        "HardwareId": hardwareId,
+        "UserId": userId,
+        "MedicineId": medicineId,
       }
     };
 

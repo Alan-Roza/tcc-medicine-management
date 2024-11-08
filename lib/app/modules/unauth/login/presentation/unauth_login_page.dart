@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/login/controller/login_controller.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/shared/widgets/unauth_layout_widget.dart';
 import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
+import 'package:tcc_medicine_management/app/shared/utils/jwt_decode.dart';
 
 class UnauthLoginPage extends StatefulWidget {
   const UnauthLoginPage({super.key});
@@ -156,6 +157,7 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                         final response = await loginController.onSubmitLogin(_formKey);
                                         userController.token = response.token;
                                         userController.userEmail = response.userLogin;
+                                        userController.userId = int.parse(getUserIdDecodingJWT(response.token) ?? '');
 
                                         if (response.userName == null) {
                                           context.goNamed('FirstAccess');

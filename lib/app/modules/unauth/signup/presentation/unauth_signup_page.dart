@@ -7,20 +7,29 @@ import 'package:tcc_medicine_management/app/modules/unauth/shared/widgets/unauth
 import 'package:tcc_medicine_management/app/modules/unauth/signup/controller/signup_controller.dart';
 import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
 
-class UnauthSignupPage extends StatelessWidget {
+class UnauthSignupPage extends StatefulWidget {
   const UnauthSignupPage({super.key});
+
+  @override
+  State<UnauthSignupPage> createState() => _UnauthSignupPageState();
+}
+
+class _UnauthSignupPageState extends State<UnauthSignupPage> {
+  final signupController = SignupController();
 
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final signupController = SignupController();
     final userController = Provider.of<UserController>(context);
+
     double height = MediaQuery.of(context).size.height;
+    var keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     return Scaffold(
+      // resizeToAvoidBottomInset: false, // This is to keyboard overflow
       backgroundColor: const Color(0xFF33ABE9),
       body: UnauthLayoutWidget(
-        dinamicHeight: height / 2,
+        dinamicHeight: (height / 2) - keyboardHeight,
         logo: const SizedBox(
           width: 200,
           child: Text('OLÁ, SEJA BEM-VINDO!',
@@ -57,7 +66,7 @@ class UnauthSignupPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Cadastrar'.toUpperCase(),
+                                'CADASTRAR',
                                 style: const TextStyle(
                                     fontSize: 22,
                                     fontFamily: 'Roboto', // Set the font family to Roboto

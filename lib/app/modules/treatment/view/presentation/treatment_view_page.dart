@@ -127,7 +127,7 @@ class _TreatmentViewPageState extends State<TreatmentViewPage> with TickerProvid
         foregroundColor: Colors.white,
         title: const Text('Visualizar Tratamento', style: TextStyle(color: Colors.white)),
         actions: [
-          IconButton(icon: const Badge(child: Icon(Icons.notifications_outlined)), onPressed: () {}),
+          // IconButton(icon: const Badge(child: Icon(Icons.notifications_outlined)), onPressed: () {}),
         ],
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
