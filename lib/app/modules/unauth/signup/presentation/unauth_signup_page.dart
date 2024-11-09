@@ -16,10 +16,10 @@ class UnauthSignupPage extends StatefulWidget {
 
 class _UnauthSignupPageState extends State<UnauthSignupPage> {
   final signupController = SignupController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final userController = Provider.of<UserController>(context);
 
     double height = MediaQuery.of(context).size.height;
@@ -180,7 +180,7 @@ class _UnauthSignupPageState extends State<UnauthSignupPage> {
                                       height: 51,
                                       alignment: Alignment.center,
                                       child: const Text(
-                                        'Entrar',
+                                        'Cadastrar',
                                         style: TextStyle(
                                           fontSize: 16,
                                         ),
@@ -191,6 +191,7 @@ class _UnauthSignupPageState extends State<UnauthSignupPage> {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 5.0),
                                   child: RichText(
+                                    textAlign: TextAlign.center,
                                     text: TextSpan(
                                       children: [
                                         const TextSpan(
@@ -235,7 +236,7 @@ class _UnauthSignupPageState extends State<UnauthSignupPage> {
                                           style: const TextStyle(color: Colors.blue),
                                           recognizer: TapGestureRecognizer()
                                             ..onTap = () {
-                                              context.goNamed('Home');
+                                              context.goNamed('Login');
                                               // Handle terms of use tap
                                             },
                                         ),
