@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/faq_help/controllers/faq_help_controller.dart';
@@ -46,47 +47,54 @@ class FaqHelpPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 26.0),
-            TextField(
-              decoration: InputDecoration(
-                fillColor: Colors.white,
-                filled: true,
-                hintText: 'Qual é a sua dúvida?',
-                prefixIcon: const Icon(Icons.search),
-                // TODO: Implement the filter list
-                // suffixIcon: IconButton(
-                //   icon: const Icon(Icons.filter_list),
-                //   onPressed: () {
-                //     _buildFilterBottomSheet(context);
-                //   },
-                // ),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(20),
+            Observer(builder: (_) {
+              return TextField(
+                onChanged: faqHelpController.onSearch,
+                decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  filled: true,
+                  hintText: 'Qual é a sua dúvida?',
+                  prefixIcon: const Icon(Icons.search),
+                  // TODO: Implement the filter list
+                  // suffixIcon: IconButton(
+                  //   icon: const Icon(Icons.filter_list),
+                  //   onPressed: () {
+                  //     _buildFilterBottomSheet(context);
+                  //   },
+                  // ),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  hintStyle: const TextStyle(color: Colors.grey, fontWeight: FontWeight.normal),
                 ),
-                hintStyle: const TextStyle(color: Colors.grey, fontWeight: FontWeight.normal),
-              ),
-            ),
+              );
+            }),
             const SizedBox(height: 26.0),
             const Text(
               'Principais Dúvidas',
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
             Expanded(
-              child: ListView(
-                padding: const EdgeInsets.only(top: 0), // Add this line to remove the top padding
-                children: [
-                  // Menu options
-                  for (var faqHelpItem in faqHelpController.faqHelpItems)
-                    _buildMenuItem(
-                      faqHelpItem.icon as IconData,
-                      faqHelpItem.title,
-                      faqHelpItem.subtitle ?? '',
-                      context,
-                      faqHelpItem.greyMode,
-                      () => {faqHelpController.onSelectItem(faqHelpItem), context.goNamed("FaqHelpAnswer")},
-                    ),
-                ],
-              ),
+              child: Observer(builder: (_) {
+                return ListView(
+                  padding: const EdgeInsets.only(top: 0), // Add this line to remove the top padding
+                  children: [
+                    // Menu options
+                    for (var faqHelpItem in (faqHelpController.filteredItems.isNotEmpty
+                        ? faqHelpController.filteredItems
+                        : faqHelpController.faqHelpItems))
+                      _buildMenuItem(
+                        faqHelpItem.icon as IconData,
+                        faqHelpItem.title,
+                        faqHelpItem.subtitle ?? '',
+                        context,
+                        faqHelpItem.greyMode,
+                        () => {faqHelpController.onSelectItem(faqHelpItem), context.goNamed("FaqHelpAnswer")},
+                      ),
+                  ],
+                );
+              }),
             ),
             const SizedBox(height: 8.0),
             ElevatedButton(
@@ -105,7 +113,6 @@ class FaqHelpPage extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 15.0),
           ],
         ),
       ),

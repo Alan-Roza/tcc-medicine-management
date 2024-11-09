@@ -1444,42 +1444,45 @@ class _MainHomePageState extends State<MainHomePage> {
   }
 
   Widget _buildHelpSection() {
-    return Card(
-      color: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      elevation: 0,
-      child: Container(
-        padding: const EdgeInsets.only(right: 8.0),
-        child: Row(
-          children: [
-            const SizedBox(width: 12.0),
-            Container(
-                padding: const EdgeInsets.only(left: 8.0, top: 6.0),
-                child: SvgPicture.asset(
-                  'assets/images/help.svg',
-                  fit: BoxFit.cover,
-                  height: 80,
-                )),
-            const Expanded(
-              flex: 5,
-              child: Text(
-                'PRECISA DE AJUDA?',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () => context.goNamed('FaqHelp'),
+      child: Card(
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        elevation: 0,
+        child: Container(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: Row(
+            children: [
+              const SizedBox(width: 12.0),
+              Container(
+                  padding: const EdgeInsets.only(left: 8.0, top: 6.0),
+                  child: SvgPicture.asset(
+                    'assets/images/help.svg',
+                    fit: BoxFit.cover,
+                    height: 80,
+                  )),
+              const Expanded(
+                flex: 5,
+                child: Text(
+                  'PRECISA DE AJUDA?',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            const Expanded(
-              flex: 1,
-              child: Icon(
-                Icons.arrow_forward,
-                color: Colors.blue,
+              const Expanded(
+                flex: 1,
+                child: Icon(
+                  Icons.arrow_forward,
+                  color: Colors.blue,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

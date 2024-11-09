@@ -107,7 +107,6 @@ class FaqHelpItemPage extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 15.0),
           ],
         ),
       ),

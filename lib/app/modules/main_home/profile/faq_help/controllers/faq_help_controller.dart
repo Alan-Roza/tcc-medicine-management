@@ -12,56 +12,62 @@ abstract class _FaqHelpController with Store {
   @observable
   FaqHelpItem? selectedItem;
 
-  List<FaqHelpItem> faqHelpItems = [
-    FaqHelpItem(
-      icon: Icons.help_outline,
-      title: 'Item 1',
-      subtitle: 'Subtitle for Item 1',
-      greyMode: false,
-      answers: List.generate(
-        5,
-        (index) => FaqHelpAnswer(
-          question: 'Question $index',
-          answer: 'Answer $index',
+  @observable
+  ObservableList<FaqHelpItem> filteredItems = ObservableList<FaqHelpItem>();
+
+  @observable
+  ObservableList<FaqHelpItem> faqHelpItems = ObservableList<FaqHelpItem>.of(
+    [
+      FaqHelpItem(
+        icon: Icons.help_outline,
+        title: 'Item 1',
+        subtitle: 'Subtitle for Item 1',
+        greyMode: false,
+        answers: List.generate(
+          5,
+          (index) => FaqHelpAnswer(
+            question: 'Question $index',
+            answer: 'Answer $index',
+          ),
         ),
+        onTap: () {
+          // TODO: Implement onTap logic for Item 2
+        },
       ),
-      onTap: () {
-        // TODO: Implement onTap logic for Item 2
-      },
-    ),
-    FaqHelpItem(
-      icon: Icons.help_outline,
-      title: 'Item 2',
-      subtitle: 'Subtitle for Item 2',
-      greyMode: false,
-      answers: List.generate(
-        5,
-        (index) => FaqHelpAnswer(
-          question: 'Question $index',
-          answer: 'Answer $index',
+      FaqHelpItem(
+        icon: Icons.help_outline,
+        title: 'Item 2',
+        subtitle: 'Subtitle for Item 2',
+        greyMode: false,
+        answers: List.generate(
+          5,
+          (index) => FaqHelpAnswer(
+            question: 'Question $index',
+            answer: 'Answer $index',
+          ),
         ),
+        onTap: () {
+          // TODO: Implement onTap logic for Item 2
+        },
       ),
-      onTap: () {
-        // TODO: Implement onTap logic for Item 2
-      },
-    ),
-    FaqHelpItem(
-      icon: Icons.help_outline,
-      title: 'Item 3',
-      subtitle: 'Subtitle for Item 3',
-      greyMode: false,
-      answers: List.generate(
-        5,
-        (index) => FaqHelpAnswer(
-          question: 'Question $index',
-          answer: 'Answer $index',
+      FaqHelpItem(
+        icon: Icons.help_outline,
+        title: 'Item 3',
+        subtitle: 'Subtitle for Item 3',
+        greyMode: false,
+        answers: List.generate(
+          5,
+          (index) => FaqHelpAnswer(
+            question: 'Question $index',
+            answer: 'Answer $index',
+          ),
         ),
+        onTap: () {
+          // TODO: Implement onTap logic for Item 2
+        },
       ),
-      onTap: () {
-        // TODO: Implement onTap logic for Item 2
-      },
-    ),
-  ];
+    ],
+  );
 
   @observable
   ObservableList<bool> isOpenList = ObservableList.of([false, false]);
@@ -73,8 +79,15 @@ abstract class _FaqHelpController with Store {
 
   @action
   void onSearch(String value) {
-    print('teste------------');
-    print(value);
+    filteredItems.clear();
+
+    if (value.isEmpty) {
+      filteredItems.addAll(faqHelpItems);
+      return;
+    }
+
+    filteredItems
+        .addAll(faqHelpItems.where((element) => element.title.toLowerCase().contains(value.toLowerCase())).toList());
   }
 
   @action
