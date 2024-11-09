@@ -56,6 +56,22 @@ mixin _$UserController on _UserController, Store {
     });
   }
 
+  late final _$patientNameAtom =
+      Atom(name: '_UserController.patientName', context: context);
+
+  @override
+  String? get patientName {
+    _$patientNameAtom.reportRead();
+    return super.patientName;
+  }
+
+  @override
+  set patientName(String? value) {
+    _$patientNameAtom.reportWrite(value, super.patientName, () {
+      super.patientName = value;
+    });
+  }
+
   late final _$userEmailAtom =
       Atom(name: '_UserController.userEmail', context: context);
 
@@ -104,6 +120,14 @@ mixin _$UserController on _UserController, Store {
     });
   }
 
+  late final _$removePatientAsyncAction =
+      AsyncAction('_UserController.removePatient', context: context);
+
+  @override
+  Future<void> removePatient() {
+    return _$removePatientAsyncAction.run(() => super.removePatient());
+  }
+
   late final _$_UserControllerActionController =
       ActionController(name: '_UserController', context: context);
 
@@ -135,6 +159,7 @@ mixin _$UserController on _UserController, Store {
 name: ${name},
 userId: ${userId},
 patientId: ${patientId},
+patientName: ${patientName},
 userEmail: ${userEmail},
 token: ${token},
 isLoggedIn: ${isLoggedIn}

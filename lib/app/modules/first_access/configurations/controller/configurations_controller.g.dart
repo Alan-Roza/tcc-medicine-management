@@ -89,6 +89,15 @@ mixin _$ConfigurationsController on _ConfigurationsController, Store {
     });
   }
 
+  late final _$getConfigurationsAsyncAction = AsyncAction(
+      '_ConfigurationsController.getConfigurations',
+      context: context);
+
+  @override
+  Future<void> getConfigurations() {
+    return _$getConfigurationsAsyncAction.run(() => super.getConfigurations());
+  }
+
   late final _$onSubmitAsyncAction =
       AsyncAction('_ConfigurationsController.onSubmit', context: context);
 

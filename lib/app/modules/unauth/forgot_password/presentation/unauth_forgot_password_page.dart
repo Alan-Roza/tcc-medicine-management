@@ -2,27 +2,22 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:tcc_medicine_management/app/modules/unauth/login/controller/login_controller.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/forgot_password/controller/forgot_password_controller.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/shared/widgets/unauth_layout_widget.dart';
-import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
-import 'package:tcc_medicine_management/app/shared/utils/jwt_decode.dart';
 
-class UnauthLoginPage extends StatefulWidget {
-  const UnauthLoginPage({super.key});
+class UnauthForgotPasswordPage extends StatefulWidget {
+  const UnauthForgotPasswordPage({super.key});
 
   @override
-  State<UnauthLoginPage> createState() => _UnauthLoginPageState();
+  State<UnauthForgotPasswordPage> createState() => _UnauthForgotPasswordPageState();
 }
 
-class _UnauthLoginPageState extends State<UnauthLoginPage> {
+class _UnauthForgotPasswordPageState extends State<UnauthForgotPasswordPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final loginController = LoginController();
+  final forgotPasswordController = ForgotPasswordController();
 
   @override
   Widget build(BuildContext context) {
-    final userController = Provider.of<UserController>(context);
-
     double height = MediaQuery.of(context).size.height;
     var keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
@@ -33,7 +28,7 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
         dinamicHeight: (height / 2) - keyboardHeight,
         logo: const SizedBox(
           width: 200,
-          child: Text('BEM-VINDO DE VOLTA!',
+          child: Text('RECUPERAR SENHA!',
               style: TextStyle(
                 fontSize: 35,
                 fontWeight: FontWeight.w400,
@@ -67,7 +62,7 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'LOGIN',
+                                'IREMOS TE ENVIAR UMA NOVA SENHA',
                                 style: TextStyle(
                                     fontSize: 22,
                                     fontFamily: 'Roboto', // Set the font family to Roboto
@@ -93,7 +88,7 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                       ),
                       Expanded(child: Container()),
                       SizedBox(
-                        height: height / 2.3,
+                        height: height / 3,
                         child: SingleChildScrollView(
                           child: Form(
                             key: _formKey,
@@ -103,79 +98,28 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                   padding: const EdgeInsets.symmetric(vertical: 5.0),
                                   child: Observer(
                                     builder: (_) => TextFormField(
-                                      onChanged: loginController.setEmail,
+                                      onChanged: forgotPasswordController.setEmail,
                                       decoration: const InputDecoration(
                                         labelText: 'E-mail',
                                         prefixIcon: Icon(Icons.email_outlined),
                                       ),
-                                      validator: (_) => loginController.emailError,
+                                      validator: (_) => forgotPasswordController.emailError,
                                     ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 5.0),
-                                  child: Observer(
-                                    builder: (_) => TextFormField(
-                                      obscureText: !loginController.isPasswordVisible,
-                                      onChanged: loginController.setPassword,
-                                      decoration: InputDecoration(
-                                        labelText: 'Senha',
-                                        prefixIcon: const Icon(Icons.lock_outline),
-                                        suffixIcon: IconButton(
-                                          icon: Icon(loginController.isPasswordVisible
-                                              ? Icons.visibility_outlined
-                                              : Icons.visibility_off_outlined),
-                                          onPressed: () {
-                                            loginController.togglePasswordVisibility();
-                                          },
-                                        ),
-                                      ),
-                                      validator: (_) => loginController.passwordError,
-                                    ),
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    RichText(
-                                      text: TextSpan(
-                                        text: "Esqueci minha senha",
-                                        style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            context.goNamed('ForgotPassword');
-                                            // Handle terms of use tap
-                                          },
-                                      ),
-                                    ),
-                                  ],
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 25.0),
                                   child: ElevatedButton(
                                     onPressed: () async {
                                       try {
-                                          context.goNamed('MainHome');
-
-// TODO:" remove comments"
-                                        // final response = await loginController.onSubmitLogin(_formKey);
-                                        // userController.token = response.token;
-                                        // userController.userEmail = response.userLogin;
-                                        // userController.userId = int.parse(getUserIdDecodingJWT(response.token) ?? '');
-
-                                        // if (response.userName == null) {
-                                        //   context.goNamed('FirstAccess');
-                                        // }
-                                        // else {
-                                        //   userController.login(response.userName ?? 'Desconhecido');
-                                        //   context.goNamed('MainHome');
-                                        // }
+                                        await forgotPasswordController.onSubmit(_formKey);
+                                        context.goNamed('Home');
 
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
+                                          SnackBar(
                                             backgroundColor: Colors.green,
                                             content: Text(
-                                                "Login realizado com Sucesso!"), // Customize with your success message
+                                                "Foi enviado um e-mail para ${forgotPasswordController.email}"), // Customize with your success message
                                           ),
                                         );
                                         return;
@@ -193,7 +137,7 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                       height: 51,
                                       alignment: Alignment.center,
                                       child: const Text(
-                                        'Entrar',
+                                        'Enviar',
                                         style: TextStyle(
                                           fontSize: 16,
                                         ),
@@ -207,15 +151,15 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                     text: TextSpan(
                                       children: [
                                         const TextSpan(
-                                          text: "Não possui uma conta? ",
+                                          text: "Lembrei minhas credenciais? ",
                                           style: TextStyle(color: Colors.black54),
                                         ),
                                         TextSpan(
-                                          text: "Cadastrar",
+                                          text: "Entrar",
                                           style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
                                           recognizer: TapGestureRecognizer()
                                             ..onTap = () {
-                                              context.goNamed('Signup');
+                                              context.goNamed('Login');
                                               // Handle terms of use tap
                                             },
                                         ),
@@ -228,7 +172,6 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                           ),
                         ),
                       ),
-                      Expanded(child: Container()),
                     ],
                   ),
                 ),

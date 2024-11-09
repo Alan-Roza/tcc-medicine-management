@@ -46,6 +46,8 @@ import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/t
 import 'package:tcc_medicine_management/app/modules/treatment/list/repository/treatment_list_repository.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/view/controllers/treatment_view_controller.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/view/repository/treatment_view_repository.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/forgot_password/controller/forgot_password_controller.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/forgot_password/repository/forgot_password_repository.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/login/repository/auth_repository.dart';
 import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
 // import 'package:tcc_medicine_management/app/shared/style/app_theme.dart';
@@ -146,6 +148,7 @@ class MyApp extends StatelessWidget {
           Provider<MainHomeController>(create: (_) => MainHomeController()),
           Provider<PatientController>(create: (_) => PatientController()),
           Provider<PatientCardController>(create: (_) => PatientCardController(null)),
+          Provider<ForgotPasswordController>(create: (_) => ForgotPasswordController()),
         ],
         child: MaterialApp.router(
           debugShowCheckedModeBanner:false ,
@@ -220,4 +223,7 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<PatientRepository>(
       () => PatientRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(DioFactory().getDio())));
+
+  getIt.registerLazySingleton<ForgotPasswordRepository>(
+      () => ForgotPasswordRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(DioFactory().getDio())));
 }
