@@ -198,38 +198,37 @@ class _MainHomePageState extends State<MainHomePage> {
                             title: const Text('Configurações'),
                             onTap: () => context.goNamed('UserConfigurations'),
                           ),
-                          
                         ],
                       ),
                     ),
                     Align(
                       alignment: FractionalOffset.bottomCenter,
                       child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                SharedPreferences prefs = await SharedPreferences.getInstance();
-                                await prefs.remove('token');
-                                context.goNamed('Home');
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red[900],
-                                minimumSize: const Size(double.infinity, 40),
-                                textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
-                              ),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.logout_outlined,
-                                    size: 20.0,
-                                  ),
-                                  SizedBox(width: 2.0),
-                                  Text('SAIR'),
-                                ],
-                              ),
-                            ),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            await prefs.remove('token');
+                            context.goNamed('Home');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red[900],
+                            minimumSize: const Size(double.infinity, 40),
+                            textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
                           ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.logout_outlined,
+                                size: 20.0,
+                              ),
+                              SizedBox(width: 2.0),
+                              Text('SAIR'),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -532,9 +531,11 @@ class _MainHomePageState extends State<MainHomePage> {
   Widget _treatmentListPage(TreatmentListController treatmentListController) {
     Timer? debounceTimer;
 
-    treatmentListController.getListTreatments(
-      TreatmentListRequestDto(size: 100, search: treatmentListController.search),
-    );
+    if (!treatmentListController.multiSelectionIsEnabled) {
+      treatmentListController.getListTreatments(
+        TreatmentListRequestDto(size: 100, search: treatmentListController.search),
+      );
+    }
 
     void onSearchTreatmentChanged(String value) {
       // Cancel the previous timer if it's still active
@@ -687,9 +688,11 @@ class _MainHomePageState extends State<MainHomePage> {
   Widget _medicineStockListPage(MedicineStockListController medicineStockListController) {
     Timer? debounceTimer;
 
-    medicineStockListController.getListMedicines(
-      MedicineListRequestDto(size: 100, search: medicineStockListController.search),
-    );
+    if (!medicineStockListController.multiSelectionIsEnabled) {
+      medicineStockListController.getListMedicines(
+        MedicineListRequestDto(size: 100, search: medicineStockListController.search),
+      );
+    }
 
     void onSearchChanged(String value) {
       // Cancel the previous timer if it's still active
