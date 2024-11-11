@@ -27,9 +27,9 @@ abstract class _ForgotPasswordController with Store {
   @action
   Future<dynamic> onSubmit(GlobalKey<FormState> formKey) async {
     // Verifica se o formulário é válido
-    if (!formKey.currentState!.validate()) {
-      return Future.error('Por favor, preencha os campos corretamente');
-    }
+    // if (!formKey.currentState!.validate()) {
+    //   return Future.error('Por favor, preencha os campos corretamente');
+    // }
 
     try {
       await _forgotPasswordRepository.exec(email);

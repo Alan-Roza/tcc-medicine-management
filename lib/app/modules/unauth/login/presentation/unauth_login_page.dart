@@ -155,21 +155,18 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
                                   child: ElevatedButton(
                                     onPressed: () async {
                                       try {
+                                        final response = await loginController.onSubmitLogin(_formKey);
+                                        userController.token = response.token;
+                                        userController.userEmail = response.userLogin;
+                                        userController.userId = int.parse(getUserIdDecodingJWT(response.token) ?? '');
+
+                                        if (response.userName == null) {
+                                          context.goNamed('FirstAccess');
+                                        }
+                                        else {
+                                          userController.login(response.userName ?? 'Desconhecido');
                                           context.goNamed('MainHome');
-
-// TODO:" remove comments"
-                                        // final response = await loginController.onSubmitLogin(_formKey);
-                                        // userController.token = response.token;
-                                        // userController.userEmail = response.userLogin;
-                                        // userController.userId = int.parse(getUserIdDecodingJWT(response.token) ?? '');
-
-                                        // if (response.userName == null) {
-                                        //   context.goNamed('FirstAccess');
-                                        // }
-                                        // else {
-                                        //   userController.login(response.userName ?? 'Desconhecido');
-                                        //   context.goNamed('MainHome');
-                                        // }
+                                        }
 
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar(

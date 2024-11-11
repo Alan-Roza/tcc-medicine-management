@@ -45,12 +45,10 @@ class _MainHomePageState extends State<MainHomePage> {
     mainHomeController = Provider.of<MainHomeController>(context);
     userController = Provider.of<UserController>(context);
 
-    final MqttService mqttService = getIt<MqttService>();
-    if (!mqttService.isConnected() && userController.userId != null) {
-      mqttService.connect(userController.userId.toString());
-    }
-
-    mainHomeController.getResumePendency();
+    // final MqttService mqttService = getIt<MqttService>();
+    // if (!mqttService.isConnected() && userController.userId != null) {
+    //   mqttService.connect(userController.userId.toString());
+    // }
 
     // Run this only once when the widget is first created
     medicineStockListController.getListMedicines(
