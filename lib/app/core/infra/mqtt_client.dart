@@ -124,7 +124,7 @@ class MqttService {
     });
   }
 
-  void publishMessage({required String userId, required String medicineId, required String hardwareId}) {
+  void publishMessage({required String userId, required String medicineId, required String treatmentId, required String hardwareId}) {
     if (client == null || client?.connectionStatus?.state != MqttConnectionState.connected) {
       print('Cliente MQTT não está conectado');
       return;
@@ -139,6 +139,7 @@ class MqttService {
         "HardwareId": hardwareId,
         "UserId": userId,
         "MedicineId": medicineId,
+        "TreatmentId": treatmentId,
       }
     };
 

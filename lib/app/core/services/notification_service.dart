@@ -97,7 +97,12 @@ class NotificationService {
                         onPressed: () async {
                           final MqttService mqttService = getIt<MqttService>();
 
-                          mqttService.publishMessage(hardwareId: params.hardwareId!, medicineId: params.medicineId.toString(), userId: params.userId.toString());// TODO: remove mock
+                          mqttService.publishMessage(
+                            hardwareId: params.hardwareId!, 
+                            medicineId: params.medicineId.toString(), 
+                            treatmentId: params.treatmentId.toString(), 
+                            userId: params.userId.toString()
+                          );
                           await player.stop();
                           Vibration.cancel();
                           Navigator.of(context).pop();
