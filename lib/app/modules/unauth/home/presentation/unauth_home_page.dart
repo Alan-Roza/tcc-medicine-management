@@ -20,6 +20,7 @@ class _UnauthHomePageState extends State<UnauthHomePage> {
     Future<void> cleanPreferences() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.clear();
+      await prefs.remove('token');
     }
 
   @override

@@ -39,7 +39,7 @@ abstract class _SignupController with Store {
   Future<dynamic> onSignup(GlobalKey<FormState> formKey) async {
     // Verifica se o formulário é válido
     if (!formKey.currentState!.validate()) {
-      return null;
+      return Future.error('Por favor, preencha os campos corretamente');
     }
 
     try {
@@ -50,9 +50,9 @@ abstract class _SignupController with Store {
       // userProfile = loginResponse.userProfile;
 
       // Retorna uma mensagem de sucesso
-      return 'Cadastro efetuado com sucesso';
+      return signupResponse;
     } catch (e) {
-      return e.toString();
+      return Future.error(e.toString());
     }
   }
 

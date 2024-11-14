@@ -208,7 +208,7 @@ class NotificationService {
         fullScreenIntent: true,
         audioAttributesUsage: AudioAttributesUsage.notificationRingtone,
         playSound: true,
-        sound: RawResourceAndroidNotificationSound('ring_alarm'),
+        sound: RawResourceAndroidNotificationSound('alarm'),
         // showWhen: false,
         // ongoing: true,
         // autoCancel: false,

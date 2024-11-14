@@ -9,7 +9,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tcc_medicine_management/app/core/infra/mqtt_client.dart';
-import 'package:tcc_medicine_management/app/core/services/notification_service.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/main/controllers/main_home_controller.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/main/presentation/pie_chart.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/main/presentation/user_profile_page.dart';
@@ -20,7 +19,6 @@ import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/t
 import 'package:tcc_medicine_management/app/modules/treatment/list/model/dto/treatment_list_request.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/shared/widgets/treatment_card_widget/presentation/treatment_card_widget.dart';
 import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
-import 'package:tcc_medicine_management/app/shared/widgets/notification/controller/notification_controller.dart';
 import 'package:tcc_medicine_management/main.dart';
 
 class MainHomePage extends StatefulWidget {
@@ -36,6 +34,34 @@ class _MainHomePageState extends State<MainHomePage> {
   late MainHomeController mainHomeController;
   late UserController userController;
 
+  bool _dataFetched = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch initial data
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchInitialData();
+    });
+  }
+
+  void _fetchInitialData() {
+    if (!_dataFetched) {
+      medicineStockListController.getListMedicines(
+        MedicineListRequestDto(size: 5, search: medicineStockListController.search, sortBy: 'ExpirationDate'),
+      );
+
+      treatmentListController.getListTreatments(
+        TreatmentListRequestDto(size: 5, search: treatmentListController.search, sortBy: 'ExpirationDate'),
+      );
+
+      mainHomeController.getResumePendency();
+      mainHomeController.getResumeDrawer();
+
+      _dataFetched = true;
+    }
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -45,19 +71,10 @@ class _MainHomePageState extends State<MainHomePage> {
     mainHomeController = Provider.of<MainHomeController>(context);
     userController = Provider.of<UserController>(context);
 
-    // final MqttService mqttService = getIt<MqttService>();
-    // if (!mqttService.isConnected() && userController.userId != null) {
-    //   mqttService.connect(userController.userId.toString());
-    // }
-
-    // Run this only once when the widget is first created
-    medicineStockListController.getListMedicines(
-      MedicineListRequestDto(size: 5, search: medicineStockListController.search, sortBy: 'ExpirationDate'),
-    );
-
-    treatmentListController.getListTreatments(
-      TreatmentListRequestDto(size: 5, search: treatmentListController.search, sortBy: 'ExpirationDate'),
-    );
+    final MqttService mqttService = getIt<MqttService>();
+    if (!mqttService.isConnected() && userController.userId != null) {
+      mqttService.connect(userController.userId.toString());
+    }
   }
 
   Future<void> refreshHomeScreenData() async {
@@ -70,12 +87,11 @@ class _MainHomePageState extends State<MainHomePage> {
     );
 
     mainHomeController.getResumePendency();
+    mainHomeController.getResumeDrawer();
   }
 
   @override
   Widget build(BuildContext context) {
-    final notificationController = Provider.of<NotificationController>(context);
-
     return Observer(
       builder: (_) => Scaffold(
         appBar: mainHomeController.selectedIndex == 0
@@ -240,7 +256,19 @@ class _MainHomePageState extends State<MainHomePage> {
           selectedItemColor: Colors.blue,
           showUnselectedLabels: true,
           currentIndex: mainHomeController.selectedIndex,
-          onTap: (index) => mainHomeController.setSelectedIndex(index),
+          onTap: (index) {
+            if (index == 1) {
+              treatmentListController.getListTreatments(
+                TreatmentListRequestDto(size: 100, search: treatmentListController.search),
+              );
+            } else if (index == 2) {
+              medicineStockListController.getListMedicines(
+                MedicineListRequestDto(size: 100, search: medicineStockListController.search),
+              );
+            }
+
+            return mainHomeController.setSelectedIndex(index);
+          },
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
@@ -362,9 +390,6 @@ class _MainHomePageState extends State<MainHomePage> {
   }
 
   Widget _buildFloatingActionButton(int selectedIndex) {
-    final medicineStockListController = Provider.of<MedicineStockListController>(context);
-    final treatmentListController = Provider.of<TreatmentListController>(context);
-
     switch (selectedIndex) {
       case 0:
         return Container();
@@ -494,9 +519,6 @@ class _MainHomePageState extends State<MainHomePage> {
   }
 
   Widget _buildBody(int index) {
-    final medicineStockListController = Provider.of<MedicineStockListController>(context);
-    final treatmentListController = Provider.of<TreatmentListController>(context);
-
     switch (index) {
       case 0:
         return RefreshIndicator(
@@ -518,10 +540,7 @@ class _MainHomePageState extends State<MainHomePage> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
-        child: Expanded(
-          flex: 3,
-          child: _treatmentListPage(treatmentListController),
-        ),
+        child: _treatmentListPage(treatmentListController),
       ),
     );
   }
@@ -529,11 +548,12 @@ class _MainHomePageState extends State<MainHomePage> {
   Widget _treatmentListPage(TreatmentListController treatmentListController) {
     Timer? debounceTimer;
 
-    if (!treatmentListController.multiSelectionIsEnabled) {
-      treatmentListController.getListTreatments(
-        TreatmentListRequestDto(size: 100, search: treatmentListController.search),
-      );
-    }
+    // Verify why i use this
+    // if (!treatmentListController.multiSelectionIsEnabled) {
+    //   treatmentListController.getListTreatments(
+    //     TreatmentListRequestDto(size: 100, search: treatmentListController.search),
+    //   );
+    // }
 
     void onSearchTreatmentChanged(String value) {
       // Cancel the previous timer if it's still active
@@ -649,14 +669,17 @@ class _MainHomePageState extends State<MainHomePage> {
                         ],
                       );
                     } else {
-                      return ListView.builder(
-                        padding: const EdgeInsets.only(bottom: 50.0),
-                        itemCount: treatmentListController.treatmentCards.length,
-                        itemBuilder: (context, index) {
-                          final item = treatmentListController.treatmentCards[index];
-                          return TreatmentCardWidget(
-                            key: Key(item.hashCode.toString()),
-                            treatmentCard: item,
+                      return Consumer<TreatmentListController>(
+                        builder: (context, treatmentListController, child) {
+                          return ListView.builder(
+                            itemCount: treatmentListController.treatmentCards.length,
+                            itemBuilder: (context, index) {
+                              final item = treatmentListController.treatmentCards[index];
+                              return TreatmentCardWidget(
+                                key: Key(item.hashCode.toString()),
+                                treatmentCard: item,
+                              );
+                            },
                           );
                         },
                       );
@@ -675,10 +698,7 @@ class _MainHomePageState extends State<MainHomePage> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
-        child: Expanded(
-          flex: 1,
-          child: _medicineStockListPage(medicineStockListController),
-        ),
+        child: _medicineStockListPage(medicineStockListController),
       ),
     );
   }
@@ -686,11 +706,12 @@ class _MainHomePageState extends State<MainHomePage> {
   Widget _medicineStockListPage(MedicineStockListController medicineStockListController) {
     Timer? debounceTimer;
 
-    if (!medicineStockListController.multiSelectionIsEnabled) {
-      medicineStockListController.getListMedicines(
-        MedicineListRequestDto(size: 100, search: medicineStockListController.search),
-      );
-    }
+// TODO: verify why i am using this
+    // if (!medicineStockListController.multiSelectionIsEnabled) {
+    //   medicineStockListController.getListMedicines(
+    //     MedicineListRequestDto(size: 100, search: medicineStockListController.search),
+    //   );
+    // }
 
     void onSearchChanged(String value) {
       // Cancel the previous timer if it's still active
@@ -806,14 +827,17 @@ class _MainHomePageState extends State<MainHomePage> {
                         ],
                       );
                     } else {
-                      return ListView.builder(
-                        padding: const EdgeInsets.only(bottom: 50.0),
-                        itemCount: medicineStockListController.medicineCards.length,
-                        itemBuilder: (context, index) {
-                          final item = medicineStockListController.medicineCards[index];
-                          return MedicineCardWidget(
-                            key: Key(item.hashCode.toString()),
-                            medicineCard: item,
+                      return Consumer<MedicineStockListController>(
+                        builder: (context, medicineStockListController, child) {
+                          return ListView.builder(
+                            itemCount: medicineStockListController.medicineCards.length,
+                            itemBuilder: (context, index) {
+                              final item = medicineStockListController.medicineCards[index];
+                              return MedicineCardWidget(
+                                key: Key(item.hashCode.toString()),
+                                medicineCard: item,
+                              );
+                            },
                           );
                         },
                       );
@@ -843,7 +867,7 @@ class _MainHomePageState extends State<MainHomePage> {
             SizedBox(
               height: 8.0,
             ),
-            _buildSectionHeader('GAVETEIRO', null),
+            _buildSectionHeader('MÓDULOS', null),
             _buildDrawerUsageWidget(),
             _buildSectionHeader('TRATAMENTOS', 'Vencimento Próximo'),
             _buildTreatmentRow(),
@@ -1334,7 +1358,7 @@ class _MainHomePageState extends State<MainHomePage> {
                 const Padding(
                   padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0, top: 12.0),
                   child: Text(
-                    'Uso do Widget',
+                    'Uso do Gaveteiro',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -1362,20 +1386,8 @@ class _MainHomePageState extends State<MainHomePage> {
                                 const Text('Gavetas Livres',
                                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
                                 Expanded(child: Container()),
-                                const Text('30%', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                const CircleAvatar(
-                                  radius: 3,
-                                  backgroundColor: Color(0xFFFAB95B),
-                                ),
-                                const SizedBox(width: 8),
-                                const Text('Gavetas Ociosas',
-                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
-                                Expanded(child: Container()),
-                                const Text('60%', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                                Text('${mainHomeController.resumeDrawer.available ?? '-'}',
+                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                               ],
                             ),
                             Row(
@@ -1388,17 +1400,34 @@ class _MainHomePageState extends State<MainHomePage> {
                                 const Text('Gavetas Ocupadas',
                                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
                                 Expanded(child: Container()),
-                                const Text('10%', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                                Text('${mainHomeController.resumeDrawer.occupied ?? '-'}',
+                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                const CircleAvatar(
+                                  radius: 3,
+                                  backgroundColor: Color.fromARGB(0, 250, 184, 91),
+                                ),
+                                const SizedBox(width: 8),
+                                const Text('Total de Gavetas',
+                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                                Expanded(child: Container()),
+                                Text('${mainHomeController.resumeDrawer.total ?? '-'}',
+                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900)),
                               ],
                             ),
                           ],
                         ),
                       ),
                       const SizedBox(width: 70), // Espaço entre o conteúdo e o gráfico
-                      const SizedBox(
+                      SizedBox(
                         width: 50, // Largura fixa para o gráfico
                         height: 50, // Altura fixa para o gráfico
-                        child: CustomPieChart(),
+                        child: CustomPieChart(
+                          resumeDrawer: mainHomeController.resumeDrawer,
+                        ),
                       ),
                       const SizedBox(width: 16)
                     ],

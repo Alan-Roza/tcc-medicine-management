@@ -2,9 +2,12 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/main/model/dto/resume_drawer_response_dto.dart';
 
 class CustomPieChart extends StatelessWidget {
-  const CustomPieChart({super.key});
+  final ResumeDrawerResponseDto resumeDrawer;
+
+  const CustomPieChart({super.key, required this.resumeDrawer});
 
   @override
   Widget build(BuildContext context) {
@@ -14,22 +17,15 @@ class CustomPieChart extends StatelessWidget {
         PieChartData(
           sections: [
             PieChartSectionData(
-              color: Color(0xFFFAB95B),
-              value: 60,
-              title: '',
-              radius: 15,
-              titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-            ),
-            PieChartSectionData(
               color: Color(0xFFA6B054),
-              value: 30,
+              value: (resumeDrawer.available ?? 1).toDouble(),
               title: '',
               radius: 15,
               titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             PieChartSectionData(
               color: Color(0xFFFF8981),
-              value: 10,
+              value: (resumeDrawer.occupied ?? 1).toDouble(),
               title: '',
               radius: 15,
               titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),

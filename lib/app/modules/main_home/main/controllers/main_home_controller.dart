@@ -1,4 +1,6 @@
 import 'package:mobx/mobx.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/main/model/dto/resume_daily_response_dto.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/main/model/dto/resume_drawer_response_dto.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/main/model/dto/resume_pendency_response_dto.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/main/repository/resume_repository.dart';
 import 'package:tcc_medicine_management/main.dart';
@@ -12,6 +14,12 @@ abstract class _MainHomeController with Store {
 
   @observable
   bool hasPendency = false;
+
+  @observable
+  ResumeDailyResponseDto resumeDaily = ResumeDailyResponseDto();
+
+  @observable
+  ResumeDrawerResponseDto resumeDrawer = ResumeDrawerResponseDto();
 
   @observable
   int currentPage = 0;
@@ -35,6 +43,19 @@ abstract class _MainHomeController with Store {
       final ResumePendencyResponseDto dataResponse = await _resumeRepository.getResumePendency();
 
       hasPendency = dataResponse.hasPendency ?? false;
+
+      return dataResponse;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  @action
+  Future<List<ResumeDrawerResponseDto>> getResumeDrawer() async {
+    try {
+      final List<ResumeDrawerResponseDto> dataResponse = await _resumeRepository.getResumeDrawer();
+
+      resumeDrawer = dataResponse.first;
 
       return dataResponse;
     } catch (e) {

@@ -3,10 +3,21 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/daily_summary/controllers/daily_summary_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
 
-class DailySummaryPage extends StatelessWidget {
+class DailySummaryPage extends StatefulWidget {
+  const DailySummaryPage({super.key});
+
+  @override
+  State<DailySummaryPage> createState() => _DailySummaryPageState();
+}
+
+class _DailySummaryPageState extends State<DailySummaryPage> {
   final dailySummaryController = DailySummaryController();
 
-  DailySummaryPage({super.key});
+  @override
+  void initState() {
+    super.initState();
+    dailySummaryController.getResumeDaily();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,13 +83,35 @@ class DailySummaryPage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16.0),
-                _buildMedicationDetails('Sinusite', [
-                  Medication(name: 'Dipirona', time: '08:30h', color: Colors.red),
-                  Medication(name: 'Acetilcisteína', time: '14:00h', color: Colors.green),
-                ]),
-                _buildMedicationDetails('Bronquite', [
-                  Medication(name: 'Azitromicina', time: '19:00h', color: Colors.grey),
-                ]),
+                for (var treatment in dailySummaryController.treatmentDetails) ...{
+                  _buildMedicationDetails(
+                    treatment.name!,
+                    treatment.medicines!.map((med) {
+                      Color color;
+                      switch (med.status) {
+                        case 'Consumed':
+                          color = Colors.green;
+                          break;
+                        case 'Delayed':
+                          color = Colors.red;
+                          break;
+                        case 'Normal':
+                          color = Colors.grey;
+                          break;
+                        default:
+                          color = Colors.blue;
+                      }
+                      return Medication(name: med.name!, color: color);
+                    }).toList(),
+                  )
+                }
+                // _buildMedicationDetails('Sinusite', [
+                //   Medication(name: 'Dipirona', time: '08:30h', color: Colors.red),
+                //   Medication(name: 'Acetilcisteína', time: '14:00h', color: Colors.green),
+                // ]),
+                // _buildMedicationDetails('Bronquite', [
+                //   Medication(name: 'Azitromicina', time: '19:00h', color: Colors.grey),
+                // ]),
               ],
             ),
           ),
@@ -109,7 +142,12 @@ class DailySummaryPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title.toUpperCase(), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Row(
+          children: [
+            Text(title.toUpperCase(), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Text(' (Tratamento)', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300)),
+          ],
+        ),
         ...medications.map((med) => ListTile(
               minTileHeight: 0,
               leading: CircleAvatar(radius: 8, backgroundColor: med.color),
@@ -117,7 +155,7 @@ class DailySummaryPage extends StatelessWidget {
                 med.name,
                 style: const TextStyle(fontWeight: FontWeight.w500),
               ),
-              subtitle: Text(med.time),
+              // subtitle: Text(med.time), TODO: Removido para simplificar
             )),
       ],
     );
@@ -126,8 +164,8 @@ class DailySummaryPage extends StatelessWidget {
 
 class Medication {
   final String name;
-  final String time;
   final Color color;
+  final String? time;
 
-  Medication({required this.name, required this.time, required this.color});
+  Medication({required this.name, required this.color, this.time});
 }

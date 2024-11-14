@@ -13,8 +13,7 @@ class MedicineStockBasicFormWidget extends StatefulWidget {
   MedicineStockBasicFormWidgetState createState() => MedicineStockBasicFormWidgetState();
 }
 
-class MedicineStockBasicFormWidgetState extends State<MedicineStockBasicFormWidget>
-    with SingleTickerProviderStateMixin {
+class MedicineStockBasicFormWidgetState extends State<MedicineStockBasicFormWidget> {
   @override
   Widget build(BuildContext context) {
     final MedicineFormController formController = Provider.of<MedicineFormController>(context);
