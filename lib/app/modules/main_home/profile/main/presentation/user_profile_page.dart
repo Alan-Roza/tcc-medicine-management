@@ -22,7 +22,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
   @override
   void initState() {
     super.initState();
-    _fetchProfileImage();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchProfileImage();
+    });
   }
 
   Future<void> _fetchProfileImage() async {

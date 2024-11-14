@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/list/model/dto/connection_list_response_dto.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/list/repository/connection_list_repository.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/model/medicine_dto.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/form/repository/medicine_repository.dart';
 import 'package:tcc_medicine_management/main.dart';
@@ -94,6 +96,7 @@ extension StringToImportanceLevelExtension on String {
 
 abstract class MedicineFormControllerBase with Store {
   final MedicineRepository _medicineRepository = getIt<MedicineRepository>();
+  final ConnectionListRepository _drawerRepository = getIt<ConnectionListRepository>();
 
   @observable
   String? medicineImageUrl;
@@ -111,6 +114,29 @@ abstract class MedicineFormControllerBase with Store {
   TextEditingController expirationDateController = TextEditingController();
   TextEditingController drawerNumberController = TextEditingController();
   TextEditingController hardwareIdController = TextEditingController();
+
+  @observable
+  List<Map<String, String>> drawers = [];
+
+  @action
+  Future<List<Map<String, String>>> getDrawersResource() async {
+    try {
+      final List<ConnectionListResponseDto> dataResponse = await _drawerRepository.exec();
+
+      drawers.clear();
+
+      for (var drawer in dataResponse) {
+        drawers.add({
+          'name': drawer.name ?? '',
+          'id': drawer.hardwareId ?? '',
+        });
+      }
+
+      return drawers;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
 
   // @computed
   // bool get isFormValid =>

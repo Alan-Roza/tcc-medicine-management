@@ -19,6 +19,16 @@ class MedicineStockOptionalFormWidget extends StatefulWidget {
 
 class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFormWidget>
     with SingleTickerProviderStateMixin {
+  late MedicineFormController formController;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final MedicineFormController formController = Provider.of<MedicineFormController>(context);
+
+    formController.getDrawersResource();
+  }
+
   @override
   Widget build(BuildContext context) {
     final MedicineFormController formController = Provider.of<MedicineFormController>(context);
@@ -144,15 +154,47 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
               )
             ],
           ),
-          Observer(
-            builder: (_) => CustomTextFieldWidget(
-              textEditingController: formController.hardwareIdController,
-              icon: Icons.account_box,
-              label: 'Identificação do Gaveteiro',
-              readOnly: widget.readOnly,
-              enabled: !widget.readOnly,
-            ),
-          ),
+          // TODO: remove after create the select
+          // Observer(
+          //   builder: (_) => CustomTextFieldWidget(
+          //     textEditingController: formController.hardwareIdController,
+          //     icon: Icons.account_box,
+          //     label: 'Identificação do Gaveteiro',
+          //     readOnly: widget.readOnly,
+          //     enabled: !widget.readOnly,
+          //   ),
+          // ),
+          widget.readOnly
+              ? Container()
+              : Observer(
+                  builder: (_) => DropdownButtonFormField<String>(
+                    value: formController.hardwareIdController.text,
+                    onChanged: (value) {
+                      if (value != null && value.isNotEmpty) {
+                        formController.hardwareIdController.text = value;
+                      }
+                    },
+                    items: [
+                      const DropdownMenuItem(
+                        value: '',
+                        child: Text('Selecione um gaveteiro'),
+                      ),
+                      ...formController.drawers.map((drawer) {
+                        // Ajustar para que os itens venham do servidor
+                        return DropdownMenuItem(
+                          value: drawer['id'],
+                          child: Text(drawer['name'] ?? ''),
+                        );
+                      }),
+                    ],
+                    decoration: const InputDecoration(
+                      labelText: 'Identificação do Gaveteiro',
+                      border: UnderlineInputBorder(),
+                      prefixIcon: Icon(Icons.medical_services),
+                    ),
+                  ),
+                ),
+          const SizedBox(height: 16),
           Observer(
             builder: (_) => CustomTextFieldWidget(
               textEditingController: formController.drawerNumberController,
