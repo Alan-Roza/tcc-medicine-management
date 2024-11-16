@@ -10,13 +10,60 @@ import 'package:tcc_medicine_management/main.dart';
 import 'package:vibration/vibration.dart';
 import 'package:timezone/timezone.dart' as tz;
 
-class NotificationService {
+class NotificationService with WidgetsBindingObserver {
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  static NotificationResponse? _pendingNotificationResponse;
+  static final NotificationService _instance = NotificationService._internal();
+
+  factory NotificationService() {
+    return _instance;
+  }
+
+  NotificationService._internal();
+  
+  static Future<void> initializeNotifications() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: onDidReceiveNotification,
+      onDidReceiveBackgroundNotificationResponse: onDidReceiveNotification,
+    );
+
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestNotificationsPermission();
+  }
 
   static Future<void> onDidReceiveNotification(NotificationResponse notificationResponse) async {
+  // Ensure the app is in the foreground
+  if (navigatorKey.currentState?.context != null) {
+    showNotificationDialog(notificationResponse);
+  } else {
+    // Store the notification response to handle it when the app comes to the foreground
+    _pendingNotificationResponse = notificationResponse;
+  }
+}
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && _pendingNotificationResponse != null) {
+      showNotificationDialog(_pendingNotificationResponse!);
+      _pendingNotificationResponse = null;
+    }
+  }
+
+  static Future<void> showNotificationDialog(NotificationResponse notificationResponse) async {
     final player = AudioPlayer();
     await player.play(AssetSource('audios/alarm.wav'));
     player.setReleaseMode(ReleaseMode.loop);
+    Future.delayed(Duration(seconds: 60), () async {
+      await player.stop();
+      Vibration.cancel();
+    });
 
     String payload = notificationResponse.payload ?? '';
 
@@ -29,7 +76,7 @@ class NotificationService {
 
     showDialog(
       barrierDismissible: false,
-      context: navigatorKey.currentContext!,
+      context: navigatorKey.currentState!.context,
       builder: (BuildContext context) => Dialog.fullscreen(
         child: Container(
           decoration: BoxDecoration(
@@ -98,11 +145,10 @@ class NotificationService {
                           final MqttService mqttService = getIt<MqttService>();
 
                           mqttService.publishMessage(
-                            hardwareId: params.hardwareId!, 
-                            medicineId: params.medicineId.toString(), 
-                            treatmentId: params.treatmentId.toString(), 
-                            userId: params.userId.toString()
-                          );
+                              hardwareId: params.hardwareId!,
+                              medicineId: params.medicineId.toString(),
+                              treatmentId: params.treatmentId.toString(),
+                              userId: params.userId.toString());
                           await player.stop();
                           Vibration.cancel();
                           Navigator.of(context).pop();
@@ -177,39 +223,23 @@ class NotificationService {
 // player.play('alarm_sound.mp3');
   }
 
-  static Future<void> initialize() async {
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-    const InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
-
-    await flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
-      onDidReceiveNotificationResponse: onDidReceiveNotification,
-      onDidReceiveBackgroundNotificationResponse: onDidReceiveNotification,
-    );
-
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestNotificationsPermission();
-  }
-
   static Future<void> showInstantNotification(Params params) async {
     NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: AndroidNotificationDetails(
         'channel_id',
         'channel_name',
-        vibrationPattern: Int64List.fromList([100, 200, 100, 300, 100, 400]),
+        // vibrationPattern: Int64List.fromList([100, 200, 100, 300, 100, 400]),
         // vibrationPattern: Int64List.fromList([500, 1000, 500, 2000]),
         importance: Importance.max,
         priority: Priority.high,
         ticker: 'ticker',
         visibility: NotificationVisibility.public,
-        fullScreenIntent: true,
         audioAttributesUsage: AudioAttributesUsage.notificationRingtone,
         playSound: true,
         sound: RawResourceAndroidNotificationSound('alarm'),
         // showWhen: false,
+        // fullScreenIntent: true,
+        // onlyAlertOnce: false,
         // ongoing: true,
         // autoCancel: false,
         // timeoutAfter: 60000, // Set timeout to 1 minute (60,000 milliseconds)
@@ -245,5 +275,10 @@ class NotificationService {
         0, title, body, tz.TZDateTime.from(scheduledDate, tz.local), platformChannelSpecifics,
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         matchDateTimeComponents: DateTimeComponents.dateAndTime);
+  }
+
+  static bool isAppInForeground() {
+    final appLifecycleState = WidgetsBinding.instance.lifecycleState;
+    return appLifecycleState == AppLifecycleState.resumed;
   }
 }

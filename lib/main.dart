@@ -60,6 +60,8 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:permission_handler/permission_handler.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<_MyAppState> myAppKey = GlobalKey<_MyAppState>();
+final GlobalKey<LoadingOverlayState> loadingOverlayKey = GlobalKey<LoadingOverlayState>();
 
 Future<void> requestPermissions() async {
   // Request notification permission
@@ -79,22 +81,118 @@ Future<void> requestPermissions() async {
   // }
 }
 
-void main() async {
+class AppRouteObserver extends NavigatorObserver {
+  String? currentRoute;
 
+  @override
+  void didPush(Route route, Route? previousRoute) {
+    super.didPush(route, previousRoute);
+    currentRoute = route.settings.name;
+    print('Current Route: $currentRoute');
+  }
+
+  @override
+  void didPop(Route route, Route? previousRoute) {
+    super.didPop(route, previousRoute);
+    currentRoute = previousRoute?.settings.name;
+    print('Current Route: $currentRoute');
+  }
+}
+
+final AppRouteObserver appRouteObserver = AppRouteObserver();
+
+class LoadingOverlay extends StatefulWidget {
+  const LoadingOverlay({super.key});
+
+  @override
+  LoadingOverlayState createState() => LoadingOverlayState();
+}
+
+class LoadingOverlayState extends State<LoadingOverlay> {
+  bool _isLoading = false;
+
+  void show() {
+    setState(() {
+      _isLoading = true;
+    });
+  }
+
+  void hide() {
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_isLoading) {
+      return const SizedBox.shrink();
+    }
+    return Container(
+      color: Colors.white.withOpacity(0.2),
+      child: const Center(
+        child: CircularProgressIndicator(
+          color: Color(0xFF00A8FF),
+        ),
+      ),
+    );
+  }
+}
+
+// void restartApp(BuildContext context) {
+//   main();
+//   GetIt.instance.reset();
+//   setupDependencies(); // Registra as dependências novamente
+//   context.findAncestorStateOfType<_MyAppState>()?.restartApp();
+// }
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await NotificationService.initialize();
+  await NotificationService.initializeNotifications();
   tz.initializeTimeZones();
 
   setupDependencies();
 
   await requestPermissions();
-  
+
   enableBackgroundExecution();
-  runApp(const MyApp());
+  runApp(MyApp(key: myAppKey));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  Key key = UniqueKey();
+
+  void restartApp() {
+    setState(() {
+      key = UniqueKey();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.detached) {
+      main();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +204,8 @@ class MyApp extends StatelessWidget {
     MaterialTheme theme = MaterialTheme(textTheme);
 
     return MaterialApp(
+      key: key,
+      // navigatorObservers: [appRouteObserver],
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
@@ -117,46 +217,52 @@ class MyApp extends StatelessWidget {
         Locale('pt', 'BR'), // Portuguese Brazil
         // Add other supported locales
       ],
-      home: MultiProvider(
-        providers: [
-          Provider<UserController>(create: (_) => UserController()),
-          Provider<MedicineViewController>(create: (_) => MedicineViewController()),
-          Provider<MedicineStockListController>(create: (_) => MedicineStockListController()),
-          Provider<MedicineFormController>(
-            create: (_) => MedicineFormController(),
-            dispose: (_, MedicineFormController controller) => controller.dispose(),
+      home: Stack(
+        children: [
+          MultiProvider(
+            providers: [
+              Provider<UserController>(create: (_) => UserController()),
+              Provider<MedicineViewController>(create: (_) => MedicineViewController()),
+              Provider<MedicineStockListController>(create: (_) => MedicineStockListController()),
+              Provider<MedicineFormController>(
+                create: (_) => MedicineFormController(),
+                dispose: (_, MedicineFormController controller) => controller.dispose(),
+              ),
+              Provider<TreatmentListController>(create: (_) => TreatmentListController()),
+              Provider<TreatmentFormController>(
+                create: (_) => TreatmentFormController(),
+                dispose: (_, TreatmentFormController controller) => controller.dispose(),
+              ),
+              Provider<AddressInfoController>(create: (_) => AddressInfoController()),
+              Provider<AdministratorInfoController>(create: (_) => AdministratorInfoController()),
+              Provider<AllergyInfoController>(create: (_) => AllergyInfoController()),
+              Provider<ChronicalDiseaseInfoController>(create: (_) => ChronicalDiseaseInfoController()),
+              Provider<ConfigurationsController>(create: (_) => ConfigurationsController()),
+              Provider<HealthInfoController>(create: (_) => HealthInfoController()),
+              Provider<UserInfoController>(create: (_) => UserInfoController()),
+              Provider<AllergyInfoController>(create: (_) => AllergyInfoController()),
+              Provider<FaqHelpController>(create: (_) => FaqHelpController()),
+              Provider<NotificationController>(create: (_) => NotificationController()),
+              Provider<ConnectController>(create: (_) => ConnectController()),
+              Provider<TreatmentViewController>(create: (_) => TreatmentViewController()),
+              Provider<ConnectionController>(create: (_) => ConnectionController()),
+              Provider<ProfilePictureController>(create: (_) => ProfilePictureController()),
+              Provider<MainHomeController>(create: (_) => MainHomeController()),
+              Provider<PatientController>(create: (_) => PatientController()),
+              Provider<PatientCardController>(create: (_) => PatientCardController(null)),
+              Provider<ForgotPasswordController>(create: (_) => ForgotPasswordController()),
+            ],
+            child: MaterialApp.router(
+              key: key, 
+              debugShowCheckedModeBanner: false,
+              routerConfig: appRouter,
+              // theme: AppTheme.lightTheme
+              // theme: brightness == Brightness.light ? theme.light() : theme.dark() // TODO - Will be used at the future
+              theme: theme.light(),
+            ),
           ),
-          Provider<TreatmentListController>(create: (_) => TreatmentListController()),
-          Provider<TreatmentFormController>(
-            create: (_) => TreatmentFormController(),
-            dispose: (_, TreatmentFormController controller) => controller.dispose(),
-          ),
-          Provider<AddressInfoController>(create: (_) => AddressInfoController()),
-          Provider<AdministratorInfoController>(create: (_) => AdministratorInfoController()),
-          Provider<AllergyInfoController>(create: (_) => AllergyInfoController()),
-          Provider<ChronicalDiseaseInfoController>(create: (_) => ChronicalDiseaseInfoController()),
-          Provider<ConfigurationsController>(create: (_) => ConfigurationsController()),
-          Provider<HealthInfoController>(create: (_) => HealthInfoController()),
-          Provider<UserInfoController>(create: (_) => UserInfoController()),
-          Provider<AllergyInfoController>(create: (_) => AllergyInfoController()),
-          Provider<FaqHelpController>(create: (_) => FaqHelpController()),
-          Provider<NotificationController>(create: (_) => NotificationController()),
-          Provider<ConnectController>(create: (_) => ConnectController()),
-          Provider<TreatmentViewController>(create: (_) => TreatmentViewController()),
-          Provider<ConnectionController>(create: (_) => ConnectionController()),
-          Provider<ProfilePictureController>(create: (_) => ProfilePictureController()),
-          Provider<MainHomeController>(create: (_) => MainHomeController()),
-          Provider<PatientController>(create: (_) => PatientController()),
-          Provider<PatientCardController>(create: (_) => PatientCardController(null)),
-          Provider<ForgotPasswordController>(create: (_) => ForgotPasswordController()),
+          LoadingOverlay(key: loadingOverlayKey),
         ],
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner:false ,
-          routerConfig: appRouter,
-          // theme: AppTheme.lightTheme
-          // theme: brightness == Brightness.light ? theme.light() : theme.dark() // TODO - Will be used at the future
-          theme: theme.light(),
-        ),
       ),
     );
   }

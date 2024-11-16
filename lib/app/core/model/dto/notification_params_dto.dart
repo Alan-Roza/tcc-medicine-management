@@ -21,18 +21,32 @@ class NotificationParamsDto {
 }
 
 class Params {
-  String? hardwareId;
-  int? userId;
-  int? medicineId;
-  String? medicineName;
-  int? treatmentId;
-  String? treatmentName;
-  String? userName;
-  String? datetime;
-  String? medicineType;
-  int? drawerNumber;
-  double? quantity;
-  int? type;
+  dynamic hardwareId;
+  dynamic userId;
+  dynamic medicineId;
+  dynamic medicineName;
+  dynamic treatmentId;
+  dynamic treatmentName;
+  dynamic userName;
+  dynamic datetime;
+  dynamic medicineType;
+  dynamic drawerNumber;
+  dynamic quantity;
+  dynamic type;
+
+  // Exemplo de JSON recebido:
+  // String? hardwareId;
+  // int? userId;
+  // int? medicineId;
+  // String? medicineName;
+  // int? treatmentId;
+  // String? treatmentName;
+  // String? userName;
+  // String? datetime;
+  // String? medicineType;
+  // int? drawerNumber;
+  // int? quantity;
+  // int? type;
 
   Params(
       {this.hardwareId,

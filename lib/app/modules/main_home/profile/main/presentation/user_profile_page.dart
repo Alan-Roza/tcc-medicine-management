@@ -6,6 +6,7 @@ import 'package:tcc_medicine_management/app/modules/first_access/user_info/contr
 import 'package:tcc_medicine_management/app/modules/main_home/profile/main/controllers/user_profile_controller.dart';
 import 'package:tcc_medicine_management/app/shared/constants/constants.dart';
 import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
+import 'package:tcc_medicine_management/main.dart';
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({super.key});
@@ -68,15 +69,22 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         Center(
                           child: profileImagePath == null
                               ? CircularProgressIndicator()
-                              : CircleAvatar(
-                                  radius: 32,
-                                  backgroundImage: NetworkImage(
-                                    Constants.baseUrl + (profileImagePath ?? ''),
-                                    headers: {
-                                      'Authorization': 'Bearer $token',
-                                    },
-                                  ),
-                                ),
+                              : profileImagePath!.isEmpty
+                                  ? CircleAvatar(
+                                      radius: 32,
+                                      backgroundColor: Colors.grey[300],
+                                      child: Icon(Icons.person, size: 32),
+                                    )
+                                  : CircleAvatar(
+                                      radius: 32,
+                                      backgroundColor: Colors.grey[300],
+                                      backgroundImage: NetworkImage(
+                                        Constants.baseUrl + (profileImagePath ?? ''),
+                                        headers: {
+                                          'Authorization': 'Bearer $token',
+                                        },
+                                      ),
+                                    ),
                         ),
                         SizedBox(width: 16),
                         Column(
@@ -134,6 +142,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       onPressed: () async {
                         SharedPreferences prefs = await SharedPreferences.getInstance();
                         await prefs.remove('token');
+                        myAppKey.currentState?.restartApp();
                         context.goNamed('Home');
                       },
                       style: ElevatedButton.styleFrom(

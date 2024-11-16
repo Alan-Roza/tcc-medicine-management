@@ -2,6 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/main/controllers/main_home_controller.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/forgot_password/controller/forgot_password_controller.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/shared/widgets/unauth_layout_widget.dart';
 
@@ -15,6 +18,24 @@ class UnauthForgotPasswordPage extends StatefulWidget {
 class _UnauthForgotPasswordPageState extends State<UnauthForgotPasswordPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final forgotPasswordController = ForgotPasswordController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchInitialData();
+    });
+  }
+
+  void _fetchInitialData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // String? token = prefs.getString('token');
+    // if (token != null && token.isNotEmpty) {
+    //   context.goNamed('MainHome');
+    // } else {
+      await prefs.clear();
+    // }
+  }
 
   @override
   Widget build(BuildContext context) {

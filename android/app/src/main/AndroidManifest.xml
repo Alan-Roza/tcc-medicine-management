@@ -13,6 +13,10 @@
         android:label="Salus"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <receiver android:name="com.dexterous.flutterlocalnotifications.receivers.ActionReceiver"/>
+        <receiver android:name="com.dexterous.flutterlocalnotifications.receivers.DismissedReceiver"/>
+        <receiver android:name="com.dexterous.flutterlocalnotifications.receivers.NotificationReceiver"/>
+        <service android:name="com.dexterous.flutterlocalnotifications.services.NotificationService" android:permission="android.permission.BIND_JOB_SERVICE"/>
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
             <intent-filter>

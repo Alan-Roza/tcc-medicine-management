@@ -38,6 +38,7 @@ import 'package:tcc_medicine_management/app/modules/unauth/login/presentation/un
 import 'package:tcc_medicine_management/app/modules/unauth/signup/presentation/unauth_signup_page.dart';
 import 'package:tcc_medicine_management/app/shared/alarm/presentation/alarm.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/notification/presentation/notification_page.dart';
+import 'package:tcc_medicine_management/main.dart';
 
 final routes = <RouteBase>[
   GoRoute(
@@ -328,4 +329,5 @@ final routes = <RouteBase>[
 
 final GoRouter appRouter = GoRouter(
   routes: routes,
+  observers: [appRouteObserver],
 );

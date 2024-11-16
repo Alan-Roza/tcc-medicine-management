@@ -94,10 +94,6 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
                                         MedicineDto medicineResponse = await formController.saveMedicine(null);
                                         if (profilePictureController.image != null && medicineResponse.id != null) await formController.uploadMedicineImage(profilePictureController.image!, medicineResponse.id!);
 
-                                        await medicineListController.getListMedicines(
-                                            MedicineListRequestDto(size: 100, search: medicineListController.search));
-
-                                        context.pop();
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar(
                                             backgroundColor: Colors.green,

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tcc_medicine_management/app/modules/main_home/main/controllers/main_home_controller.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/login/controller/login_controller.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/shared/widgets/unauth_layout_widget.dart';
 import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
@@ -18,6 +20,26 @@ class UnauthLoginPage extends StatefulWidget {
 class _UnauthLoginPageState extends State<UnauthLoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final loginController = LoginController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchInitialData();
+    });
+  }
+
+  void _fetchInitialData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // // final mainHomeController = Provider.of<MainHomeController>(context);
+    // String? token = prefs.getString('token');
+    // if (token != null && token.isNotEmpty) {
+    //   context.goNamed('MainHome');
+    //   // mainHomeController.setSelectedIndex(0);
+    // } else {
+      await prefs.clear();
+    // }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -162,8 +184,7 @@ class _UnauthLoginPageState extends State<UnauthLoginPage> {
 
                                         if (response.userName == null) {
                                           context.goNamed('FirstAccess');
-                                        }
-                                        else {
+                                        } else {
                                           userController.login(response.userName ?? 'Desconhecido');
                                           context.goNamed('MainHome');
                                         }

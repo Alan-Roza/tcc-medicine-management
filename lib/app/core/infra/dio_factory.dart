@@ -1,12 +1,22 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tcc_medicine_management/app/core/routes/app_routes.dart';
 import 'package:tcc_medicine_management/app/shared/constants/constants.dart';
+import 'package:tcc_medicine_management/main.dart';
 
 const String APPLICATION_JSON = "application/json";
 const String CONTENT_TYPE = "content-type";
 const String ACCEPT = "accept";
 const String AUTHORIZATION = "authorization";
 const String DEFAULT_LANGUAGE = "language";
+
+// TODO: Its only temporary, remove it after the property implementation of the loading overlay
+final List<String> loadingBlacklist = [
+  'MainHome',
+  'Connection',
+  'Patients',
+];
 
 class DioFactory {
 
@@ -43,9 +53,25 @@ class DioFactory {
         if (token != null) {
           options.headers['Authorization'] = 'Bearer $token';
         }
+
+        // Check if the current route is in the blacklist
+        String? currentRoute = appRouteObserver.currentRoute;
+
+        if (currentRoute != null && !loadingBlacklist.contains(currentRoute)) {
+          loadingOverlayKey.currentState?.show();
+        }
+
         return handler.next(options);
       },
+      onResponse: (response, handler) async {
+        // await Future.delayed(Duration(seconds: 5)); // Used only for test loading
+        // Hide loading overlay
+        loadingOverlayKey.currentState?.hide();
+
+        return handler.next(response);
+      },
       onError: (DioException error, handler) {
+        loadingOverlayKey.currentState?.hide();
         // Handle error
         return handler.next(error);
       },

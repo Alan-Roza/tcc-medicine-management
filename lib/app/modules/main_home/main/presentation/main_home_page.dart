@@ -41,6 +41,7 @@ class _MainHomePageState extends State<MainHomePage> {
     super.initState();
     // Fetch initial data
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      mainHomeController.setSelectedIndex(0);
       _fetchInitialData();
     });
   }
@@ -539,9 +540,7 @@ class _MainHomePageState extends State<MainHomePage> {
   Widget _buildTreatmentPage(TreatmentListController treatmentListController) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: SingleChildScrollView(
-        child: _treatmentListPage(treatmentListController),
-      ),
+      child: _treatmentListPage(treatmentListController),
     );
   }
 
@@ -646,15 +645,17 @@ class _MainHomePageState extends State<MainHomePage> {
               ],
             ),
             const SizedBox(height: 30.0),
-            RefreshIndicator(
-              onRefresh: () async => await treatmentListController
-                  .getListTreatments(TreatmentListRequestDto(size: 100, search: treatmentListController.search)),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height - 250,
-                child: Observer(
-                  builder: (_) {
-                    if (treatmentListController.treatmentCards.isEmpty) {
-                      return ListView(
+            Expanded(
+              child: Observer(
+                builder: (_) {
+                  if (treatmentListController.treatmentCards.isEmpty) {
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        await treatmentListController.getListTreatments(
+                          TreatmentListRequestDto(size: 100, search: treatmentListController.search),
+                        );
+                      },
+                      child: ListView(
                         physics: const AlwaysScrollableScrollPhysics(),
                         children: const [
                           Padding(
@@ -667,11 +668,20 @@ class _MainHomePageState extends State<MainHomePage> {
                             ),
                           ),
                         ],
-                      );
-                    } else {
-                      return Consumer<TreatmentListController>(
-                        builder: (context, treatmentListController, child) {
-                          return ListView.builder(
+                      ),
+                    );
+                  } else {
+                    return Consumer<TreatmentListController>(
+                      builder: (context, treatmentListController, child) {
+                        return RefreshIndicator(
+                          onRefresh: () async {
+                            await treatmentListController.getListTreatments(
+                              TreatmentListRequestDto(size: 100, search: treatmentListController.search),
+                            );
+                          },
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: const AlwaysScrollableScrollPhysics(),
                             itemCount: treatmentListController.treatmentCards.length,
                             itemBuilder: (context, index) {
                               final item = treatmentListController.treatmentCards[index];
@@ -680,12 +690,12 @@ class _MainHomePageState extends State<MainHomePage> {
                                 treatmentCard: item,
                               );
                             },
-                          );
-                        },
-                      );
-                    }
-                  },
-                ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
               ),
             ),
           ],
@@ -697,9 +707,7 @@ class _MainHomePageState extends State<MainHomePage> {
   Widget _buildMedicinePage(MedicineStockListController medicineStockListController) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: SingleChildScrollView(
-        child: _medicineStockListPage(medicineStockListController),
-      ),
+      child: _medicineStockListPage(medicineStockListController),
     );
   }
 
@@ -804,15 +812,17 @@ class _MainHomePageState extends State<MainHomePage> {
               ],
             ),
             const SizedBox(height: 30.0),
-            RefreshIndicator(
-              onRefresh: () => medicineStockListController
-                  .getListMedicines(MedicineListRequestDto(size: 100, search: medicineStockListController.search)),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height - 250,
-                child: Observer(
-                  builder: (_) {
-                    if (medicineStockListController.medicineCards.isEmpty) {
-                      return ListView(
+            Expanded(
+              child: Observer(
+                builder: (_) {
+                  if (medicineStockListController.medicineCards.isEmpty) {
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        await medicineStockListController.getListMedicines(
+                          MedicineListRequestDto(size: 100, search: medicineStockListController.search),
+                        );
+                      },
+                      child: ListView(
                         physics: const AlwaysScrollableScrollPhysics(),
                         children: const [
                           Padding(
@@ -825,11 +835,20 @@ class _MainHomePageState extends State<MainHomePage> {
                             ),
                           ),
                         ],
-                      );
-                    } else {
-                      return Consumer<MedicineStockListController>(
-                        builder: (context, medicineStockListController, child) {
-                          return ListView.builder(
+                      ),
+                    );
+                  } else {
+                    return Consumer<MedicineStockListController>(
+                      builder: (context, medicineStockListController, child) {
+                        return RefreshIndicator(
+                          onRefresh: () async {
+                            await medicineStockListController.getListMedicines(
+                              MedicineListRequestDto(size: 100, search: medicineStockListController.search),
+                            );
+                          },
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: const AlwaysScrollableScrollPhysics(),
                             itemCount: medicineStockListController.medicineCards.length,
                             itemBuilder: (context, index) {
                               final item = medicineStockListController.medicineCards[index];
@@ -838,12 +857,12 @@ class _MainHomePageState extends State<MainHomePage> {
                                 medicineCard: item,
                               );
                             },
-                          );
-                        },
-                      );
-                    }
-                  },
-                ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
               ),
             ),
           ],

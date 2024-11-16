@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:tcc_medicine_management/app/core/model/dto/notification_params_dto.dart';
@@ -47,37 +48,51 @@ class MqttService {
 
         // Convertendo a mensagem de volta para o formato JSON
         var jsonMessage = jsonDecode(messageContent);
+        if (jsonMessage['params'] != null && jsonMessage['params']['quantity'] is double) {
+          jsonMessage['params']['quantity'] = (jsonMessage['params']['quantity'] as double).toInt();
+        }
+
         NotificationParamsDto notification = NotificationParamsDto.fromJson(jsonMessage);
 
         // Switch case para processar a ação da mensagem
         switch (notification.action) {
           case 'RequestConsume':
             final params = notification.params;
-            params?.datetime = '${DateTime.now().hour}:${DateTime.now().minute}';
+            params?.datetime =
+                '${(DateTime.now().hour).toString().padLeft(2, '0')}:${(DateTime.now().minute).toString().padLeft(2, '0')}';
 
             final MedicineViewRepository medicineViewRepository = getIt<MedicineViewRepository>();
             // void getByIdMedicine() async {
-              try {
-                final MedicineViewResponseDto dataResponse = await medicineViewRepository.exec(MedicineViewRequestDto(medicineId: params?.medicineId));
-                params?.medicineName = dataResponse.name;
-                params?.medicineType = dataResponse.type;
-              } catch (e) {
-                // return Future.error(e.toString());
-              }
+            try {
+              final MedicineViewResponseDto dataResponse =
+                  await medicineViewRepository.exec(MedicineViewRequestDto(medicineId: params?.medicineId));
+              params?.medicineName = dataResponse.name;
+              params?.medicineType = dataResponse.type;
+            } catch (e) {
+              // return Future.error(e.toString());
+            }
             // }
             // getByIdMedicine();
 
             final TreatmentViewRepository treatmentViewRepository = getIt<TreatmentViewRepository>();
-              try {
-                final TreatmentViewResponseDto dataResponse = await treatmentViewRepository.exec(TreatmentViewRequestDto(treatmentId: params?.treatmentId));
-                params?.treatmentId = dataResponse.treatment!.id;
-                params?.treatmentName = dataResponse.treatment!.name;
-              } catch (e) {
-                // return Future.error(e.toString());
-              }
+            try {
+              final TreatmentViewResponseDto dataResponse =
+                  await treatmentViewRepository.exec(TreatmentViewRequestDto(treatmentId: params?.treatmentId));
+              params?.treatmentId = dataResponse.treatment!.id;
+              params?.treatmentName = dataResponse.treatment!.name;
+            } catch (e) {
+              // return Future.error(e.toString());
+            }
 
             if (params != null) {
-              NotificationService.showInstantNotification(params);
+              if (!NotificationService.isAppInForeground()) {
+                NotificationService.showInstantNotification(params);
+              } else {
+                // NotificationService.showInstantNotification(params);
+                NotificationService.showNotificationDialog(NotificationResponse(
+                    payload: jsonEncode(params),
+                    notificationResponseType: NotificationResponseType.selectedNotification));
+              }
             }
 
             break;
@@ -124,7 +139,8 @@ class MqttService {
     });
   }
 
-  void publishMessage({required String userId, required String medicineId, required String treatmentId, required String hardwareId}) {
+  void publishMessage(
+      {required String userId, required String medicineId, required String treatmentId, required String hardwareId}) {
     if (client == null || client?.connectionStatus?.state != MqttConnectionState.connected) {
       print('Cliente MQTT não está conectado');
       return;
