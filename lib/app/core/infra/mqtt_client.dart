@@ -98,6 +98,7 @@ class MqttService {
             break;
           case 'Repeater':
             NotificationService.flutterLocalNotificationsPlugin.cancelAll();
+            NotificationService.closeNotificationDialog();
             break;
           default:
             print('Action não reconhecida');

@@ -79,14 +79,14 @@ class _GeneralInfoPageState extends State<GeneralInfoPage> {
               ],
             ),
             SizedBox(height: 15.0),
-            Expanded(child: UserInfoFormWidget(formKey: _formKey)),
+            Expanded(child: SingleChildScrollView(child: UserInfoFormWidget(formKey: _formKey))),
             ElevatedButton(
               onPressed: () async {
                 try {
                   final UserInfoDto response = await userInfoController.onSubmit(_formKey, userId);
                   if (profilePictureController.image != null) await userInfoController.uploadPhoto(profilePictureController.image!);
                   if (response.name != null) userController.login(response.name!);
-
+      
                   context.pop();
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
