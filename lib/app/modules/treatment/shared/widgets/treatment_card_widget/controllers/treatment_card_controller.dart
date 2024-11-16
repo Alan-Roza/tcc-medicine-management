@@ -10,7 +10,7 @@ abstract class TreatmentCardControllerBase with Store {
   late bool isSelected;
   late String name;
   late int quantity;
-  late String expirationDate;
+  late String? expirationDate;
   late String patientName;
   late String priority;
   late String id;

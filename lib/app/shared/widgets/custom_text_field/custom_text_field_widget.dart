@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextFieldWidget extends StatelessWidget {
   final TextEditingController? textEditingController;
@@ -11,6 +12,7 @@ class CustomTextFieldWidget extends StatelessWidget {
   final bool readOnly;
   final bool? enabled;
   final FormFieldValidator<String>? validator;
+  final String? type;
 
   const CustomTextFieldWidget({
     super.key,
@@ -24,12 +26,13 @@ class CustomTextFieldWidget extends StatelessWidget {
     this.readOnly = false,
     this.enabled = true,
     this.validator,
+    this.type,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.only(bottom: 8.0),
       child: TextFormField(
         onTap: () {
           if (onTap != null) onTap!();
@@ -52,6 +55,8 @@ class CustomTextFieldWidget extends StatelessWidget {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: validator,
         controller: textEditingController,
+        keyboardType: type == 'numeric' ? TextInputType.number : TextInputType.text,
+        inputFormatters: type == 'numeric' ? [FilteringTextInputFormatter.digitsOnly] : [],
         onChanged: (value) {
           if (onChanged != null) onChanged!(value);
         },

@@ -93,44 +93,47 @@ class TreatmentMedicineFormWidgetState extends State<TreatmentMedicineFormWidget
                         ),
                       ),
                       Observer(
-                        builder: (_) => CustomTextFieldWidget(
-                          textEditingController: formController.startDateDisplayControllers[medicine.medicineId],
-                          icon: Icons.access_time,
-                          label: 'Início do Tratamento',
-                          readOnly: widget.readOnly,
-                          enabled: !widget.readOnly,
-                          onTap: () {
-                            showDatePicker(
-                              context: context,
-                              initialDate: formController.startDateControllers[medicine.medicineId]!.text.isNotEmpty
-                                  ? DateTime.parse(formController.startDateControllers[medicine.medicineId]!.text)
-                                  : DateTime.now(),
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime(2100),
-                            ).then((selectedDate) {
-                              showTimePicker(
+                        builder: (_) => Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: CustomTextFieldWidget(
+                            textEditingController: formController.startDateDisplayControllers[medicine.medicineId],
+                            icon: Icons.access_time,
+                            label: 'Início do Tratamento',
+                            readOnly: widget.readOnly,
+                            enabled: !widget.readOnly,
+                            onTap: () {
+                              showDatePicker(
                                 context: context,
-                                initialTime: formController.startDateControllers[medicine.medicineId]!.text.isNotEmpty
-                                    ? TimeOfDay.fromDateTime(
-                                        DateTime.parse(formController.startDateControllers[medicine.medicineId]!.text))
-                                    : TimeOfDay.now(),
-                              ).then((selectedTime) {
-                                if (selectedTime != null && selectedDate != null) {
-                                  DateTime selectedDateTime = DateTime(
-                                    selectedDate.year,
-                                    selectedDate.month,
-                                    selectedDate.day,
-                                    selectedTime.hour,
-                                    selectedTime.minute,
-                                  );
-                                  formController.convertStartDate(selectedDateTime.toString(), medicine.medicineId!);
-                                }
-                                if (selectedTime == null && selectedDate != null) {
-                                  formController.convertStartDate(selectedDate.toString(), medicine.medicineId!);
-                                }
+                                initialDate: formController.startDateControllers[medicine.medicineId]!.text.isNotEmpty
+                                    ? DateTime.parse(formController.startDateControllers[medicine.medicineId]!.text)
+                                    : DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100),
+                              ).then((selectedDate) {
+                                showTimePicker(
+                                  context: context,
+                                  initialTime: formController.startDateControllers[medicine.medicineId]!.text.isNotEmpty
+                                      ? TimeOfDay.fromDateTime(
+                                          DateTime.parse(formController.startDateControllers[medicine.medicineId]!.text))
+                                      : TimeOfDay.now(),
+                                ).then((selectedTime) {
+                                  if (selectedTime != null && selectedDate != null) {
+                                    DateTime selectedDateTime = DateTime(
+                                      selectedDate.year,
+                                      selectedDate.month,
+                                      selectedDate.day,
+                                      selectedTime.hour,
+                                      selectedTime.minute,
+                                    );
+                                    formController.convertStartDate(selectedDateTime.toString(), medicine.medicineId!);
+                                  }
+                                  if (selectedTime == null && selectedDate != null) {
+                                    formController.convertStartDate(selectedDate.toString(), medicine.medicineId!);
+                                  }
+                                });
                               });
-                            });
-                          },
+                            },
+                          ),
                         ),
                       ),
                       Observer(

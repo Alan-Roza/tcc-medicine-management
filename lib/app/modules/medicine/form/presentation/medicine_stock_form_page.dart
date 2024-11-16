@@ -92,8 +92,12 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
                                     if (stepProgressController.currentStep == _formWidgets.length - 1) {
                                       try {
                                         MedicineDto medicineResponse = await formController.saveMedicine(null);
-                                        if (profilePictureController.image != null && medicineResponse.id != null) await formController.uploadMedicineImage(profilePictureController.image!, medicineResponse.id!);
+                                        if (profilePictureController.image != null && medicineResponse.id != null) {
+                                          await formController.uploadMedicineImage(
+                                              profilePictureController.image!, medicineResponse.id!);
+                                        }
 
+                                        context.pop();
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar(
                                             backgroundColor: Colors.green,

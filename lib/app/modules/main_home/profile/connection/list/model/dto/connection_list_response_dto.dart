@@ -3,6 +3,7 @@ class ConnectionListResponseDto {
   String? hardwareId;
   String? user;
   String? topic;
+  int? drawerNumber;
 
   ConnectionListResponseDto({this.name, this.hardwareId, this.user, this.topic});
 
@@ -11,6 +12,7 @@ class ConnectionListResponseDto {
     hardwareId = json['hardwareId'];
     user = json['user'];
     topic = json['topic'];
+    drawerNumber = json['drawerNumber'];
   }
 
   Map<String, dynamic> toJson() {
@@ -19,6 +21,7 @@ class ConnectionListResponseDto {
     data['hardwareId'] = hardwareId;
     data['user'] = user;
     data['topic'] = topic;
+    data['drawerNumber'] = drawerNumber;
     return data;
   }
 

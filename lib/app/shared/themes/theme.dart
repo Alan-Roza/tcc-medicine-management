@@ -350,6 +350,18 @@ class MaterialTheme {
     useMaterial3: true,
     brightness: colorScheme.brightness,
     colorScheme: colorScheme,
+    inputDecorationTheme: InputDecorationTheme(
+        disabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: const Color.fromARGB(255, 66, 66, 66)), // Cor da borda quando o input está desabilitado
+        ),
+        // focusedBorder: OutlineInputBorder(
+        //   borderSide: BorderSide(color: Color(0xFF00A8FF)), // Cor da borda quando o input está focado
+        // ),
+        iconColor: const Color.fromARGB(255, 66, 66, 66),
+        prefixIconColor: const Color.fromARGB(255, 66, 66, 66), // Cor do texto do input
+        labelStyle: TextStyle(color: const Color.fromARGB(255, 66, 66, 66)), // Cor do texto do label
+        hintStyle: TextStyle(color: const Color.fromARGB(255, 66, 66, 66)),
+      ),
     textTheme: textTheme.apply(
       fontFamily: 'Roboto',
       bodyColor: colorScheme.onSurface,

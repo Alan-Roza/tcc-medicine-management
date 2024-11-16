@@ -60,30 +60,28 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
               )
             ],
           ),
+          const SizedBox(height: 20),
           Observer(
-            builder: (_) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: TextFormField(
-                enabled: !widget.readOnly,
-                readOnly: true, // Makes the field not editable; only selectable
-                controller: formController.expirationDateController,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.calendar_month_rounded),
-                  labelText: 'Data de Validade',
-                ),
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(DateTime.now().year),
-                    lastDate: DateTime(DateTime.now().year + 2),
-                  );
-                  if (pickedDate != null) {
-                    // Update the text field with the selected date
-                    formController.setExpirationDate(pickedDate); // Update your controller/state management solution
-                  }
-                },
+            builder: (_) => TextFormField(
+              enabled: !widget.readOnly,
+              readOnly: true, // Makes the field not editable; only selectable
+              controller: formController.expirationDateController,
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.calendar_month_rounded),
+                labelText: 'Data de Validade',
               ),
+              onTap: () async {
+                DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(DateTime.now().year),
+                  lastDate: DateTime(DateTime.now().year + 2),
+                );
+                if (pickedDate != null) {
+                  // Update the text field with the selected date
+                  formController.setExpirationDate(pickedDate); // Update your controller/state management solution
+                }
+              },
             ),
           ),
           Observer(
@@ -132,78 +130,124 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
               ),
             ),
           ),
-          const SizedBox(height: 20),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'MÓDULO GAVETEIRO',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              Container(
-                width: 40,
-                height: 6,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF00A8FF),
-                  border: Border.all(
-                    color: const Color(0xFF00A8FF), // Set border color
-                    width: 2, // Set border width
-                  ),
-                  borderRadius: BorderRadius.circular(10), // Add a border radius
-                ),
-              )
-            ],
-          ),
-          // TODO: remove after create the select
-          // Observer(
-          //   builder: (_) => CustomTextFieldWidget(
-          //     textEditingController: formController.hardwareIdController,
-          //     icon: Icons.account_box,
-          //     label: 'Identificação do Gaveteiro',
-          //     readOnly: widget.readOnly,
-          //     enabled: !widget.readOnly,
-          //   ),
-          // ),
-          widget.readOnly
-              ? Container()
-              : Observer(
-                  builder: (_) => DropdownButtonFormField<String>(
-                    value: formController.hardwareIdController.text,
-                    onChanged: (value) {
-                      if (value != null && value.isNotEmpty) {
-                        formController.hardwareIdController.text = value;
-                      }
-                    },
-                    items: [
-                      const DropdownMenuItem(
-                        value: '',
-                        child: Text('Selecione um gaveteiro'),
-                      ),
-                      ...formController.drawers.map((drawer) {
-                        // Ajustar para que os itens venham do servidor
-                        return DropdownMenuItem(
-                          value: drawer['id'],
-                          child: Text(drawer['name'] ?? ''),
-                        );
-                      }),
-                    ],
-                    decoration: const InputDecoration(
-                      labelText: 'Identificação do Gaveteiro',
-                      border: UnderlineInputBorder(),
-                      prefixIcon: Icon(Icons.medical_services),
+          formController.drawers.isEmpty || formController.hardwareIdController.text.isEmpty
+              ? const SizedBox()
+              : const SizedBox(height: 20),
+          formController.drawers.isEmpty || formController.hardwareIdController.text.isEmpty
+              ? const SizedBox()
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'MÓDULO GAVETEIRO',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                  ),
+                    Container(
+                      width: 40,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF00A8FF),
+                        border: Border.all(
+                          color: const Color(0xFF00A8FF), // Set border color
+                          width: 2, // Set border width
+                        ),
+                        borderRadius: BorderRadius.circular(10), // Add a border radius
+                      ),
+                    )
+                  ],
                 ),
-          const SizedBox(height: 16),
-          Observer(
-            builder: (_) => CustomTextFieldWidget(
-              textEditingController: formController.drawerNumberController,
-              icon: Icons.medication_rounded,
-              label: 'Número da Gaveta',
-              readOnly: widget.readOnly,
-              enabled: !widget.readOnly,
-            ),
-          ),
+          formController.drawers.isEmpty || formController.hardwareIdController.text.isEmpty
+              ? const SizedBox()
+              : widget.readOnly
+                  ? Observer(
+                      builder: (_) => CustomTextFieldWidget(
+                        textEditingController: formController.hardwareIdController,
+                        icon: Icons.account_box,
+                        label: 'Identificação do Gaveteiro',
+                        readOnly: widget.readOnly,
+                        enabled: !widget.readOnly,
+                      ),
+                    )
+                  : Observer(
+                      builder: (_) => DropdownButtonFormField<dynamic>(
+                        value: formController.hardwareIdController.text,
+                        onChanged: (value) {
+                          if (value != null && value.isNotEmpty) {
+                            formController.hardwareIdController.text = value['id'] ?? '';
+                            formController.drawerNumber = int.parse(value['drawerNumber'] ?? 0);
+                          }
+                        },
+                        items: [
+                          const DropdownMenuItem(
+                            value: '',
+                            child: Text('Selecione um gaveteiro'),
+                          ),
+                          ...formController.drawers.map((drawer) {
+                            // Ajustar para que os itens venham do servidor
+                            return DropdownMenuItem(
+                              value: drawer,
+                              child: Text(drawer['name'] ?? ''),
+                            );
+                          }),
+                        ],
+                        decoration: const InputDecoration(
+                          labelText: 'Identificação do Gaveteiro',
+                          border: UnderlineInputBorder(),
+                          prefixIcon: Icon(Icons.medical_services),
+                        ),
+                      ),
+                    ),
+          formController.drawers.isEmpty ||
+                  formController.drawerNumberController.text.isEmpty ||
+                  formController.drawerNumberController.text == '0'
+              ? const SizedBox()
+              : widget.readOnly
+                  ? const SizedBox()
+                  : const SizedBox(height: 16),
+          formController.drawers.isEmpty ||
+                  formController.drawerNumberController.text.isEmpty ||
+                  formController.drawerNumberController.text == '0'
+              ? const SizedBox()
+              : widget.readOnly
+                  ? Observer(
+                      builder: (_) => CustomTextFieldWidget(
+                        textEditingController: formController.drawerNumberController,
+                        icon: Icons.medication_rounded,
+                        label: 'Número da Gaveta',
+                        readOnly: widget.readOnly,
+                        enabled: !widget.readOnly,
+                      ),
+                    )
+                  : Observer(
+                      builder: (_) => DropdownButtonFormField<dynamic>(
+                        value: formController.drawerNumberController.text,
+                        onChanged: formController.hardwareIdController.text.isEmpty
+                            ? null
+                            : (value) {
+                                if (value != null && value.isNotEmpty) {
+                                  formController.hardwareIdController.text = value['id'] ?? '';
+                                  formController.drawerNumber = int.parse(value['drawerNumber'] ?? 0);
+                                }
+                              },
+                        items: [
+                          const DropdownMenuItem(
+                            value: '',
+                            child: Text('Selecione a Gaveta'),
+                          ),
+                          ...List.generate(formController.drawerNumber, (index) => index + 1).map((drawerNumber) {
+                            return DropdownMenuItem(
+                              value: drawerNumber.toString(),
+                              child: Text(drawerNumber.toString()),
+                            );
+                          }),
+                        ],
+                        decoration: const InputDecoration(
+                          labelText: 'Número da Gaveta',
+                          border: UnderlineInputBorder(),
+                          prefixIcon: Icon(Icons.medication_rounded),
+                        ),
+                      ),
+                    ),
           const SizedBox(height: 20),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

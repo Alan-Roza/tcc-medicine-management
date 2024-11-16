@@ -63,7 +63,6 @@ class TreatmentBasicFormWidgetState extends State<TreatmentBasicFormWidget> with
               enabled: !widget.readOnly,
             ),
           ),
-          const SizedBox(height: 16),
           Observer(
             builder: (_) => DropdownButtonFormField<ImportanceLevel>(
               value: formController.importanceLevel,
@@ -101,7 +100,7 @@ class TreatmentBasicFormWidgetState extends State<TreatmentBasicFormWidget> with
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 8),
           widget.readOnly
               ? Container()
               : Observer(

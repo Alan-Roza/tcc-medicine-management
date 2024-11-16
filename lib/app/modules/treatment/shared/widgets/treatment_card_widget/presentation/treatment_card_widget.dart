@@ -142,9 +142,9 @@ class TreatmentCardWidget extends StatelessWidget {
                                     style: TextStyle(fontWeight: FontWeight.normal),
                                   ),
                                   TextSpan(
-                                    text: DateFormat.yMd().format(DateTime.parse(treatmentCard.expirationDate)).length > 13
-                                      ? '${DateFormat.yMd().format(DateTime.parse(treatmentCard.expirationDate)).substring(0, 13)}...' // Truncate and add ellipsis
-                                      : DateFormat.yMd().format(DateTime.parse(treatmentCard.expirationDate)),
+                                    text: treatmentCard.expirationDate == null || treatmentCard.expirationDate!.isEmpty ? 'Indeterminado' : DateFormat.yMd().format(DateTime.parse(treatmentCard.expirationDate!)).length > 13
+                                      ? '${DateFormat.yMd().format(DateTime.parse(treatmentCard.expirationDate!)).substring(0, 13)}...' // Truncate and add ellipsis
+                                      : DateFormat.yMd().format(DateTime.parse(treatmentCard.expirationDate!)),
                                   ),
                                   // TODO: verify what text put instead of price
                                   // const TextSpan(

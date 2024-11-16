@@ -118,6 +118,9 @@ abstract class MedicineFormControllerBase with Store {
   @observable
   List<Map<String, String>> drawers = [];
 
+  @observable
+  int drawerNumber = 0;
+
   @action
   Future<List<Map<String, String>>> getDrawersResource() async {
     try {
@@ -129,6 +132,7 @@ abstract class MedicineFormControllerBase with Store {
         drawers.add({
           'name': drawer.name ?? '',
           'id': drawer.hardwareId ?? '',
+          'drawerNumber': (drawer.drawerNumber ?? 0).toString(),
         });
       }
 
@@ -211,7 +215,7 @@ abstract class MedicineFormControllerBase with Store {
         expirationDate: expirationDateController.text.isNotEmpty
           ? DateFormat('yyyy-MM-ddTHH:mm:ss.SSSZ').format(DateFormat('dd/MM/yyyy').parse(expirationDateController.text))
           : null,
-        drawerNumber: int.parse(drawerNumberController.text),
+        drawerNumber: drawerNumberController.text.isEmpty ? 0 : int.parse(drawerNumberController.text),
         hardwareId: hardwareIdController.text,
       );
 

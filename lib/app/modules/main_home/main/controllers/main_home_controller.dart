@@ -19,7 +19,7 @@ abstract class _MainHomeController with Store {
   ResumeDailyResponseDto resumeDaily = ResumeDailyResponseDto();
 
   @observable
-  ResumeDrawerResponseDto resumeDrawer = ResumeDrawerResponseDto();
+  List<ResumeDrawerResponseDto> resumeDrawer = [];
 
   @observable
   int currentPage = 0;
@@ -55,7 +55,7 @@ abstract class _MainHomeController with Store {
     try {
       final List<ResumeDrawerResponseDto> dataResponse = await _resumeRepository.getResumeDrawer();
 
-      resumeDrawer = dataResponse.first;
+      resumeDrawer = dataResponse;
 
       return dataResponse;
     } catch (e) {

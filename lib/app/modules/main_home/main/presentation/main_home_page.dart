@@ -258,7 +258,18 @@ class _MainHomePageState extends State<MainHomePage> {
           showUnselectedLabels: true,
           currentIndex: mainHomeController.selectedIndex,
           onTap: (index) {
-            if (index == 1) {
+            if (index == 0) {
+              medicineStockListController.getListMedicines(
+                MedicineListRequestDto(size: 5, search: medicineStockListController.search, sortBy: 'ExpirationDate'),
+              );
+
+              treatmentListController.getListTreatments(
+                TreatmentListRequestDto(size: 5, search: treatmentListController.search, sortBy: 'ExpirationDate'),
+              );
+
+              mainHomeController.getResumePendency();
+              mainHomeController.getResumeDrawer();
+            } else if (index == 1) {
               treatmentListController.getListTreatments(
                 TreatmentListRequestDto(size: 100, search: treatmentListController.search),
               );
@@ -886,8 +897,8 @@ class _MainHomePageState extends State<MainHomePage> {
             SizedBox(
               height: 8.0,
             ),
-            _buildSectionHeader('MÓDULOS', null),
-            _buildDrawerUsageWidget(),
+            mainHomeController.resumeDrawer.isNotEmpty ? _buildSectionHeader('MÓDULOS', null) : Container(),
+            mainHomeController.resumeDrawer.isNotEmpty ? _buildDrawerUsageWidget() : Container(),
             _buildSectionHeader('TRATAMENTOS', 'Vencimento Próximo'),
             _buildTreatmentRow(),
             _buildHelpSection(),
@@ -1252,7 +1263,7 @@ class _MainHomePageState extends State<MainHomePage> {
           );
   }
 
-  Widget _buildViewTreatmentCard({required String name, required double price, required String expires}) {
+  Widget _buildViewTreatmentCard({required String name, required double price, required String? expires}) {
     return Card(
       color: Colors.grey.shade900,
       margin: const EdgeInsets.all(8.0),
@@ -1293,7 +1304,7 @@ class _MainHomePageState extends State<MainHomePage> {
                       text: 'Vence em: ',
                       style: TextStyle(color: Colors.white, fontWeight: FontWeight.w200, fontSize: 10)),
                   TextSpan(
-                      text: DateFormat('dd/MM/yyyy', 'pt_BR').format(DateTime.parse(expires)),
+                      text: expires == null || expires.isEmpty ? 'Indeterminado' : DateFormat('dd/MM/yyyy', 'pt_BR').format(DateTime.parse(expires)),
                       style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 10)),
                 ],
               ),
@@ -1405,7 +1416,7 @@ class _MainHomePageState extends State<MainHomePage> {
                                 const Text('Gavetas Livres',
                                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
                                 Expanded(child: Container()),
-                                Text('${mainHomeController.resumeDrawer.available ?? '-'}',
+                                Text('${mainHomeController.resumeDrawer[0].available ?? '-'}',
                                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                               ],
                             ),
@@ -1419,7 +1430,7 @@ class _MainHomePageState extends State<MainHomePage> {
                                 const Text('Gavetas Ocupadas',
                                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
                                 Expanded(child: Container()),
-                                Text('${mainHomeController.resumeDrawer.occupied ?? '-'}',
+                                Text('${mainHomeController.resumeDrawer[0].occupied ?? '-'}',
                                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                               ],
                             ),
@@ -1433,7 +1444,7 @@ class _MainHomePageState extends State<MainHomePage> {
                                 const Text('Total de Gavetas',
                                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                                 Expanded(child: Container()),
-                                Text('${mainHomeController.resumeDrawer.total ?? '-'}',
+                                Text('${mainHomeController.resumeDrawer[0].total ?? '-'}',
                                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900)),
                               ],
                             ),
@@ -1445,7 +1456,7 @@ class _MainHomePageState extends State<MainHomePage> {
                         width: 50, // Largura fixa para o gráfico
                         height: 50, // Altura fixa para o gráfico
                         child: CustomPieChart(
-                          resumeDrawer: mainHomeController.resumeDrawer,
+                          resumeDrawer: mainHomeController.resumeDrawer[0],
                         ),
                       ),
                       const SizedBox(width: 16)

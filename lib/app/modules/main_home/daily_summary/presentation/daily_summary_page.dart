@@ -83,28 +83,40 @@ class _DailySummaryPageState extends State<DailySummaryPage> {
                   ],
                 ),
                 const SizedBox(height: 16.0),
-                for (var treatment in dailySummaryController.treatmentDetails) ...{
-                  _buildMedicationDetails(
-                    treatment.name!,
-                    treatment.medicines!.map((med) {
-                      Color color;
-                      switch (med.status) {
-                        case 'Consumed':
-                          color = Colors.green;
-                          break;
-                        case 'Delayed':
-                          color = Colors.red;
-                          break;
-                        case 'Normal':
-                          color = Colors.grey;
-                          break;
-                        default:
-                          color = Colors.blue;
-                      }
-                      return Medication(name: med.name!, color: color);
-                    }).toList(),
-                  )
-                }
+                dailySummaryController.treatmentDetails.isEmpty
+                    ? const Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 30),
+                          child: Text(
+                            'Sem informações',
+                            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w100),
+                          ),
+                        ),
+                      )
+                    : Column(
+                        children: dailySummaryController.treatmentDetails.map((treatment) {
+                          return _buildMedicationDetails(
+                            treatment.name!,
+                            treatment.medicines!.map((med) {
+                              Color color;
+                              switch (med.status) {
+                                case 'Consumed':
+                                  color = Colors.green;
+                                  break;
+                                case 'Delayed':
+                                  color = Colors.red;
+                                  break;
+                                case 'Normal':
+                                  color = Colors.grey;
+                                  break;
+                                default:
+                                  color = Colors.blue;
+                              }
+                              return Medication(name: med.name!, color: color);
+                            }).toList(),
+                          );
+                        }).toList(),
+                      )
                 // _buildMedicationDetails('Sinusite', [
                 //   Medication(name: 'Dipirona', time: '08:30h', color: Colors.red),
                 //   Medication(name: 'Acetilcisteína', time: '14:00h', color: Colors.green),

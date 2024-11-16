@@ -84,6 +84,7 @@ class MedicineStockBasicFormWidgetState extends State<MedicineStockBasicFormWidg
               textEditingController: formController.quantityController,
               icon: Icons.tune_outlined,
               label: 'Quantidade',
+              type: 'numeric',
               readOnly: widget.readOnly,
               enabled: !widget.readOnly,
             ),
