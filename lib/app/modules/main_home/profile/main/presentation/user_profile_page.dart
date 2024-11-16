@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -144,6 +145,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         await prefs.remove('token');
                         myAppKey.currentState?.restartApp();
                         context.goNamed('Home');
+                        SystemNavigator.pop();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red[900],

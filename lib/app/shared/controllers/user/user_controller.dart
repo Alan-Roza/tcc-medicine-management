@@ -39,6 +39,7 @@ abstract class _UserController with Store {
     name = '';
     userId = null;
     patientId = null;
+    patientName = null;
     userEmail = null;
     token = null;
   }
@@ -49,6 +50,7 @@ abstract class _UserController with Store {
     name = '';
     userId = null;
     patientId = null;
+    patientName = null;
     userEmail = null;
     token = null;
   }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
@@ -225,6 +226,7 @@ class _MainHomePageState extends State<MainHomePage> {
                             SharedPreferences prefs = await SharedPreferences.getInstance();
                             await prefs.remove('token');
                             context.goNamed('Home');
+                            SystemNavigator.pop();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red[900],
@@ -1304,7 +1306,9 @@ class _MainHomePageState extends State<MainHomePage> {
                       text: 'Vence em: ',
                       style: TextStyle(color: Colors.white, fontWeight: FontWeight.w200, fontSize: 10)),
                   TextSpan(
-                      text: expires == null || expires.isEmpty ? 'Indeterminado' : DateFormat('dd/MM/yyyy', 'pt_BR').format(DateTime.parse(expires)),
+                      text: expires == null || expires.isEmpty
+                          ? 'Indeterminado'
+                          : DateFormat('dd/MM/yyyy', 'pt_BR').format(DateTime.parse(expires)),
                       style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 10)),
                 ],
               ),
