@@ -61,22 +61,41 @@ class _ProfilePictureWidgetState extends State<ProfilePictureWidget> {
             Positioned(
               bottom: 4,
               right: 4,
-              child: GestureDetector(
-                onTap: _pickImage,
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 1,
+              child: profilePictureController.image != null
+                  ? GestureDetector(
+                      onTap: () {
+                        profilePictureController.clear();
+                      },
+                      child: Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 1,
+                          ),
+                        ),
+                        child: const Icon(Icons.close, size: 22, color: Colors.white),
+                      ),
+                    )
+                  : GestureDetector(
+                      onTap: _pickImage,
+                      child: Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 1,
+                          ),
+                        ),
+                        child: const Icon(Icons.add, size: 24, color: Colors.white),
+                      ),
                     ),
-                  ),
-                  child: const Icon(Icons.add, size: 24, color: Colors.white),
-                ),
-              ),
             ),
           ],
         ),

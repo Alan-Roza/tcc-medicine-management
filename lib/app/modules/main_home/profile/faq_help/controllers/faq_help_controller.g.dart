@@ -41,6 +41,38 @@ mixin _$FaqHelpController on _FaqHelpController, Store {
     });
   }
 
+  late final _$filteredItemsAtom =
+      Atom(name: '_FaqHelpController.filteredItems', context: context);
+
+  @override
+  ObservableList<FaqHelpItem> get filteredItems {
+    _$filteredItemsAtom.reportRead();
+    return super.filteredItems;
+  }
+
+  @override
+  set filteredItems(ObservableList<FaqHelpItem> value) {
+    _$filteredItemsAtom.reportWrite(value, super.filteredItems, () {
+      super.filteredItems = value;
+    });
+  }
+
+  late final _$faqHelpItemsAtom =
+      Atom(name: '_FaqHelpController.faqHelpItems', context: context);
+
+  @override
+  ObservableList<FaqHelpItem> get faqHelpItems {
+    _$faqHelpItemsAtom.reportRead();
+    return super.faqHelpItems;
+  }
+
+  @override
+  set faqHelpItems(ObservableList<FaqHelpItem> value) {
+    _$faqHelpItemsAtom.reportWrite(value, super.faqHelpItems, () {
+      super.faqHelpItems = value;
+    });
+  }
+
   late final _$isOpenListAtom =
       Atom(name: '_FaqHelpController.isOpenList', context: context);
 
@@ -98,6 +130,8 @@ mixin _$FaqHelpController on _FaqHelpController, Store {
     return '''
 currentPage: ${currentPage},
 selectedItem: ${selectedItem},
+filteredItems: ${filteredItems},
+faqHelpItems: ${faqHelpItems},
 isOpenList: ${isOpenList}
     ''';
   }

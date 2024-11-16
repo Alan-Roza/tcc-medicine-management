@@ -97,6 +97,10 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
                                               profilePictureController.image!, medicineResponse.id!);
                                         }
 
+                                        medicineListController.getListMedicines(
+                                          MedicineListRequestDto(size: 100, search: medicineListController.search, sortBy: 'ExpirationDate'),
+                                        );
+
                                         context.pop();
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar(

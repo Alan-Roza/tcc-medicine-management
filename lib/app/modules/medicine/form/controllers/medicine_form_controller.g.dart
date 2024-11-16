@@ -57,6 +57,48 @@ mixin _$MedicineFormController on MedicineFormControllerBase, Store {
     });
   }
 
+  late final _$drawersAtom =
+      Atom(name: 'MedicineFormControllerBase.drawers', context: context);
+
+  @override
+  List<Map<String, String>> get drawers {
+    _$drawersAtom.reportRead();
+    return super.drawers;
+  }
+
+  @override
+  set drawers(List<Map<String, String>> value) {
+    _$drawersAtom.reportWrite(value, super.drawers, () {
+      super.drawers = value;
+    });
+  }
+
+  late final _$drawerNumberAtom =
+      Atom(name: 'MedicineFormControllerBase.drawerNumber', context: context);
+
+  @override
+  int get drawerNumber {
+    _$drawerNumberAtom.reportRead();
+    return super.drawerNumber;
+  }
+
+  @override
+  set drawerNumber(int value) {
+    _$drawerNumberAtom.reportWrite(value, super.drawerNumber, () {
+      super.drawerNumber = value;
+    });
+  }
+
+  late final _$getDrawersResourceAsyncAction = AsyncAction(
+      'MedicineFormControllerBase.getDrawersResource',
+      context: context);
+
+  @override
+  Future<List<Map<String, String>>> getDrawersResource() {
+    return _$getDrawersResourceAsyncAction
+        .run(() => super.getDrawersResource());
+  }
+
   late final _$saveMedicineAsyncAction =
       AsyncAction('MedicineFormControllerBase.saveMedicine', context: context);
 
@@ -115,7 +157,9 @@ mixin _$MedicineFormController on MedicineFormControllerBase, Store {
     return '''
 medicineImageUrl: ${medicineImageUrl},
 medicineType: ${medicineType},
-importanceLevel: ${importanceLevel}
+importanceLevel: ${importanceLevel},
+drawers: ${drawers},
+drawerNumber: ${drawerNumber}
     ''';
   }
 }

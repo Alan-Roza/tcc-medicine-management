@@ -25,6 +25,38 @@ mixin _$MainHomeController on _MainHomeController, Store {
     });
   }
 
+  late final _$resumeDailyAtom =
+      Atom(name: '_MainHomeController.resumeDaily', context: context);
+
+  @override
+  ResumeDailyResponseDto get resumeDaily {
+    _$resumeDailyAtom.reportRead();
+    return super.resumeDaily;
+  }
+
+  @override
+  set resumeDaily(ResumeDailyResponseDto value) {
+    _$resumeDailyAtom.reportWrite(value, super.resumeDaily, () {
+      super.resumeDaily = value;
+    });
+  }
+
+  late final _$resumeDrawerAtom =
+      Atom(name: '_MainHomeController.resumeDrawer', context: context);
+
+  @override
+  List<ResumeDrawerResponseDto> get resumeDrawer {
+    _$resumeDrawerAtom.reportRead();
+    return super.resumeDrawer;
+  }
+
+  @override
+  set resumeDrawer(List<ResumeDrawerResponseDto> value) {
+    _$resumeDrawerAtom.reportWrite(value, super.resumeDrawer, () {
+      super.resumeDrawer = value;
+    });
+  }
+
   late final _$currentPageAtom =
       Atom(name: '_MainHomeController.currentPage', context: context);
 
@@ -65,6 +97,14 @@ mixin _$MainHomeController on _MainHomeController, Store {
     return _$getResumePendencyAsyncAction.run(() => super.getResumePendency());
   }
 
+  late final _$getResumeDrawerAsyncAction =
+      AsyncAction('_MainHomeController.getResumeDrawer', context: context);
+
+  @override
+  Future<List<ResumeDrawerResponseDto>> getResumeDrawer() {
+    return _$getResumeDrawerAsyncAction.run(() => super.getResumeDrawer());
+  }
+
   late final _$_MainHomeControllerActionController =
       ActionController(name: '_MainHomeController', context: context);
 
@@ -94,6 +134,8 @@ mixin _$MainHomeController on _MainHomeController, Store {
   String toString() {
     return '''
 hasPendency: ${hasPendency},
+resumeDaily: ${resumeDaily},
+resumeDrawer: ${resumeDrawer},
 currentPage: ${currentPage},
 selectedIndex: ${selectedIndex}
     ''';

@@ -73,6 +73,30 @@ mixin _$DailySummaryController on _DailySummaryController, Store {
     });
   }
 
+  late final _$treatmentDetailsAtom =
+      Atom(name: '_DailySummaryController.treatmentDetails', context: context);
+
+  @override
+  List<Treatments> get treatmentDetails {
+    _$treatmentDetailsAtom.reportRead();
+    return super.treatmentDetails;
+  }
+
+  @override
+  set treatmentDetails(List<Treatments> value) {
+    _$treatmentDetailsAtom.reportWrite(value, super.treatmentDetails, () {
+      super.treatmentDetails = value;
+    });
+  }
+
+  late final _$getResumeDailyAsyncAction =
+      AsyncAction('_DailySummaryController.getResumeDaily', context: context);
+
+  @override
+  Future<ResumeDailyResponseDto> getResumeDaily() {
+    return _$getResumeDailyAsyncAction.run(() => super.getResumeDaily());
+  }
+
   late final _$_DailySummaryControllerActionController =
       ActionController(name: '_DailySummaryController', context: context);
 
@@ -101,7 +125,8 @@ mixin _$DailySummaryController on _DailySummaryController, Store {
 totalToConsume: ${totalToConsume},
 consumed: ${consumed},
 notConsumed: ${notConsumed},
-inProgress: ${inProgress}
+inProgress: ${inProgress},
+treatmentDetails: ${treatmentDetails}
     ''';
   }
 }

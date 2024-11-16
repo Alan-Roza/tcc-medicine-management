@@ -25,19 +25,16 @@ mixin _$ProfilePictureController on _ProfilePictureController, Store {
     });
   }
 
-  late final _$_ProfilePictureControllerActionController =
-      ActionController(name: '_ProfilePictureController', context: context);
+  late final _$setImageAsyncAction =
+      AsyncAction('_ProfilePictureController.setImage', context: context);
 
   @override
-  void setImage(File? newImage) {
-    final _$actionInfo = _$_ProfilePictureControllerActionController
-        .startAction(name: '_ProfilePictureController.setImage');
-    try {
-      return super.setImage(newImage);
-    } finally {
-      _$_ProfilePictureControllerActionController.endAction(_$actionInfo);
-    }
+  Future<void> setImage(File? newImage) {
+    return _$setImageAsyncAction.run(() => super.setImage(newImage));
   }
+
+  late final _$_ProfilePictureControllerActionController =
+      ActionController(name: '_ProfilePictureController', context: context);
 
   @override
   void clear() {
