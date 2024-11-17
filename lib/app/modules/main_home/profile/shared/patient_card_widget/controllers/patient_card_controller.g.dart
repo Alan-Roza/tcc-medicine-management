@@ -18,14 +18,10 @@ mixin _$PatientCardController on PatientCardControllerBase, Store {
     return super.isSelected;
   }
 
-  bool _isSelectedIsInitialized = false;
-
   @override
   set isSelected(bool value) {
-    _$isSelectedAtom.reportWrite(
-        value, _isSelectedIsInitialized ? super.isSelected : null, () {
+    _$isSelectedAtom.reportWrite(value, super.isSelected, () {
       super.isSelected = value;
-      _isSelectedIsInitialized = true;
     });
   }
 
@@ -38,13 +34,10 @@ mixin _$PatientCardController on PatientCardControllerBase, Store {
     return super.id;
   }
 
-  bool _idIsInitialized = false;
-
   @override
   set id(int value) {
-    _$idAtom.reportWrite(value, _idIsInitialized ? super.id : null, () {
+    _$idAtom.reportWrite(value, super.id, () {
       super.id = value;
-      _idIsInitialized = true;
     });
   }
 
@@ -57,13 +50,10 @@ mixin _$PatientCardController on PatientCardControllerBase, Store {
     return super.name;
   }
 
-  bool _nameIsInitialized = false;
-
   @override
   set name(String value) {
-    _$nameAtom.reportWrite(value, _nameIsInitialized ? super.name : null, () {
+    _$nameAtom.reportWrite(value, super.name, () {
       super.name = value;
-      _nameIsInitialized = true;
     });
   }
 
@@ -76,13 +66,10 @@ mixin _$PatientCardController on PatientCardControllerBase, Store {
     return super.age;
   }
 
-  bool _ageIsInitialized = false;
-
   @override
   set age(int value) {
-    _$ageAtom.reportWrite(value, _ageIsInitialized ? super.age : null, () {
+    _$ageAtom.reportWrite(value, super.age, () {
       super.age = value;
-      _ageIsInitialized = true;
     });
   }
 
@@ -95,14 +82,10 @@ mixin _$PatientCardController on PatientCardControllerBase, Store {
     return super.cellphone;
   }
 
-  bool _cellphoneIsInitialized = false;
-
   @override
   set cellphone(String value) {
-    _$cellphoneAtom.reportWrite(
-        value, _cellphoneIsInitialized ? super.cellphone : null, () {
+    _$cellphoneAtom.reportWrite(value, super.cellphone, () {
       super.cellphone = value;
-      _cellphoneIsInitialized = true;
     });
   }
 
@@ -115,14 +98,10 @@ mixin _$PatientCardController on PatientCardControllerBase, Store {
     return super.gender;
   }
 
-  bool _genderIsInitialized = false;
-
   @override
   set gender(String value) {
-    _$genderAtom.reportWrite(value, _genderIsInitialized ? super.gender : null,
-        () {
+    _$genderAtom.reportWrite(value, super.gender, () {
       super.gender = value;
-      _genderIsInitialized = true;
     });
   }
 
@@ -135,14 +114,10 @@ mixin _$PatientCardController on PatientCardControllerBase, Store {
     return super.lastAccess;
   }
 
-  bool _lastAccessIsInitialized = false;
-
   @override
   set lastAccess(DateTime? value) {
-    _$lastAccessAtom.reportWrite(
-        value, _lastAccessIsInitialized ? super.lastAccess : null, () {
+    _$lastAccessAtom.reportWrite(value, super.lastAccess, () {
       super.lastAccess = value;
-      _lastAccessIsInitialized = true;
     });
   }
 
@@ -155,14 +130,10 @@ mixin _$PatientCardController on PatientCardControllerBase, Store {
     return super.imageUrl;
   }
 
-  bool _imageUrlIsInitialized = false;
-
   @override
   set imageUrl(String value) {
-    _$imageUrlAtom
-        .reportWrite(value, _imageUrlIsInitialized ? super.imageUrl : null, () {
+    _$imageUrlAtom.reportWrite(value, super.imageUrl, () {
       super.imageUrl = value;
-      _imageUrlIsInitialized = true;
     });
   }
 
@@ -176,6 +147,17 @@ mixin _$PatientCardController on PatientCardControllerBase, Store {
 
   late final _$PatientCardControllerBaseActionController =
       ActionController(name: 'PatientCardControllerBase', context: context);
+
+  @override
+  void updatePatient(PatientCard patient) {
+    final _$actionInfo = _$PatientCardControllerBaseActionController
+        .startAction(name: 'PatientCardControllerBase.updatePatient');
+    try {
+      return super.updatePatient(patient);
+    } finally {
+      _$PatientCardControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void toggleSelection() {

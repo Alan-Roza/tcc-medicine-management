@@ -257,7 +257,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               Provider<ProfilePictureController>(create: (_) => ProfilePictureController()),
               Provider<MainHomeController>(create: (_) => MainHomeController()),
               Provider<PatientController>(create: (_) => PatientController()),
-              Provider<PatientCardController>(create: (_) => PatientCardController(null)),
+              Provider<PatientCardController>(create: (_) => PatientCardController()),
               Provider<ForgotPasswordController>(create: (_) => ForgotPasswordController()),
               Provider<TreatmentScheduleController>(create: (_) => TreatmentScheduleController()),
             ],

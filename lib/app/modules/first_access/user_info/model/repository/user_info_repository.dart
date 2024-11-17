@@ -3,7 +3,7 @@ import 'package:tcc_medicine_management/app/modules/first_access/user_info/model
 
 abstract class IUserInfoRepository {
   Future<UserInfoDto> exec(UserInfoDto data, int? id);
-  Future<UserInfoDto> getPatient();
+  Future<UserInfoDto?> getPatient();
   Future<String> uploadPhoto(File imageFile);
   Future<String> getProfileImage();
 }

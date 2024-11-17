@@ -24,18 +24,22 @@ abstract class _PatientController with Store {
     try {
       final PatientListResponseDto dataResponse = await _patientRepository.getPatientList();
 
+      patientCards.clear();
+
+      if(dataResponse.patients == null || dataResponse.patients!.isEmpty) {
+        return dataResponse;
+      }
+
       dataResponse.patients?.forEach((patient) {
         patientCards.add(
           PatientCardController(
-            PatientCard(
-              id: patient.id!,
-              name: patient.name!,
-              age: DateTime.now().difference(DateTime.parse(patient.birthdate!)).inDays ~/ 365,
-              cellphone: patient.telephone!,
-              gender: patient.gender!,
-              lastAccess: patient.lastAccess != null ? DateTime.parse(patient.lastAccess!) : null,
-              imageUrl: patient.profilePicture != null ? Constants.baseUrl + patient.profilePicture! : '',
-            ),
+            id: patient.id!,
+            name: patient.name!,
+            age: DateTime.now().difference(DateTime.parse(patient.birthdate!)).inDays ~/ 365,
+            cellphone: patient.telephone!,
+            gender: patient.gender!,
+            lastAccess: patient.lastAccess != null ? DateTime.parse(patient.lastAccess!) : null,
+            imageUrl: patient.profilePicture != null ? Constants.baseUrl + patient.profilePicture! : '',
           ),
         );
       });

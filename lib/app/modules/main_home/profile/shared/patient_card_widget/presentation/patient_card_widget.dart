@@ -162,51 +162,49 @@ class PatientCardWidget extends StatelessWidget {
                   const SizedBox(width: 8.0),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
-                    child: Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Paciente',
-                            style: TextStyle(fontWeight: FontWeight.w300),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Paciente',
+                          style: TextStyle(fontWeight: FontWeight.w300),
+                        ),
+                        Text(
+                          patientCard.name,
+                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 8),
+                        RichText(
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                          text: TextSpan(
+                            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+                            children: [
+                              const TextSpan(
+                                text: "Idade: ",
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                              TextSpan(
+                                text: "${patientCard.age} ano(s)",
+                              ),
+                              const TextSpan(
+                                text: "\nGênero: ",
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                              TextSpan(
+                                text: patientCard.gender,
+                              ),
+                              const TextSpan(
+                                text: "\nContato: ",
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                              TextSpan(
+                                text: formatPhoneNumber(patientCard.cellphone),
+                              ),
+                            ],
                           ),
-                          Text(
-                            patientCard.name,
-                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 8),
-                          RichText(
-                            softWrap: true,
-                            overflow: TextOverflow.ellipsis,
-                            text: TextSpan(
-                              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
-                              children: [
-                                const TextSpan(
-                                  text: "Idade: ",
-                                  style: TextStyle(fontWeight: FontWeight.normal),
-                                ),
-                                TextSpan(
-                                  text: "${patientCard.age} ano(s)",
-                                ),
-                                const TextSpan(
-                                  text: "\nGênero: ",
-                                  style: TextStyle(fontWeight: FontWeight.normal),
-                                ),
-                                TextSpan(
-                                  text: patientCard.gender,
-                                ),
-                                const TextSpan(
-                                  text: "\nContato: ",
-                                  style: TextStyle(fontWeight: FontWeight.normal),
-                                ),
-                                TextSpan(
-                                  text: formatPhoneNumber(patientCard.cellphone),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

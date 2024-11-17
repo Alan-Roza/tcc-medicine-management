@@ -29,10 +29,10 @@ class _GeneralInfoPageState extends State<GeneralInfoPage> {
 
       userInfoController.dispose();
 
-      UserInfoDto patient = await userInfoController.getPatient();
+      UserInfoDto? patient = await userInfoController.getPatient();
 
-      userInfoController.nameController.text = patient.name ?? '';
-      userInfoController.setBirthDate(DateTime.parse(patient.birthdate!));
+      userInfoController.nameController.text = patient?.name ?? '';
+      userInfoController.setBirthDate(DateTime.parse(patient!.birthdate!));
       switch (patient.gender) {
         case 'Masculino':
           userInfoController.setGender(Gender.Masculino);

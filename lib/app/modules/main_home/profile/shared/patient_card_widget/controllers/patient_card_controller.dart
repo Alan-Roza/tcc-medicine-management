@@ -8,32 +8,41 @@ class PatientCardController = PatientCardControllerBase with _$PatientCardContro
 
 abstract class PatientCardControllerBase with Store {
   @observable
-  late bool isSelected;
+  bool isSelected = false;
 
   @observable
-  late int id;
+  int id = 0;
 
   @observable
-  late String name;
+  String name = '';
 
   @observable
-  late int age;
+  int age = 0;
 
   @observable
-  late String cellphone;
+  String cellphone = '';
 
   @observable
-  late String gender;
+  String gender = '';
 
   @observable
-  late DateTime? lastAccess;
+  DateTime? lastAccess;
 
   @observable
-  late String imageUrl;
+  String imageUrl = '';
 
-  PatientCardControllerBase(PatientCard? patient) {
-    if (patient == null) return;
+  PatientCardControllerBase({
+    this.id = 0,
+    this.name = '',
+    this.age = 0,
+    this.cellphone = '',
+    this.gender = '',
+    this.lastAccess,
+    this.imageUrl = '',
+  });
 
+  @action
+  void updatePatient(PatientCard patient) {
     id = patient.id;
     name = patient.name;
     age = patient.age;

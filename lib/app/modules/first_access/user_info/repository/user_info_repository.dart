@@ -49,12 +49,16 @@ class UserInfoRepository implements IUserInfoRepository {
   }
 
   @override
-  Future<UserInfoDto> getPatient() async {
+  Future<UserInfoDto?> getPatient() async {
     if (await _networkInfo.isConnected) {
       try {
         final response = await _apiService.get(
           endPoint: "/Patient",
         );
+
+        if (response.data == null || response.data.isEmpty) {
+          return null;
+        }
 
         final dataResponse = UserInfoDto.fromJson(response.data);
 

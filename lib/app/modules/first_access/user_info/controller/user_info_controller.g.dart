@@ -61,7 +61,7 @@ mixin _$UserInfoController on _UserInfoController, Store {
       AsyncAction('_UserInfoController.getPatient', context: context);
 
   @override
-  Future<UserInfoDto> getPatient() {
+  Future<UserInfoDto?> getPatient() {
     return _$getPatientAsyncAction.run(() => super.getPatient());
   }
 

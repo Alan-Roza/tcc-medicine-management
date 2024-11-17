@@ -145,9 +145,9 @@ abstract class _UserInfoController with Store {
   }
 
   @action
-  Future<UserInfoDto> getPatient() async {
+  Future<UserInfoDto?> getPatient() async {
     try {
-      final UserInfoDto dataResponse = await _userInfoRepository.getPatient();
+      final UserInfoDto? dataResponse = await _userInfoRepository.getPatient();
       return dataResponse;
     } catch (e) {
       return Future.error(e.toString());
