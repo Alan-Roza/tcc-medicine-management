@@ -31,6 +31,7 @@ import 'package:tcc_medicine_management/app/modules/main_home/profile/user_gener
 import 'package:tcc_medicine_management/app/modules/medicine/form/presentation/medicine_stock_form_page.dart';
 import 'package:tcc_medicine_management/app/modules/medicine/view/presentation/medicine_stock_view_page.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/form/presentation/treatment_form_page.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/schedule/presentation/treatment_schedule_page.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/view/presentation/treatment_view_page.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/forgot_password/presentation/unauth_forgot_password_page.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/home/presentation/unauth_home_page.dart';
@@ -199,6 +200,13 @@ final routes = <RouteBase>[
           bool readOnly = params['readOnly'] == 'true';
 
           return GlobalWrapper(child: TreatmentViewPage(treatmentId: params['treatmentId']!, readOnly: readOnly));
+        },
+      ),
+      GoRoute(
+        path: 'treatment-schedule',
+        name: 'TreatmentSchedule',
+        builder: (BuildContext context, GoRouterState state) {
+          return GlobalWrapper(child: TreatmentSchedulePage());
         },
       ),
       GoRoute(

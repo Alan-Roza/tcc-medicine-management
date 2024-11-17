@@ -45,6 +45,8 @@ import 'package:tcc_medicine_management/app/modules/treatment/form/controllers/t
 import 'package:tcc_medicine_management/app/modules/treatment/form/repository/treatment_medicine_repository.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/list/controllers/treatment_list_controller.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/list/repository/treatment_list_repository.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/schedule/controllers/treatment_schedule_controller.dart';
+import 'package:tcc_medicine_management/app/modules/treatment/schedule/repository/treatment_schedule_repository.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/view/controllers/treatment_view_controller.dart';
 import 'package:tcc_medicine_management/app/modules/treatment/view/repository/treatment_view_repository.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/forgot_password/controller/forgot_password_controller.dart';
@@ -257,6 +259,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               Provider<PatientController>(create: (_) => PatientController()),
               Provider<PatientCardController>(create: (_) => PatientCardController(null)),
               Provider<ForgotPasswordController>(create: (_) => ForgotPasswordController()),
+              Provider<TreatmentScheduleController>(create: (_) => TreatmentScheduleController()),
             ],
             child: MaterialApp.router(
               key: key, 
@@ -338,4 +341,7 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<ForgotPasswordRepository>(
       () => ForgotPasswordRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(DioFactory().getDio())));
+
+  getIt.registerLazySingleton<TreatmentScheduleRepository>(
+      () => TreatmentScheduleRepository(NetworkInfoImpl(InternetConnectionChecker()), ApiService(DioFactory().getDio())));
 }
