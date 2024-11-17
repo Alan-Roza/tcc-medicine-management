@@ -80,7 +80,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   onPressed: () async {
                     try {
                       final UserInfoDto userPatient = await userInfoController.getPatient();
-                      final UserInfoDto response = await userInfoController.onSubmit(_formKey, userPatient.patientId != null ? int.parse(userPatient.patientId!) : null);
+                      final UserInfoDto response = await userInfoController.onSubmit(_formKey, userPatient.name != null ? 1 : null);
                       if (profilePictureController.image != null) await userInfoController.uploadPhoto(profilePictureController.image!);
                       userController.login(response.name ?? 'Desconhecido');
 
