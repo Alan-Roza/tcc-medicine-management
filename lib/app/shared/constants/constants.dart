@@ -1,8 +1,8 @@
 class Constants {
   //GET https://newsapi.org/v2/everything?q=bitcoin&api
   //top-headlines?country=us
-  // static const String baseUrl = "https://ee2e-200-211-62-61.ngrok-free.app";
-  static const String baseUrl = "http://192.168.187.227:7777";
+  static const String baseUrl = "https://4df6-189-46-65-146.ngrok-free.app";
+  // static const String baseUrl = "http://192.168.187.227:7777";
   // static const String baseUrl = "http://192.168.1.42:7777";
   // static const String baseUrlMqtt = "192.168.1.42";
   static const String baseUrlMqtt = "192.168.187.227";
