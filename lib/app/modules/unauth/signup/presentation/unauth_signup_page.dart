@@ -174,19 +174,17 @@ class _UnauthSignupPageState extends State<UnauthSignupPage> {
                                     onPressed: () async {
                                       try {
                                         final response = await signupController.onSignup(formKey);
-                                        userController.token = response?.token;
-                                        userController.userEmail = response?.userLogin;
+                                        userController.token = response.token;
+                                        userController.userEmail = response.userLogin;
 
-                                        if (response != null) {
-                                          context.goNamed('FirstAccess');
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(
-                                              backgroundColor: Colors.green,
-                                              content: Text("Usuário cadastrado com sucesso."),
-                                            ),
-                                          );
-                                        }
-                                        return;
+                                        context.goNamed('FirstAccess');
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: Colors.green,
+                                            content: Text("Usuário cadastrado com sucesso."),
+                                          ),
+                                        );
+                                                                              return;
                                       } catch (error) {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(

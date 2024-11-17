@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:tcc_medicine_management/app/modules/unauth/login/model/dto/signup_response_dto.dart';
 import 'package:tcc_medicine_management/app/modules/unauth/login/repository/auth_repository.dart';
 import 'package:tcc_medicine_management/main.dart';
 
@@ -36,7 +37,7 @@ abstract class _SignupController with Store {
   }
 
   @action
-  Future<dynamic> onSignup(GlobalKey<FormState> formKey) async {
+  Future<SignupResponseDto> onSignup(GlobalKey<FormState> formKey) async {
     // Verifica se o formulário é válido
     if (!formKey.currentState!.validate()) {
       return Future.error('Por favor, preencha os campos corretamente');

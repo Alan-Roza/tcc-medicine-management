@@ -104,7 +104,7 @@ mixin _$SignupController on _SignupController, Store {
       AsyncAction('_SignupController.onSignup', context: context);
 
   @override
-  Future<dynamic> onSignup(GlobalKey<FormState> formKey) {
+  Future<SignupResponseDto> onSignup(GlobalKey<FormState> formKey) {
     return _$onSignupAsyncAction.run(() => super.onSignup(formKey));
   }
 
