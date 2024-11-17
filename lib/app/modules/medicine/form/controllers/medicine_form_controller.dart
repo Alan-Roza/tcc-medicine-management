@@ -216,7 +216,8 @@ abstract class MedicineFormControllerBase with Store {
           ? DateFormat('yyyy-MM-ddTHH:mm:ss.SSSZ').format(DateFormat('dd/MM/yyyy').parse(expirationDateController.text))
           : null,
         drawerNumber: drawerNumberController.text.isEmpty ? 0 : int.parse(drawerNumberController.text),
-        hardwareId: hardwareIdController.text,
+        // hardwareId: hardwareIdController.text,
+        hardwareId: drawers.firstWhere((drawer) => drawer['name'] == hardwareIdController.text)['id'],
       );
 
       final MedicineDto dataResponse = await _medicineRepository.exec(medicine);

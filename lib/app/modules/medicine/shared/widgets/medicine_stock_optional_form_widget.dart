@@ -173,7 +173,8 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
                         value: formController.hardwareIdController.text,
                         onChanged: (value) {
                           if (value != null && value.isNotEmpty) {
-                            formController.hardwareIdController.text = value['id'] ?? '';
+                            formController.hardwareIdController.text = value['name'] ?? '';
+                            formController.drawerNumberController.text = value['drawerNumber'] ?? '0';
                             formController.drawerNumber = int.parse(value['drawerNumber'] ?? 0);
                           }
                         },
@@ -227,7 +228,8 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
                             ? null
                             : (value) {
                                 if (value != null && value.isNotEmpty) {
-                                  formController.hardwareIdController.text = value['id'] ?? '';
+                                  formController.hardwareIdController.text = value['name'] ?? '';
+                                  formController.hardwareIdController.text = value['drawerNumber'] ?? '0';
                                   formController.drawerNumber = int.parse(value['drawerNumber'] ?? 0);
                                 }
                               },

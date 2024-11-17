@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:tcc_medicine_management/app/core/infra/mqtt_client.dart';
 import 'package:tcc_medicine_management/app/modules/main_home/profile/connection/list/controllers/connection_controller.dart';
+import 'package:tcc_medicine_management/app/shared/controllers/user/user_controller.dart';
 import 'package:tcc_medicine_management/app/shared/widgets/padded_screen.dart';
+import 'package:tcc_medicine_management/main.dart';
 
 class ConnectionPage extends StatefulWidget {
   const ConnectionPage({super.key});
@@ -14,13 +17,20 @@ class ConnectionPage extends StatefulWidget {
 
 class _ConnectionPageState extends State<ConnectionPage> {
   late ConnectionController connectionController;
+  late UserController userController;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     connectionController = Provider.of<ConnectionController>(context);
+    userController = Provider.of<UserController>(context);
 
     connectionController.getListConnections();
+
+    final MqttService mqttService = getIt<MqttService>();
+    if (!mqttService.isConnected() && userController.userId != null) {
+      mqttService.connect(userController.userId.toString());
+    }
   }
 
   @override
