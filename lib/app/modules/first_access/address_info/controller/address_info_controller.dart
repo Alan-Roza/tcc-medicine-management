@@ -44,8 +44,24 @@ abstract class _AddressInfoController with Store {
   Future<AddressInfoDto> onSubmit(GlobalKey<FormState> formKey, int? userId) async {
     try {
       // TODO: will be implemented at future
-      if (!formKey.currentState!.validate()) {
-        return Future.error('Preencha os campos corretamente!');
+      // if (!formKey.currentState!.validate()) {
+      //   return Future.error('Preencha os campos corretamente!');
+      // }
+
+      if (postalCode.text.isEmpty) {
+        return Future.error('O campo CEP não pode estar vazio!');
+      }
+      if (street.text.isEmpty) {
+        return Future.error('O campo Rua não pode estar vazio!');
+      }
+      if (neighborhood.text.isEmpty) {
+        return Future.error('O campo Bairro não pode estar vazio!');
+      }
+      if (city.text.isEmpty) {
+        return Future.error('O campo Cidade não pode estar vazio!');
+      }
+      if (state.text.isEmpty) {
+        return Future.error('O campo Estado não pode estar vazio!');
       }
 
       final AddressInfoDto addressInfo = AddressInfoDto(

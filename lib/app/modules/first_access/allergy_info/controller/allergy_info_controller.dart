@@ -32,6 +32,15 @@ abstract class _AllergyInfoController with Store {
       //   return Future.error('Preencha os campos corretamente!');
       // }
 
+      if (medicines.isEmpty) {
+        return Future.error('Adicione ao menos um medicamento!');
+      }
+
+      final uniqueMedicines = medicines.toSet().toList();
+      if (uniqueMedicines.length != medicines.length) {
+        return Future.error('Não pode haver medicamentos repetidos!');
+      }
+
       final List<AllergyInfoDto> allergyInfo = medicines.map((medicine) => AllergyInfoDto(allergy: medicine)).toList();
 
       final List<AllergyInfoDto> dataResponse = await _allergyInfoRepository.exec(allergyInfo);

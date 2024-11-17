@@ -211,7 +211,7 @@ abstract class MedicineFormControllerBase with Store {
         importance: importanceLevel.displayName,
         storageQuantity: int.parse(quantityController.text),
         // unitType: unityController.text,
-        price: double.parse(valuePaidController.text.replaceAll(',', '.')),
+        price: valuePaidController.text.isNotEmpty ? double.parse(valuePaidController.text.replaceAll(',', '.')) : null,
         expirationDate: expirationDateController.text.isNotEmpty
           ? DateFormat('yyyy-MM-ddTHH:mm:ss.SSSZ').format(DateFormat('dd/MM/yyyy').parse(expirationDateController.text))
           : null,

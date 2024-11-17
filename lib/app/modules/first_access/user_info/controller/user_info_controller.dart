@@ -10,7 +10,7 @@ import 'package:tcc_medicine_management/main.dart';
 part 'user_info_controller.g.dart';
 
 // ignore: constant_identifier_names
-enum Gender { Masculino, Feminino }
+enum Gender { Masculino, Feminino, Outro }
 
 class UserInfoController = _UserInfoController with _$UserInfoController;
 
@@ -71,8 +71,32 @@ abstract class _UserInfoController with Store {
   Future<UserInfoDto> onSubmit(GlobalKey<FormState> formKey, int? userId) async {
     try {
       // TODO: will be implemented at future
-      if (!formKey.currentState!.validate()) {
-        return Future.error('Preencha os campos corretamente!');
+      // if (!formKey.currentState!.validate()) {
+      //   return Future.error('Preencha os campos corretamente!');
+      // }
+
+      if (nameController.text.isEmpty) {
+        return Future.error('O campo Nome é obrigatório');
+      }
+
+      if (phoneController.text.isEmpty) {
+        return Future.error('O campo Telefone é obrigatório');
+      }
+
+      if (birthDateController.text.isEmpty) {
+        return Future.error('O campo Data de Nascimento é obrigatório');
+      }
+
+      if (gender == null) {
+        return Future.error('O campo Gênero é obrigatório');
+      }
+
+      if (nameController.text.contains(RegExp(r'[0-9]'))) {
+        return Future.error('O campo Nome não pode conter números');
+      }
+
+      if (phoneController.text.length != 11) {
+        return Future.error('O campo Telefone precisa ter 11 dígitos');
       }
 
       final String name = nameController.text ?? '-';

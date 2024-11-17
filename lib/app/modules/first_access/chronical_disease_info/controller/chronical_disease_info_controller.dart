@@ -86,6 +86,10 @@ abstract class _ChronicalDiseaseInfoController with Store {
         otherDiseases.add('Osteoporose');
       }
 
+      if (otherDiseases.isEmpty) {
+        return Future.error('É necessário ter ao menos uma doença crônica.');
+      }
+
       final List<ChronicalDiseaseInfoDto> diseaseInfo = otherDiseases.map((disease) => ChronicalDiseaseInfoDto(disease: disease)).toList();
 
       final List<ChronicalDiseaseInfoDto> dataResponse = await _chronicalDiseaseInfoRepository.exec(diseaseInfo, id);

@@ -118,6 +118,47 @@ class MedicineStockFormPageState extends State<MedicineStockFormPage> with Singl
                                         );
                                       }
                                     } else {
+                                      if (stepProgressController.currentStep < _formWidgets.length - 2) {
+                                        if (formController.nameController.text.isEmpty) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              backgroundColor: Colors.red,
+                                              content: Text("Nome do medicamento não pode ser vazio."),
+                                            ),
+                                          );
+                                          return;
+                                        }
+                                        if (formController.quantityController.text.isEmpty || int.parse(formController.quantityController.text) <= 0) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              backgroundColor: Colors.red,
+                                              content: Text("Quantidade não pode ser vazio."),
+                                            ),
+                                          );
+                                          return;
+                                        }
+                                      }
+                                       if (stepProgressController.currentStep == _formWidgets.length - 2) {
+                                        if (formController.expirationDateController.text.isEmpty) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            backgroundColor: Colors.red,
+                                            content: Text("Data de Validade não pode ser vazia."),
+                                          ),
+                                          );
+                                          return;
+                                        }
+                                        if (formController.valuePaidController.text.isEmpty) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            backgroundColor: Colors.red,
+                                            content: Text("Valor pago não pode ser vazio."),
+                                          ),
+                                          );
+                                          return;
+                                        }
+                                          
+                                      }
                                       stepProgressController.increaseCurrentStep();
                                     }
                                   },

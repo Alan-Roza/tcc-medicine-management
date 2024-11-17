@@ -138,38 +138,39 @@ class ConfigurationsFormWidgetState extends State<ConfigurationsFormWidget> with
           ),
           const SizedBox(height: 30.0),
 
-          const Text(
-            'TIPOGRAFIA',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          Observer(
-            builder: (_) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: DropdownButtonFormField<String>(
-                value: configurationsController.fontSize,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.people_outline),
-                  labelText: 'Tamanho da Fonte',
-                ),
-                items: const [
-                  DropdownMenuItem<String>(
-                    value: "normal",
-                    child: Text('NORMAL'),
-                  ),
-                  DropdownMenuItem<String>(
-                    value: "plus",
-                    child: Text('AUMENTADA'),
-                  ),
-                ],
-                onChanged: (String? value) {
-                  if (value != null) {
-                    configurationsController.setFontSize(value);
-                  }
-                },
-              ),
-            ),
-          ),
-          const SizedBox(height: 30.0),
+// TODO: not working yet
+          // const Text(
+          //   'TIPOGRAFIA',
+          //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          // ),
+          // Observer(
+          //   builder: (_) => Padding(
+          //     padding: const EdgeInsets.symmetric(vertical: 8.0),
+          //     child: DropdownButtonFormField<String>(
+          //       value: configurationsController.fontSize,
+          //       decoration: const InputDecoration(
+          //         prefixIcon: Icon(Icons.people_outline),
+          //         labelText: 'Tamanho da Fonte',
+          //       ),
+          //       items: const [
+          //         DropdownMenuItem<String>(
+          //           value: "normal",
+          //           child: Text('NORMAL'),
+          //         ),
+          //         DropdownMenuItem<String>(
+          //           value: "plus",
+          //           child: Text('AUMENTADA'),
+          //         ),
+          //       ],
+          //       onChanged: (String? value) {
+          //         if (value != null) {
+          //           configurationsController.setFontSize(value);
+          //         }
+          //       },
+          //     ),
+          //   ),
+          // ),
+          // const SizedBox(height: 30.0),
         ],
       ),
     );

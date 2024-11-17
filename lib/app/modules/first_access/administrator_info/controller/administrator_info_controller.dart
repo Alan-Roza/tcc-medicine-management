@@ -28,6 +28,10 @@ abstract class _AdministratorInfoController with Store {
       //   return Future.error('Preencha os campos corretamente!');
       // }
 
+      if (code.isEmpty) {
+        return Future.error('O código não pode estar vazio!');
+      }
+
       final AdministratorRequestDto data = AdministratorRequestDto(
         otp: code,
       );

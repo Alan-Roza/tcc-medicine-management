@@ -4,6 +4,7 @@ class UserInfoDto {
   String? birthdate;
   String? telephone;
   String? gender;
+  String? patientId;
 
   UserInfoDto(
       {this.name, this.email, this.birthdate, this.telephone, this.gender});
@@ -14,6 +15,7 @@ class UserInfoDto {
     birthdate = json['birthdate'];
     telephone = json['telephone'];
     gender = json['gender'];
+    patientId = json['patientId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -22,6 +24,7 @@ class UserInfoDto {
     data['birthdate'] = birthdate;
     data['telephone'] = '55$telephone';
     data['gender'] = gender;
+    data['patientId'] = patientId;
     return data;
   }
 }

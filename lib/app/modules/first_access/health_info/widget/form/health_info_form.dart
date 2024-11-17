@@ -29,6 +29,7 @@ class HealthInfoFormWidgetState extends State<HealthInfoFormWidget> with SingleT
               textEditingController: healthInfoController.height,
               icon: Icons.local_post_office_rounded,
               label: 'Altura (metros)',
+              type: 'numeric',
               onChanged: (value) {
                 // Add your logic here
               },
@@ -39,6 +40,7 @@ class HealthInfoFormWidgetState extends State<HealthInfoFormWidget> with SingleT
               textEditingController: healthInfoController.weight,
               icon: Icons.streetview_outlined,
               label: 'Peso (kg)',
+              type: 'numeric',
               onChanged: (value) {
                 // Add your logic here
               },

@@ -108,20 +108,32 @@ class TreatmentFormPageState extends State<TreatmentFormPage> with SingleTickerP
                                           ),
                                         );
                                       }
-                                    } else if (stepProgressController.currentStep == 0 &&
-                                        formController.selectedMedicines.isEmpty) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                          backgroundColor: Colors.red,
-                                          content: Text(
-                                            'É necessário ter pelo menos um medicamento.',
+                                    } else if (stepProgressController.currentStep == 0) {
+                                      if (formController.selectedMedicines.isEmpty) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            backgroundColor: Colors.red,
+                                            content: Text(
+                                              'É necessário ter pelo menos um medicamento.',
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                      return;
-                                    } else {
-                                      stepProgressController.increaseCurrentStep();
+                                        );
+                                        return;
+                                      }
+                                      if (formController.nameController.text.isEmpty) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            backgroundColor: Colors.red,
+                                            content: Text(
+                                              'O nome do tratamento é obrigatório.',
+                                            ),
+                                          ),
+                                        );
+                                        return;
+                                      }
                                     }
+                                    
+                                    stepProgressController.increaseCurrentStep();
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.blue,

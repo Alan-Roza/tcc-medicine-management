@@ -56,7 +56,7 @@ class CustomTextFieldWidget extends StatelessWidget {
         validator: validator,
         controller: textEditingController,
         keyboardType: type == 'numeric' ? TextInputType.number : TextInputType.text,
-        inputFormatters: type == 'numeric' ? [FilteringTextInputFormatter.digitsOnly] : [],
+        // inputFormatters: type == 'numeric' ? [FilteringTextInputFormatter.digitsOnly] : [],
         onChanged: (value) {
           if (onChanged != null) onChanged!(value);
         },

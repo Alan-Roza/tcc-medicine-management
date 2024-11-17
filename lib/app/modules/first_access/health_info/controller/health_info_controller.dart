@@ -61,13 +61,21 @@ abstract class _HealthInfoController with Store {
   Future<HealthInfoDto> onSubmit(GlobalKey<FormState> formKey, int? id) async {
     try {
       // TODO: will be implemented at future
-      if (!formKey.currentState!.validate()) {
-        return Future.error('Preencha os campos corretamente!');
+      // if (!formKey.currentState!.validate()) {
+      //   return Future.error('Preencha os campos corretamente!');
+      // }
+
+      if (height.text.isEmpty || double.tryParse(height.text.replaceAll('.', '').replaceAll(',', '.')) == null) {
+        return Future.error('Altura inválida!');
+      }
+
+      if (weight.text.isEmpty || double.tryParse(weight.text.replaceAll('.', '').replaceAll(',', '.')) == null) {
+        return Future.error('Peso inválido!');
       }
 
       final HealthInfoDto healthInfo = HealthInfoDto(
-        height: double.parse(height.text),
-        weight: double.parse(weight.text),
+        height: double.parse(height.text.replaceAll('.', '').replaceAll(',', '.')),
+        weight: double.parse(weight.text.replaceAll('.', '').replaceAll(',', '.')),
         pregnant: isPregnant,
         smoking: isSmoker,
         alcohol: isAlcohol,
