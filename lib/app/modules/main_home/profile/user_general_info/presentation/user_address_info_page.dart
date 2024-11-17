@@ -52,7 +52,7 @@ class _UserAddressInfoPageState extends State<UserAddressInfoPage> {
       body: PaddedScreen(
         child: Column(
           children: [
-            Expanded(child: AddressInfoFormWidget(formKey: formKey)),
+            Expanded(child: SingleChildScrollView(child: AddressInfoFormWidget(formKey: formKey))),
             ElevatedButton(
               onPressed: () async {
                 try {

@@ -33,6 +33,14 @@ mixin _$AllergyInfoController on _AllergyInfoController, Store {
     return _$onSubmitAsyncAction.run(() => super.onSubmit());
   }
 
+  late final _$getAllergiesAsyncAction =
+      AsyncAction('_AllergyInfoController.getAllergies', context: context);
+
+  @override
+  Future<List<AllergyInfoDto>> getAllergies() {
+    return _$getAllergiesAsyncAction.run(() => super.getAllergies());
+  }
+
   late final _$_AllergyInfoControllerActionController =
       ActionController(name: '_AllergyInfoController', context: context);
 
@@ -53,6 +61,17 @@ mixin _$AllergyInfoController on _AllergyInfoController, Store {
         name: '_AllergyInfoController.removeMedicine');
     try {
       return super.removeMedicine(medicine);
+    } finally {
+      _$_AllergyInfoControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setAllergies(List<AllergyInfoDto> allergies) {
+    final _$actionInfo = _$_AllergyInfoControllerActionController.startAction(
+        name: '_AllergyInfoController.setAllergies');
+    try {
+      return super.setAllergies(allergies);
     } finally {
       _$_AllergyInfoControllerActionController.endAction(_$actionInfo);
     }

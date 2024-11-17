@@ -142,6 +142,17 @@ mixin _$ChronicalDiseaseInfoController
   }
 
   @override
+  void setDiseases(List<ChronicalDiseaseInfoDto> diseases) {
+    final _$actionInfo = _$_ChronicalDiseaseInfoControllerActionController
+        .startAction(name: '_ChronicalDiseaseInfoController.setDiseases');
+    try {
+      return super.setDiseases(diseases);
+    } finally {
+      _$_ChronicalDiseaseInfoControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void removeDisease(String disease) {
     final _$actionInfo = _$_ChronicalDiseaseInfoControllerActionController
         .startAction(name: '_ChronicalDiseaseInfoController.removeDisease');

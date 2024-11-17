@@ -2,4 +2,5 @@ import 'package:tcc_medicine_management/app/modules/first_access/allergy_info/mo
 
 abstract class IAllergyInfoRepository {
   Future<List<AllergyInfoDto>> exec(List<AllergyInfoDto> data);
+  Future<List<AllergyInfoDto>> getAllergies();
 }

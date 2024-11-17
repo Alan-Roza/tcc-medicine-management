@@ -19,15 +19,32 @@ class AllergyInfoRepository implements IAllergyInfoRepository {
     if (await _networkInfo.isConnected) {
       try {
         final response = await _apiService.post(
-          endPoint: "/Patient/Allergy", 
+          endPoint: "/Patient/Allergy",
           data: data.map((item) => item.toJson()).toList(),
         );
-        
+
         List<AllergyInfoDto> allergies = parseAllergies(response.data);
-      
+
         return allergies;
-      } 
-      catch (error) {
+      } catch (error) {
+        return Future.error(handleError(error));
+      }
+    } else {
+      // Throws an exception when there is no internet connection
+      return Future.error("Verifique o acesso à internet");
+    }
+  }
+
+  @override
+  Future<List<AllergyInfoDto>> getAllergies() async {
+    if (await _networkInfo.isConnected) {
+      try {
+        final response = await _apiService.get(endPoint: "/Patient/Allergy/AllAlergies");
+
+        List<AllergyInfoDto> allergies = parseAllergies(response.data);
+
+        return allergies;
+      } catch (error) {
         return Future.error(handleError(error));
       }
     } else {

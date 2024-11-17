@@ -25,6 +25,14 @@ abstract class _AllergyInfoController with Store {
   }
 
   @action
+  void setAllergies(List<AllergyInfoDto> allergies) {
+    medicines.clear();
+    for (var allergy in allergies) {
+      medicines.add(allergy.allergy!);
+    }
+  }
+
+  @action
   Future<List<AllergyInfoDto>> onSubmit() async {
     try {
       // TODO: will be implemented at future
@@ -44,6 +52,17 @@ abstract class _AllergyInfoController with Store {
       final List<AllergyInfoDto> allergyInfo = medicines.map((medicine) => AllergyInfoDto(allergy: medicine)).toList();
 
       final List<AllergyInfoDto> dataResponse = await _allergyInfoRepository.exec(allergyInfo);
+
+      return dataResponse;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  @action
+  Future<List<AllergyInfoDto>> getAllergies() async {
+    try {
+      final List<AllergyInfoDto> dataResponse = await _allergyInfoRepository.getAllergies();
 
       return dataResponse;
     } catch (e) {

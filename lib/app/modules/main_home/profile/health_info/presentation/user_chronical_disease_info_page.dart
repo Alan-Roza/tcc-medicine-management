@@ -28,7 +28,7 @@ class _UserChronicalDiseaseInfoPageState extends State<UserChronicalDiseaseInfoP
 
       List<ChronicalDiseaseInfoDto>? diseasesInfo = await chronicalDiseaseInfoController.getDiseases();
 
-      // chronicalDiseaseInfoController.setDiseases(diseasesInfo);
+      chronicalDiseaseInfoController.setDiseases(diseasesInfo);
 
       if (diseasesInfo.isNotEmpty) userId = 1; // 1 == already registered
     });
@@ -48,7 +48,7 @@ class _UserChronicalDiseaseInfoPageState extends State<UserChronicalDiseaseInfoP
       body: PaddedScreen(
         child: Column(
           children: [
-            Expanded(child: ChronicalDiseaseInfoFormWidget(formKey: _formKey)),
+            Expanded(child: SingleChildScrollView(child: ChronicalDiseaseInfoFormWidget(formKey: _formKey))),
             ElevatedButton(
               onPressed: () async {
                 try {

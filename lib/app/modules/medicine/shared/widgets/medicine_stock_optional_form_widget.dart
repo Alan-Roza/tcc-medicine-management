@@ -130,10 +130,10 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
               ),
             ),
           ),
-          formController.drawers.isEmpty || formController.hardwareIdController.text.isEmpty
+          formController.drawers.isEmpty || (widget.readOnly && formController.hardwareIdController.text.isEmpty)
               ? const SizedBox()
               : const SizedBox(height: 20),
-          formController.drawers.isEmpty || formController.hardwareIdController.text.isEmpty
+          formController.drawers.isEmpty || (widget.readOnly && formController.hardwareIdController.text.isEmpty)
               ? const SizedBox()
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,7 +156,7 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
                     )
                   ],
                 ),
-          formController.drawers.isEmpty || formController.hardwareIdController.text.isEmpty
+          formController.drawers.isEmpty || (widget.readOnly && formController.hardwareIdController.text.isEmpty)
               ? const SizedBox()
               : widget.readOnly
                   ? Observer(
@@ -198,15 +198,17 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
                       ),
                     ),
           formController.drawers.isEmpty ||
-                  formController.drawerNumberController.text.isEmpty ||
-                  formController.drawerNumberController.text == '0'
+                  (widget.readOnly &&
+                      (formController.drawerNumberController.text.isEmpty ||
+                          formController.drawerNumberController.text == '0'))
               ? const SizedBox()
               : widget.readOnly
                   ? const SizedBox()
                   : const SizedBox(height: 16),
           formController.drawers.isEmpty ||
-                  formController.drawerNumberController.text.isEmpty ||
-                  formController.drawerNumberController.text == '0'
+                  (widget.readOnly &&
+                      (formController.drawerNumberController.text.isEmpty ||
+                          formController.drawerNumberController.text == '0'))
               ? const SizedBox()
               : widget.readOnly
                   ? Observer(
@@ -221,7 +223,7 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
                   : Observer(
                       builder: (_) => DropdownButtonFormField<dynamic>(
                         value: formController.drawerNumberController.text,
-                        onChanged: formController.hardwareIdController.text.isEmpty
+                        onChanged: widget.readOnly
                             ? null
                             : (value) {
                                 if (value != null && value.isNotEmpty) {

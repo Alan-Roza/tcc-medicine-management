@@ -38,6 +38,32 @@ abstract class _ChronicalDiseaseInfoController with Store {
   }
 
   @action
+  void setDiseases(List<ChronicalDiseaseInfoDto> diseases) {
+    otherDiseases.clear();
+    for (var disease in diseases) {
+      switch (disease.disease) {
+      case 'Hipertensão':
+        hasHypertension = true;
+        break;
+      case 'Diabetes':
+        hasDiabetes = true;
+        break;
+      case 'Alzheimer':
+        hasAlzheimer = true;
+        break;
+      case 'Doença de Parkinson':
+        hasParkinsonDisease = true;
+        break;
+      case 'Osteoporose':
+        hasOsteoporosis = true;
+        break;
+      default:
+        otherDiseases.add(disease.disease!);
+      }
+    }
+  }
+
+  @action
   void removeDisease(String disease) {
     otherDiseases.remove(disease);
   }
@@ -92,7 +118,7 @@ abstract class _ChronicalDiseaseInfoController with Store {
 
       final List<ChronicalDiseaseInfoDto> diseaseInfo = otherDiseases.map((disease) => ChronicalDiseaseInfoDto(disease: disease)).toList();
 
-      final List<ChronicalDiseaseInfoDto> dataResponse = await _chronicalDiseaseInfoRepository.exec(diseaseInfo, id);
+      final List<ChronicalDiseaseInfoDto> dataResponse = await _chronicalDiseaseInfoRepository.exec(diseaseInfo, null);
 
       return dataResponse;
     } catch (e) {

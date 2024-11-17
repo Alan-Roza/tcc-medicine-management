@@ -14,10 +14,10 @@ abstract class _LoginController with Store {
   bool isPasswordVisible = false;
 
   @observable
-  String email = 'alan@rozaworks.com.br'; // TODO: dont forget to remove this default value
+  String email = ''; 
 
   @observable
-  String password = '123456'; // TODO: dont forget to remove this default value
+  String password = '';
 
   @action
   void togglePasswordVisibility() {

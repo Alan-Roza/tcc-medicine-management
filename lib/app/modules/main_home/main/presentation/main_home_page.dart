@@ -194,11 +194,11 @@ class _MainHomePageState extends State<MainHomePage> {
                             title: const Text('Conexão'),
                             onTap: () => context.goNamed('Connection'),
                           ),
-                          ListTile(
-                            leading: const Icon(Icons.notifications_none),
-                            title: const Text('Notificações'),
-                            onTap: () => context.goNamed('Notification'),
-                          ),
+                          // ListTile(
+                          //   leading: const Icon(Icons.notifications_none),
+                          //   title: const Text('Notificações'),
+                          //   onTap: () => context.goNamed('Notification'),
+                          // ),
                           ListTile(
                             leading: const Icon(Icons.person),
                             title: const Text('Perfil'),
@@ -1230,7 +1230,27 @@ class _MainHomePageState extends State<MainHomePage> {
             title,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          if (action != null) TextButton(onPressed: () {}, child: Text(action)),
+          // if (action != null) TextButton(onPressed: () {}, child: Text(action)),
+        action != null
+          ? DropdownButton<String>(
+            value: action,
+            icon: const Icon(Icons.arrow_drop_down, color: Colors.blue),
+            underline: Container(
+              height: 2,
+              color: Colors.transparent,
+            ),
+            onChanged: (String? newValue) {
+              // Handle the action change here
+            },
+            items: <String>[action]
+              .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value, style: const TextStyle(fontSize: 14, color: Colors.blue)),
+              );
+            }).toList(),
+            )
+          : Container()
         ],
       ),
     );

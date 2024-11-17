@@ -52,7 +52,7 @@ class _GeneralHealthInfoPageState extends State<GeneralHealthInfoPage> {
       body: PaddedScreen(
         child: Column(
           children: [
-            Expanded(child: HealthInfoFormWidget(formKey: formKey)),
+            Expanded(child: SingleChildScrollView(child: HealthInfoFormWidget(formKey: formKey))),
             ElevatedButton(
               onPressed: () async {
                 try {
