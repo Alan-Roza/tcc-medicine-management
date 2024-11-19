@@ -22,11 +22,11 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
   late MedicineFormController formController;
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     super.didChangeDependencies();
     final MedicineFormController formController = Provider.of<MedicineFormController>(context);
 
-    formController.getDrawersResource();
+    await formController.getDrawersResource();
   }
 
   @override
@@ -198,60 +198,71 @@ class MedicineStockOptionalFormWidgetState extends State<MedicineStockOptionalFo
                         ),
                       ),
                     ),
-          formController.drawers.isEmpty ||
-                  (widget.readOnly &&
-                      (formController.drawerNumberController.text.isEmpty ||
-                          formController.drawerNumberController.text == '0'))
+          formController.drawers.isEmpty || (widget.readOnly && formController.hardwareIdController.text.isEmpty)
               ? const SizedBox()
-              : widget.readOnly
-                  ? const SizedBox()
-                  : const SizedBox(height: 16),
-          formController.drawers.isEmpty ||
-                  (widget.readOnly &&
-                      (formController.drawerNumberController.text.isEmpty ||
-                          formController.drawerNumberController.text == '0'))
-              ? const SizedBox()
-              : widget.readOnly
-                  ? Observer(
-                      builder: (_) => CustomTextFieldWidget(
-                        textEditingController: formController.drawerNumberController,
-                        icon: Icons.medication_rounded,
-                        label: 'Número da Gaveta',
-                        readOnly: widget.readOnly,
-                        enabled: !widget.readOnly,
-                      ),
-                    )
-                  : Observer(
-                      builder: (_) => DropdownButtonFormField<dynamic>(
-                        value: formController.drawerNumberController.text,
-                        onChanged: widget.readOnly
-                            ? null
-                            : (value) {
-                                if (value != null && value.isNotEmpty) {
-                                  formController.hardwareIdController.text = value['name'] ?? '';
-                                  formController.hardwareIdController.text = value['drawerNumber'] ?? '0';
-                                  formController.drawerNumber = int.parse(value['drawerNumber'] ?? 0);
-                                }
-                              },
-                        items: [
-                          const DropdownMenuItem(
-                            value: '',
-                            child: Text('Selecione a Gaveta'),
-                          ),
-                          ...List.generate(formController.drawerNumber, (index) => index + 1).map((drawerNumber) {
-                            return DropdownMenuItem(
-                              value: drawerNumber.toString(),
-                              child: Text(drawerNumber.toString()),
-                            );
-                          }),
-                        ],
-                        decoration: const InputDecoration(
-                          labelText: 'Número da Gaveta',
-                          border: UnderlineInputBorder(),
-                          prefixIcon: Icon(Icons.medication_rounded),
-                        ),
-                      ),
-                    ),
+              : Observer(
+                  builder: (_) => CustomTextFieldWidget(
+                    textEditingController: formController.drawerNumberController,
+                    icon: Icons.medication_rounded,
+                    label: 'Número da Gaveta',
+                    readOnly: widget.readOnly,
+                    enabled: !widget.readOnly,
+                  ),
+                ),
+          // formController.drawers.isEmpty ||
+          //         (widget.readOnly &&
+          //             (formController.drawerNumberController.text.isEmpty ||
+          //                 formController.drawerNumberController.text == '0'))
+          //     ? const SizedBox()
+          //     : widget.readOnly
+          //         ? const SizedBox()
+          //         : const SizedBox(height: 16),
+          // formController.drawers.isEmpty ||
+          //         (widget.readOnly &&
+          //             (formController.drawerNumberController.text.isEmpty ||
+          //                 formController.drawerNumberController.text == '0'))
+          //     ? const SizedBox()
+          //     : widget.readOnly
+          //         ? Observer(
+          //             builder: (_) => CustomTextFieldWidget(
+          //               textEditingController: formController.drawerNumberController,
+          //               icon: Icons.medication_rounded,
+          //               label: 'Número da Gaveta',
+          //               readOnly: widget.readOnly,
+          //               enabled: !widget.readOnly,
+          //             ),
+          //           )
+          //         : Observer(
+          //             builder: (_) => DropdownButtonFormField<dynamic>(
+          //               value: formController.drawerNumberController.text,
+          //               onChanged: widget.readOnly
+          //                   ? null
+          //                   : (value) {
+          //                       if (value != null && value.isNotEmpty) {
+          //                         formController.hardwareIdController.text = value['name'] ?? '';
+          //                         formController.hardwareIdController.text = value['drawerNumber'] ?? '0';
+          //                         formController.drawerNumber = int.parse(value['drawerNumber'] ?? 0);
+          //                       }
+          //                     },
+          //               items: [
+          //                 const DropdownMenuItem(
+          //                   value: '',
+          //                   child: Text('Selecione a Gaveta'),
+          //                 ),
+          //                 ...List.generate(formController.drawerNumber, (index) => index + 1).map((drawerNumber) {
+          //                   return DropdownMenuItem(
+          //                     value: drawerNumber.toString(),
+          //                     child: Text(drawerNumber.toString()),
+          //                   );
+          //                 }),
+          //               ],
+          //               decoration: const InputDecoration(
+          //                 labelText: 'Número da Gaveta',
+          //                 border: UnderlineInputBorder(),
+          //                 prefixIcon: Icon(Icons.medication_rounded),
+          //               ),
+          //             ),
+          //           ),
           const SizedBox(height: 20),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
